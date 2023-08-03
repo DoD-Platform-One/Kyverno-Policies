@@ -8,11 +8,11 @@ metadata:
     kyverno-policies-bbtest/type: mutate
     kyverno-policies-bbtest/expected: mutate
     kyverno-policies-bbtest/key: .spec.containers[0].image
-    kyverno-policies-bbtest/value: registry1.dso.mil/ironbank/redhat/ubi/ubi8-minimal:latest
+    kyverno-policies-bbtest/value: registry1.dso.mil/ironbank/redhat/ubi/ubi8-minimal@sha256:429697a55bea8e883fb2055be5a064f659f55d99b97e2d4ce38e7e79d1e48b57
 spec:
   containers:
   - name: c1
-    image: replace.image.registry/ironbank/redhat/ubi/ubi8-minimal
+    image: replace.image.registry/ironbank/redhat/ubi/ubi8-minimal@sha256:429697a55bea8e883fb2055be5a064f659f55d99b97e2d4ce38e7e79d1e48b57
     args: ["sleep", "infinity"]
 ---
 # Test 2: Init containers with the image registry are mutated
@@ -25,12 +25,12 @@ metadata:
     kyverno-policies-bbtest/type: mutate
     kyverno-policies-bbtest/expected: mutate
     kyverno-policies-bbtest/key: .spec.initContainers[0].image
-    kyverno-policies-bbtest/value: registry1.dso.mil/ironbank/redhat/ubi/ubi8-minimal
+    kyverno-policies-bbtest/value: registry1.dso.mil/ironbank/redhat/ubi/ubi8-minimal@sha256:429697a55bea8e883fb2055be5a064f659f55d99b97e2d4ce38e7e79d1e48b57
 spec:
   containers:
   - name: c1
-    image: registry1.dso.mil/ironbank/redhat/ubi/ubi8-minimal
+    image: registry1.dso.mil/ironbank/redhat/ubi/ubi8-minimal@sha256:429697a55bea8e883fb2055be5a064f659f55d99b97e2d4ce38e7e79d1e48b57
     args: ["sleep", "infinity"]
   initContainers:
   - name: i1
-    image: replace.image.registry/ironbank/redhat/ubi/ubi8-minimal
+    image: replace.image.registry/ironbank/redhat/ubi/ubi8-minimal@sha256:429697a55bea8e883fb2055be5a064f659f55d99b97e2d4ce38e7e79d1e48b57

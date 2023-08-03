@@ -3,6 +3,12 @@
 Format: [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 
 ---
+## [1.1.0-bb.8] - 2023-07-27
+### Changed
+- re-added IB key to test values for package/BB CI
+- modified disallow-image-tags, require-image-signature, update-image-registry
+- added timeout to test-policies.sh
+
 ## [1.1.0-bb.7] - 2023-06-16
 ### Changed
 - ironbank/opensource/kubernetes/kubectl updated from v1.26.4 to 1.27.3

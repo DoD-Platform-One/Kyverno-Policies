@@ -70,5 +70,5 @@ metadata:
 spec:
   containers:
   - name: c1
-    image: registry1.dso.mil/ironbank/redhat/ubi/ubi8-minimal
+    image: registry1.dso.mil/ironbank/redhat/ubi/ubi8-minimal@sha256:429697a55bea8e883fb2055be5a064f659f55d99b97e2d4ce38e7e79d1e48b57
     args: ["sleep", "infinity"]
