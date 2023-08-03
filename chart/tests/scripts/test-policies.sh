@@ -105,7 +105,7 @@ for POLICY in "${POLICIES[@]}"; do
 
   # Apply test vectors and verify no errors
   echo -n "- Test vectors deployed: "
-  DEPLOYS=$(kubectl apply -f /yaml/$POLICY.yaml 2>&1)
+  DEPLOYS=$(kubectl apply --wait --timeout=10s -f /yaml/$POLICY.yaml 2>&1)
 
   # Verify resources were deployed
   NUM_DEPLOYS=$(echo $DEPLOYS | grep -oP "created$|configured$|denied" | wc -l)

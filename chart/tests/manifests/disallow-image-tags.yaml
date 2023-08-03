@@ -1,3 +1,8 @@
+#
+# use registry1.dso.mil/bigbang-ci/bb-ci to test.  Even though the :latest tag doesn't exist,
+# it's enough to trigger the kyverno policies for these tests.
+#
+
 # Test 1: Containers using the disallowed tag are not allowed
 apiVersion: v1
 kind: Pod
@@ -10,7 +15,7 @@ metadata:
 spec:
   containers:
   - name: c1
-    image: registry1.dso.mil/ironbank/redhat/ubi/ubi8-minimal:latest
+    image: registry1.dso.mil/bigbang-ci/bb-ci:latest
     args: ["sleep", "infinity"]
 ---
 # Test 2: Init containers using the disallowed tag are not allowed
@@ -29,7 +34,7 @@ spec:
     args: ["sleep", "infinity"]
   initContainers:
   - name: i1
-    image: registry1.dso.mil/ironbank/redhat/ubi/ubi8-minimal:latest
+    image: registry1.dso.mil/bigbang-ci/bb-ci:latest
 ---
 # Test 3: Containers without a tag are not allowed
 apiVersion: v1
@@ -43,7 +48,7 @@ metadata:
 spec:
   containers:
   - name: c1
-    image: registry1.dso.mil/ironbank/redhat/ubi/ubi8-minimal
+    image: registry1.dso.mil/bigbang-ci/bb-ci
     args: ["sleep", "infinity"]
 ---
 # Test 4: Init containers without a tag are not allowed
@@ -62,7 +67,7 @@ spec:
     args: ["sleep", "infinity"]
   initContainers:
   - name: i1
-    image: registry1.dso.mil/ironbank/redhat/ubi/ubi8-minimal
+    image: registry1.dso.mil/bigbang-ci/bb-ci
 ---
 # Test 5: Containers and init containers with immutable tags are allowed
 apiVersion: v1
