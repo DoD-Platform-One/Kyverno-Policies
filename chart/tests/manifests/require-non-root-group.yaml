@@ -172,3 +172,75 @@ spec:
     image: registry1.dso.mil/ironbank/redhat/ubi/ubi8-minimal
     securityContext:
       runAsGroup: 1000
+---
+# Test 10: Istio-Init pods that run non-root groups are allowed
+apiVersion: v1
+kind: Pod
+metadata:
+  name: require-non-root-group-10
+  namespace: default
+  annotations:
+    kyverno-policies-bbtest/type: validate
+    kyverno-policies-bbtest/expected: pass
+spec:
+  containers:
+  - name: c1
+    image: registry1.dso.mil/ironbank/opensource/istio/proxyv2
+    args: ["sleep", "infinity"]
+    securityContext:
+      runAsGroup: 1337
+      runAsNonRoot: true
+      runAsUser: 1337
+  initContainers:
+  - name: not-me
+    image: registry1.dso.mil/ironbank/opensource/istio/proxyv2
+    securityContext:
+      runAsGroup: 0
+---
+# Test 10: Init pods that run non-root groups are allowed
+apiVersion: v1
+kind: Pod
+metadata:
+  name: require-non-root-group-11
+  namespace: default
+  annotations:
+    kyverno-policies-bbtest/type: validate
+    kyverno-policies-bbtest/expected: pass
+spec:
+  containers:
+  - name: not-me
+    image: registry1.dso.mil/ironbank/opensource/istio/proxyv2
+    args: ["sleep", "infinity"]
+    securityContext:
+      runAsGroup: 0
+      runAsNonRoot: true
+      runAsUser: 1337
+  initContainers:
+  - name: i1
+    image: registry1.dso.mil/ironbank/opensource/istio/proxyv2
+    securityContext:
+      runAsGroup: 1337
+---
+# Test 10: non Istio-Init pods that run root groups are not allowed
+apiVersion: v1
+kind: Pod
+metadata:
+  name: require-non-root-group-12
+  namespace: default
+  annotations:
+    kyverno-policies-bbtest/type: validate
+    kyverno-policies-bbtest/expected: fail
+spec:
+  containers:
+  - name: not-me
+    image: registry1.dso.mil/ironbank/opensource/istio/proxyv2
+    args: ["sleep", "infinity"]
+    securityContext:
+      runAsGroup: 0
+      runAsNonRoot: true
+      runAsUser: 1337
+  initContainers:
+  - name: i1
+    image: registry1.dso.mil/ironbank/opensource/istio/proxyv2
+    securityContext:
+      runAsGroup: 0

@@ -26,29 +26,37 @@ spec:
         runAsGroup must be set to an id > 0 in either spec.securityContext.runAsGroup or
         (spec.containers[*].securityContext.runAsGroup, spec.initContainers[*].securityContext.runAsGroup,
         and spec.ephemeralContainers[*].securityContext.runAsGroup)
-      anyPattern:
-      - spec:
-          securityContext:
+      foreach:
+      - list: request.object.spec.[ephemeralContainers, initContainers, containers][]
+        preconditions:
+          all:
+          {{- include "kyverno-policies.excludeContainersPrecondition" (merge (dict "name" $name "operator" "AnyIn") .) | nindent 4 }}
+        pattern:
+          =(securityContext):
+            =(runAsGroup): "*"
+      - list: request.object.spec.[ephemeralContainers, initContainers, containers][]
+        preconditions:
+          any:
+          - key: "{{`{{ request.object.spec.securityContext.runAsGroup || to_number('0') }}`}}"
+            operator: NotEquals
+            value: 0
+          all:
+          {{- include "kyverno-policies.excludeContainersPrecondition" (merge (dict "name" $name "operator" "AnyNotIn") .) | nindent 4
+}}
+        pattern:
+          =(securityContext):
+            =(runAsGroup): "!0"
+      - list: request.object.spec.[ephemeralContainers, initContainers, containers][]
+        preconditions:
+          all:
+          - key: "{{`{{ request.object.spec.securityContext.runAsGroup || to_number('0') }}`}}"
+            operator: Equals
+            value: 0
+          {{- include "kyverno-policies.excludeContainersPrecondition" (merge (dict "name" $name "operator" "AnyNotIn") .) | nindent 4
+}}
+        anyPattern:
+        - securityContext:
             runAsGroup: ">0"
-          containers:
-          - =(securityContext):
-              =(runAsGroup): ">0"
-          =(initContainers):
-          - =(securityContext):
-              =(runAsGroup): ">0"
-          =(ephemeralContainers):
-          - =(securityContext):
-              =(runAsGroup): ">0"
-      - spec:
-          containers:
-          - securityContext:
-              runAsGroup: ">0"
-          =(initContainers):
-          - securityContext:
-              runAsGroup: ">0"
-          =(ephemeralContainers):
-          - securityContext:
-              runAsGroup: ">0"
   - name: fs-group
     {{- include "kyverno-policies.exclude" (merge (dict "name" $name) .) | indent 4 }}
     {{- include "kyverno-policies.match" (merge (dict "name" $name "kinds" (list "Pod")) .) | nindent 4 }}
