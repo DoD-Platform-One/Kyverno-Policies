@@ -3,6 +3,10 @@
 Format: [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 
 ---
+## [1.1.0-bb.10] - 2023-08-29
+### Added
+- precondition support for excluding istio-init containers from require-group policy
+
 ## [1.1.0-bb.9] - 2023-08-01
 ### Added
 - added DEVELOPMENT_MAINTENANCE.md
