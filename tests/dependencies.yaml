@@ -1,4 +1,5 @@
 kyverno:
   git:
     repo: "https://repo1.dso.mil/platform-one/big-bang/apps/sandbox/kyverno.git"
+    tag: "2.7.2-bb.0"
   namespace: "kyverno"
