@@ -23,7 +23,16 @@ spec:
   - name: drop-all-capabilities
     {{- include "kyverno-policies.exclude" (merge (dict "name" $name) .) | indent 4 }}
     {{- include "kyverno-policies.match" (merge (dict "name" $name "kinds" (list "Pod")) .) | nindent 4 }}
-    {{- include "kyverno-policies.precondition.default" . | nindent 4 }}
+    {{- with index .Values "policyPreconditions" $name }}
+    preconditions:
+      {{- toYaml . | nindent 6 }}
+    {{- else }}
+    preconditions:
+      all:
+      - key: "{{`{{ request.operation || 'BACKGROUND' }}`}}"
+        operator: NotEquals
+        value: DELETE
+    {{- end }}
     validate:
       message: >-
         Containers must drop all Linux capabilities by setting the fields

@@ -3,6 +3,11 @@
 Format: [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 
 ---
+## [3.0.4-bb.0] - 2023-09-20
+### Changed
+- changed CI test script and values to work better with newer kyverno chart version 3.0.0 for app version 1.10.X
+- disabled require-non-root-group and require-non-root-user policy tests until a fix is added
+
 ## [1.1.0-bb.10] - 2023-08-29
 ### Added
 - precondition support for excluding istio-init containers from require-group policy

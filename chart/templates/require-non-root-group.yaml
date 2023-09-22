@@ -20,7 +20,10 @@ spec:
   - name: run-as-group
     {{- include "kyverno-policies.exclude" (merge (dict "name" $name) .) | indent 4 }}
     {{- include "kyverno-policies.match" (merge (dict "name" $name "kinds" (list "Pod")) .) | nindent 4 }}
-    {{- include "kyverno-policies.precondition.default" . | nindent 4 }}
+    {{- with index .Values "policyPreconditions" $name }}
+    preconditions:
+      {{- toYaml . | nindent 6 }}
+    {{- end }}
     validate:
       message: >-
         runAsGroup must be set to an id > 0 in either spec.securityContext.runAsGroup or
@@ -45,7 +48,7 @@ spec:
 }}
         pattern:
           =(securityContext):
-            =(runAsGroup): "!0"
+            =(runAsGroup): ">0"
       - list: request.object.spec.[ephemeralContainers, initContainers, containers][]
         preconditions:
           all:
@@ -60,7 +63,10 @@ spec:
   - name: fs-group
     {{- include "kyverno-policies.exclude" (merge (dict "name" $name) .) | indent 4 }}
     {{- include "kyverno-policies.match" (merge (dict "name" $name "kinds" (list "Pod")) .) | nindent 4 }}
-    {{- include "kyverno-policies.precondition.default" . | nindent 4 }}
+    {{- with index .Values "policyPreconditions" $name }}
+    preconditions:
+      {{- toYaml . | nindent 6 }}
+    {{- end }}
     validate:
       message: >-
         fsGroup must be empty or set to an id > 0 in spec.securityContextChanging.

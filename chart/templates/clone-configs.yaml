@@ -26,6 +26,7 @@ spec:
     generate:
       kind: {{ $v.kind }}
       name: {{ $v.name }}
+      apiVersion: v1
       namespace: "{{ "{{" }}request.object.metadata.name{{ "}}" }}"
       synchronize: true
       clone:

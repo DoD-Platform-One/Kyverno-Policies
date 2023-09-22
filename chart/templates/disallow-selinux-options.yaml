@@ -21,6 +21,10 @@ spec:
   - name: pod-disallow-selinux-{{ $v }}
     {{- include "kyverno-policies.exclude" (merge (dict "name" $name) $) | indent 4 }}
     {{- include "kyverno-policies.match" (merge (dict "name" $name "kinds" (list "Pod")) $) | nindent 4 }}
+    {{- with index $.Values "policyPreconditions" $name }}
+    preconditions:
+      {{- toYaml . | nindent 6 }}
+    {{- end }}
     validate:
       message: >-
         Setting SELinux {{ $v }} is not allowed.  The fields spec.securityContext.seLinuxOptions.{{ $v }},
@@ -34,7 +38,10 @@ spec:
   - name: container-disallow-selinux-{{ $v }}
     {{- include "kyverno-policies.exclude" (merge (dict "name" $name) $) | indent 4 }}
     {{- include "kyverno-policies.match" (merge (dict "name" $name "kinds" (list "Pod")) $) | nindent 4 }}
-    {{- include "kyverno-policies.precondition.default" . | nindent 4 }}
+    {{- with index $.Values "policyPreconditions" $name }}
+    preconditions:
+      {{- toYaml . | nindent 6 }}
+    {{- end }}
     validate:
       message: >-
         Setting SELinux {{ $v }} is not allowed.  The fields spec.securityContext.seLinuxOptions.{{ $v }},

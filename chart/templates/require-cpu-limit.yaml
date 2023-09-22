@@ -25,7 +25,10 @@ spec:
   - name: validate-resources
     {{- include "kyverno-policies.exclude" (merge (dict "name" $name) .) | indent 4 }}
     {{- include "kyverno-policies.match" (merge (dict "name" $name "kinds" (list "Pod")) .) | nindent 4 }}
-    {{- include "kyverno-policies.precondition.default" . | nindent 4 }}
+    {{- with index .Values "policyPreconditions" $name }}
+    preconditions:
+      {{- toYaml . | nindent 6 }}
+    {{- end }}
     validate:
       message: "CPU limits are required to be defined and below the maximum."
       {{- include "kyverno-policies.excludeContainers" (merge (dict "name" $name) .) | nindent 6 }}
