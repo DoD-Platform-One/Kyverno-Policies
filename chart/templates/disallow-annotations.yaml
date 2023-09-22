@@ -5,6 +5,9 @@ kind: ClusterPolicy
 metadata:
   name: {{ $name }}
   annotations:
+    {{- with .Values.autogenControllers }}
+    pod-policies.kyverno.io/autogen-controllers: {{ . }}
+    {{- end }}
     policies.kyverno.io/title: Disallow Annotations
     policies.kyverno.io/category: Best Practices
     policies.kyverno.io/severity: {{ default "medium" (dig $name "severity" nil .Values.policies) }}
@@ -19,11 +22,16 @@ metadata:
 spec:
   {{- include "kyverno-policies.webhookTimeoutSeconds" (merge (dict "name" $name) .) | indent 2 }}
   validationFailureAction: {{ default (dig $name "validationFailureAction" nil .Values.policies) .Values.validationFailureAction }}
+  background: {{ .Values.background }}
+  failurePolicy: {{ .Values.failurePolicy }}
   rules:
   - name: {{ $name }}
     {{- include "kyverno-policies.exclude" (merge (dict "name" $name) .) | indent 4 }}
     {{- include "kyverno-policies.match" (merge (dict "name" $name "kinds" (list "Pod")) .) | nindent 4 }}
-    {{- include "kyverno-policies.precondition.default" . | nindent 4 }}
+    {{- with index .Values "policyPreconditions" $name }}
+      preconditions:
+        {{- toYaml . | nindent 6 }}
+      {{- end }}
     validate:
       message: >-
         One or more annotations is not allowed per the policies disallowed values list.

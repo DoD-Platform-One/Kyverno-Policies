@@ -39,7 +39,7 @@ When a helm test is started, the pod `kyverno-policies-script-test` will run wit
 
 ## Test Values
 
-All validation policies should be set to "audit" for the failure action.  This allows Kyverno to capture multiple violations in a policy report.  Setting policies to "enforce" will cause Kyverno to stop after the first resource violation.
+All validation policies should be set to "Audit" for the failure action.  This allows Kyverno to capture multiple violations in a policy report.  Setting policies to "enforce" will cause Kyverno to stop after the first resource violation.
 
 Policies should have values setup to allow for both enforcement and non-enforcement of the policy.  Enforcement means the policy blocks, generates, or mutates a resource.  Non-enforcement means the policy allows or ignores a resource (e.g exception).
 

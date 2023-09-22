@@ -20,7 +20,10 @@ spec:
   - name: external-ips
     {{- include "kyverno-policies.exclude" (merge (dict "name" $name) .) | indent 4 }}
     {{- include "kyverno-policies.match" (merge (dict "name" $name "kinds" (list "Service")) .) | nindent 4 }}
-    {{- include "kyverno-policies.precondition.default" . | nindent 4 }}
+    {{- with index .Values "policyPreconditions" $name }}
+    preconditions:
+      {{- toYaml . | nindent 6 }}
+    {{- end }}
     validate:
       message: "Only externalIPs in the approved list are allowed."
       pattern:

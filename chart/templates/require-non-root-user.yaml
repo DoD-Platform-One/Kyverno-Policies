@@ -20,7 +20,10 @@ spec:
   - name: non-root-user
     {{- include "kyverno-policies.exclude" (merge (dict "name" $name) .) | indent 4 }}
     {{- include "kyverno-policies.match" (merge (dict "name" $name "kinds" (list "Pod")) .) | nindent 4 }}
-    {{- include "kyverno-policies.precondition.default" . | nindent 4 }}
+    {{- with index .Values "policyPreconditions" $name }}
+    preconditions:
+      {{- toYaml . | nindent 6 }}
+    {{- end }}
     validate:
       message: >-
         Either `runAsNonRoot` must be set to true or `runAsUser` must be > 0 in
@@ -48,7 +51,7 @@ spec:
           {{- include "kyverno-policies.excludeContainersPrecondition" (merge (dict "name" $name "operator" "AnyNotIn") .) | nindent 4 }}
         pattern:
           =(securityContext):
-            =(runAsUser): "!0"
+            =(runAsUser): ">0"
             =(runAsNonRoot): "!false"
       - list: request.object.spec.[ephemeralContainers, initContainers, containers][]
         preconditions:

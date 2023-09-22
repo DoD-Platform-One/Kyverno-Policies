@@ -32,7 +32,10 @@ spec:
   - name: {{ printf "%s-pod-%d" $name $index }}
     {{- include "kyverno-policies.exclude" (merge (dict "name" $name) $) | indent 4 }}
     {{- include "kyverno-policies.match" (merge (dict "name" $name "kinds" (list "Pod")) $) | nindent 4 }}
-    {{- include "kyverno-policies.precondition.default" . | nindent 4 }}
+    {{- with index $.Values "policyPreconditions" $name }}
+    preconditions:
+      {{- toYaml . | nindent 6 }}
+    {{- end }}
     validate:
       message: >-
         Pod tolerations that match the taint "{{ default "*" $v.key }}={{ default "*" $v.value }}:{{ default "*" $v.effect }}"' are not allowed.
@@ -51,7 +54,10 @@ spec:
   - name: {{ printf "%s-controller-%d" $name $index }}
     {{- include "kyverno-policies.exclude" (merge (dict "name" $name) $) | indent 4 }}
     {{- include "kyverno-policies.match" (merge (dict "name" $name "kinds" (list "DaemonSet" "Deployment" "Job" "StatefulSet")) $) | nindent 4 }}
-    {{- include "kyverno-policies.precondition.default" . | nindent 4 }}
+    {{- with index $.Values "policyPreconditions" $name }}
+    preconditions:
+      {{- toYaml . | nindent 6 }}
+    {{- end }}
     validate:
       message: >-
         Tolerations that match the taint "{{ default "*" $v.key }}={{ default "*" $v.value }}:{{ default "*" $v.effect }}"' are not allowed.
@@ -70,7 +76,10 @@ spec:
   - name: {{ printf "%s-cronjob-%d" $name $index }}
     {{- include "kyverno-policies.exclude" (merge (dict "name" $name) $) | indent 4 }}
     {{- include "kyverno-policies.match" (merge (dict "name" $name "kinds" (list "CronJob")) $) | nindent 4 }}
-    {{- include "kyverno-policies.precondition.default" . | nindent 4 }}
+    {{- with index $.Values "policyPreconditions" $name }}
+    preconditions:
+      {{- toYaml . | nindent 6 }}
+    {{- end }}
     validate:
       message: >-
         Tolerations that match the taint "{{ default "*" $v.key }}={{ default "*" $v.value }}:{{ default "*" $v.effect }}"' are not allowed.
@@ -89,7 +98,10 @@ spec:
   - name: {{ printf "%s-runtimeclass-%d" $name $index }}
     {{- include "kyverno-policies.exclude" (merge (dict "name" $name) $) | indent 4 }}
     {{- include "kyverno-policies.match" (merge (dict "name" $name "kinds" (list "RuntimeClass")) $) | nindent 4 }}
-    {{- include "kyverno-policies.precondition.default" . | nindent 4 }}
+    {{- with index $.Values "policyPreconditions" $name }}
+    preconditions:
+      {{- toYaml . | nindent 6 }}
+    {{- end }}
     validate:
       message: >-
         RuntimeClaass tolerations that match the taint "{{ default "*" $v.key }}={{ default "*" $v.value }}:{{ default "*" $v.effect }}"' are not allowed.

@@ -165,7 +165,6 @@ data:
 {{- end }}
 {{- end -}}
 
-
 {{/* Add default precondition */}}
 {{- define "kyverno-policies.precondition.default" -}}
 preconditions:
@@ -181,4 +180,31 @@ preconditions:
   - CREATE
   - UPDATE
   - BACKGROUND
+{{- end -}}
+
+{{/* Get deployed Kyverno version from Kubernetes */}}
+{{- define "kyverno-policies.kyvernoVersion" -}}
+{{- $version := "" -}}
+{{- if eq .Values.kyvernoVersion "autodetect" }}
+{{- with (lookup "apps/v1" "Deployment" .Release.Namespace "kyverno") -}}
+  {{- with (first .spec.template.spec.containers) -}}
+    {{- $imageTag := (last (splitList ":" .image)) -}}
+    {{- $version = trimPrefix "v" $imageTag -}}
+  {{- end -}}
+{{- end -}}
+{{ $version }}
+{{- else -}}
+{{ .Values.kyvernoVersion }}
+{{- end -}}
+{{- end -}}
+
+{{/* Fail if deployed Kyverno does not match */}}
+{{- define "kyverno-policies.supportedKyvernoCheck" -}}
+{{- $supportedKyverno := index . "ver" -}}
+{{- $top := index . "top" }}
+{{- if (include "kyverno-policies.kyvernoVersion" $top) -}}
+  {{- if not ( semverCompare $supportedKyverno (include "kyverno-policies.kyvernoVersion" $top) ) -}}
+    {{- fail (printf "Kyverno version is too low, expected %s" $supportedKyverno) -}}
+  {{- end -}}
+{{- end -}}
 {{- end -}}

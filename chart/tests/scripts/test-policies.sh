@@ -35,9 +35,9 @@ fi
 
 #######################################
 
-# Set all policies to audit so we can test them one at a time
+# Set all policies to Audit so we can test them one at a time
 echo ---
-echo -e "${CYN}Setup: Set all policies to audit${NC}"
+echo -e "${CYN}Setup: Set all policies to Audit${NC}"
 POLICY_FAILACTIONS=()
 for POLICY in "${POLICIES[@]}"; do
 
@@ -45,8 +45,8 @@ for POLICY in "${POLICIES[@]}"; do
   POLICY_FAILACTIONS+=($(kubectl get cpol $POLICY -o jsonpath="{.spec.validationFailureAction}"))
 
   # Patch policy validation failure action
-  if [ "${POLICY_FAILACTIONS[-1]}" != "audit" ]; then
-    kubectl patch cpol $POLICY -p '{"spec":{"validationFailureAction":"audit"}}' --type=merge
+  if [ "${POLICY_FAILACTIONS[-1]}" != "Audit" ]; then
+    kubectl patch cpol $POLICY -p '{"spec":{"validationFailureAction":"Audit"}}' --type=merge
   fi
 done
 
@@ -82,9 +82,9 @@ for POLICY in "${POLICIES[@]}"; do
   done
 
   if [ "$TESTTYPE" == "validate" ]; then
-    # Patch policy under test to enforce
-    echo -n "Setting policy to enforce: "
-    kubectl patch cpol $POLICY -p '{"spec":{"validationFailureAction":"enforce"}}' --type=merge
+    # Patch policy under test to Enforce
+    echo -n "Setting policy to Enforce: "
+    kubectl patch cpol $POLICY -p '{"spec":{"validationFailureAction":"Enforce"}}' --type=merge
   fi
 
   # Verify policy is ready
@@ -145,7 +145,7 @@ for POLICY in "${POLICIES[@]}"; do
     ##### Validate Test
     if [ "$TESTTYPE" == "validate" ]; then
       ALLOW=$(echo $DEPLOYS | grep -oP "$MANIFEST(?= created)")
-      BLOCK=$(echo $DEPLOYS | grep -oP "$MANIFEST(?= for resource (error|violation))")
+      BLOCK=$(echo $DEPLOYS | grep -oP "$MANIFEST.*was blocked")
       if [ "$EXPECTED" == "pass" ]; then
         # Verify manifest is in the allowed list and not in the blocked list
         if [ -n "$ALLOW" ] && [ -z "$BLOCK" ]; then
@@ -264,8 +264,8 @@ for POLICY in "${POLICIES[@]}"; do
 
   if [ "$TESTTYPE" == "validate" ]; then
     # Unpatch policy
-    echo -n "Setting policy to audit: "
-    kubectl patch cpol $POLICY -p '{"spec":{"validationFailureAction":"audit"}}' --type=merge
+    echo -n "Setting policy to Audit: "
+    kubectl patch cpol $POLICY -p '{"spec":{"validationFailureAction":"Audit"}}' --type=merge
   fi
 
   echo "Cleaning up Test Resources"
@@ -280,7 +280,7 @@ echo -e "${CYN}Cleanup: Restore policy's validation failure action${NC}"
 for POLICY in "${POLICIES[@]}"; do
 
   # Patch policy validation failure action
-  if [ "${POLICY_FAILACTIONS[0]}" != "audit" ]; then
+  if [ "${POLICY_FAILACTIONS[0]}" != "Audit" ]; then
     kubectl patch cpol $POLICY -p "{\"spec\":{\"validationFailureAction\":\"${POLICY_FAILACTIONS[0]}\"}}" --type=merge
   fi
 
