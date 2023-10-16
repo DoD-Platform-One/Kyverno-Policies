@@ -6,6 +6,9 @@ kind: ClusterPolicy
 metadata:
   name: {{ $name }}
   annotations:
+    {{- with .Values.autogenControllers }}
+    pod-policies.kyverno.io/autogen-controllers: {{ . }}
+    {{- end }}
     policies.kyverno.io/title: Require Image Signature
     policies.kyverno.io/category: Best Practices (Security)
     policies.kyverno.io/severity: {{ default "high" (dig $name "severity" nil .Values.policies) }}
@@ -20,6 +23,8 @@ metadata:
 spec:
   {{- include "kyverno-policies.webhookTimeoutSeconds" (merge (dict "name" $name) .) | indent 2 }}
   validationFailureAction: {{ default (dig $name "validationFailureAction" nil .Values.policies) .Values.validationFailureAction }}
+  background: {{ .Values.background }}
+  failurePolicy: {{ .Values.failurePolicy }}
   rules:
   - name: verify-image
     {{- include "kyverno-policies.exclude" (merge (dict "name" $name) .) | indent 4 }}

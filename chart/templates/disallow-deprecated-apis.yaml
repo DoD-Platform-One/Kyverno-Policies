@@ -7,7 +7,7 @@ metadata:
   annotations:
     {{- with .Values.autogenControllers }}
     pod-policies.kyverno.io/autogen-controllers: {{ . }}
-	  {{- end }}
+    {{- end }}
     policies.kyverno.io/title: Disallow Deprecated APIs
     policies.kyverno.io/category: Best Practices
     policies.kyverno.io/severity: {{ default "low" (dig $name "severity" nil .Values.policies) }}

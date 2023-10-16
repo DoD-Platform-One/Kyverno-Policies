@@ -26,6 +26,10 @@ exclude: {}
 # -- Adds an excludeContainers to all policies.  This is merged with any policy-specific excludeContainers.
 excludeContainers: []
 
+# -- Customize the target Pod controllers for the auto-generated rules. (Eg. `none`, `Deployment`, `DaemonSet,Deployment,StatefulSet`)
+# For more info https://kyverno.io/docs/writing-policies/autogen/.
+autogenControllers: ""
+
 # -- Additional labels to apply to all policies.
 customLabels: {}
 

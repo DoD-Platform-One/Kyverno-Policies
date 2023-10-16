@@ -5,6 +5,9 @@ kind: ClusterPolicy
 metadata:
   name: {{ $name }}
   annotations:
+    {{- with .Values.autogenControllers }}
+    pod-policies.kyverno.io/autogen-controllers: {{ . }}
+    {{- end }}
     policies.kyverno.io/title: Clone ConfigMaps and Secrets
     policies.kyverno.io/category: Helper
     policies.kyverno.io/severity: {{ default "low" (dig $name "severity" nil .Values.policies) }}
@@ -18,6 +21,8 @@ metadata:
   labels: {{- include "kyverno-policies.labels" . | nindent 4 }}
 spec:
   {{- include "kyverno-policies.webhookTimeoutSeconds" (merge (dict "name" $name) .) | indent 2 }}
+  background: {{ .Values.background }}
+  failurePolicy: {{ .Values.failurePolicy }}
   rules:
   {{- range $v := (dig $name "parameters" "clone" nil .Values.policies) }}
   - name: {{ printf "%s-%s-%s" (tpl $v.namespace $) $v.name $v.kind }}

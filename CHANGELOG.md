@@ -3,6 +3,10 @@
 Format: [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 
 ---
+## [3.0.4-bb.1] - 2023-10-11
+### Changed
+- respect `autogenControllers`, `background`, and `failurePolicy` values across all policies
+
 ## [3.0.4-bb.0] - 2023-09-20
 ### Changed
 - changed CI test script and values to work better with newer kyverno chart version 3.0.0 for app version 1.10.X

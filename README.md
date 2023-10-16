@@ -1,6 +1,6 @@
 # kyverno-policies
 
-![Version: 3.0.4-bb.0](https://img.shields.io/badge/Version-3.0.4--bb.0-informational?style=flat-square) ![AppVersion: v1.10.3](https://img.shields.io/badge/AppVersion-v1.10.3-informational?style=flat-square)
+![Version: 3.0.4-bb.1](https://img.shields.io/badge/Version-3.0.4--bb.1-informational?style=flat-square) ![AppVersion: v1.10.3](https://img.shields.io/badge/AppVersion-v1.10.3-informational?style=flat-square)
 
 Collection of Kyverno security and best-practice policies for Kyverno
 
@@ -43,6 +43,7 @@ helm install kyverno-policies chart/
 | webhookTimeoutSeconds | int | `30` | Override all policies' time to wait for admission webhook to respond.  If blank, uses policy setting or default (10).  Range is 1 to 30. |
 | exclude | object | `{}` | Adds an exclusion to all policies.  This is merged with any policy-specific excludes.  See https://kyverno.io/docs/writing-policies/match-exclude for fields. |
 | excludeContainers | list | `[]` | Adds an excludeContainers to all policies.  This is merged with any policy-specific excludeContainers. |
+| autogenControllers | string | `""` | Customize the target Pod controllers for the auto-generated rules. (Eg. `none`, `Deployment`, `DaemonSet,Deployment,StatefulSet`) For more info https://kyverno.io/docs/writing-policies/autogen/. |
 | customLabels | object | `{}` | Additional labels to apply to all policies. |
 | policyPreconditions | object | `{}` | Add preconditions to individual policies. Policies with multiple rules can have individual rules excluded by using the name of the rule as the key in the `policyPreconditions` map. |
 | waitforready.enabled | bool | `true` | Controls wait for ready deployment |
