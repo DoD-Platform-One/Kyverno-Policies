@@ -5,6 +5,9 @@ kind: ClusterPolicy
 metadata:
   name: {{ $name }}
   annotations:
+    {{- with .Values.autogenControllers }}
+    pod-policies.kyverno.io/autogen-controllers: {{ . }}
+    {{- end }}
     policies.kyverno.io/title: Disallow SELinux Options
     policies.kyverno.io/category: Pod Security Standards (Baseline)
     policies.kyverno.io/severity: {{ default "high" (dig $name "severity" nil .Values.policies) }}
@@ -16,6 +19,8 @@ metadata:
 spec:
   {{- include "kyverno-policies.webhookTimeoutSeconds" (merge (dict "name" $name) .) | indent 2 }}
   validationFailureAction: {{ default (dig $name "validationFailureAction" nil .Values.policies) .Values.validationFailureAction }}
+  background: {{ .Values.background }}
+  failurePolicy: {{ .Values.failurePolicy }}
   rules:
   {{- range $v := (dig $name "parameters" "disallow" nil .Values.policies) }}
   - name: pod-disallow-selinux-{{ $v }}

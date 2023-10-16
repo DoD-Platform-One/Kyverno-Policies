@@ -22,6 +22,8 @@ metadata:
 spec:
   {{- include "kyverno-policies.webhookTimeoutSeconds" (merge (dict "name" $name) .) | indent 2 }}
   validationFailureAction: {{ default (dig $name "validationFailureAction" nil .Values.policies) .Values.validationFailureAction }}
+  background: {{ .Values.background }}
+  failurePolicy: {{ .Values.failurePolicy }}
   rules:
   - name: validate-probes
     {{- include "kyverno-policies.exclude" (merge (dict "name" $name) .) | indent 4 }}

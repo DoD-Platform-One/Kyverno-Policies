@@ -5,6 +5,9 @@ kind: ClusterPolicy
 metadata:
   name: {{ $name }}
   annotations:
+    {{- with .Values.autogenControllers }}
+    pod-policies.kyverno.io/autogen-controllers: {{ . }}
+    {{- end }}
     policies.kyverno.io/title: Drop All Capabilities
     policies.kyverno.io/category: Pod Security Standards (Restricted)
     policies.kyverno.io/severity: {{ default "medium" (dig $name "severity" nil .Values.policies) }}
@@ -19,6 +22,7 @@ spec:
   {{- include "kyverno-policies.webhookTimeoutSeconds" (merge (dict "name" $name) .) | indent 2 }}
   validationFailureAction: {{ default (dig $name "validationFailureAction" nil .Values.policies) .Values.validationFailureAction }}
   background: false
+  failurePolicy: {{ .Values.failurePolicy }}
   rules:
   - name: drop-all-capabilities
     {{- include "kyverno-policies.exclude" (merge (dict "name" $name) .) | indent 4 }}
