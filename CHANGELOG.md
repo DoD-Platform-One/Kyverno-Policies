@@ -3,6 +3,11 @@
 Format: [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 
 ---
+## [3.0.4-bb.2] - 2023-10-11
+### Changed
+- Added Kyverno Policy for Auditing Automount Service Account Token usage.
+- Added exceptions for Kyverno Reporter, Gitlab Runners, and Gitlab Shared Secrets
+
 ## [3.0.4-bb.1] - 2023-10-11
 ### Changed
 - respect `autogenControllers`, `background`, and `failurePolicy` values across all policies

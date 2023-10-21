@@ -1,6 +1,6 @@
 # kyverno-policies
 
-![Version: 3.0.4-bb.1](https://img.shields.io/badge/Version-3.0.4--bb.1-informational?style=flat-square) ![AppVersion: v1.10.3](https://img.shields.io/badge/AppVersion-v1.10.3-informational?style=flat-square)
+![Version: 3.0.4-bb.2](https://img.shields.io/badge/Version-3.0.4--bb.2-informational?style=flat-square) ![AppVersion: v1.10.3](https://img.shields.io/badge/AppVersion-v1.10.3-informational?style=flat-square)
 
 Collection of Kyverno security and best-practice policies for Kyverno
 
@@ -72,6 +72,7 @@ helm install kyverno-policies chart/
 | policies.disallow-nodeport-services | object | `{"enabled":true,"validationFailureAction":"Audit"}` | Prevent services of the type NodePort |
 | policies.disallow-pod-exec | object | `{"enabled":false,"validationFailureAction":"Audit"}` | Prevent the use of `exec` or `attach` on pods |
 | policies.disallow-privilege-escalation | object | `{"enabled":true,"validationFailureAction":"Enforce"}` | Prevent privilege escalation on pods |
+| policies.disallow-auto-mount-service-account-token | object | `{"enabled":true,"exclude":{"any":[{"resources":{"kinds":["Pod"],"names":["gitlab-shared-secrets*"],"namespaces":["gitlab"]}},{"resources":{"kinds":["ServiceAccount"],"names":["gitlab-runner"],"namespaces":["gitlab-runner"]}},{"resources":{"kinds":["Pod","Deployment"],"names":["kyverno-reporter*"],"namespaces":["kyverno-reporter"]}}]},"validationFailureAction":"Audit"}` | Prevent Automounting of Kubernetes API Credentials on Pods and Service Accounts |
 | policies.disallow-privileged-containers | object | `{"enabled":true,"validationFailureAction":"Enforce"}` | Prevent containers that run as privileged |
 | policies.disallow-selinux-options | object | `{"enabled":true,"parameters":{"disallow":["user","role"]},"validationFailureAction":"Enforce"}` | Prevent specified SELinux options from being used on pods. |
 | policies.disallow-selinux-options.parameters.disallow | list | `["user","role"]` | List of selinux options that are not allowed.  Valid values include `level`, `role`, `type`, and `user`. Defaults pulled from https://kubernetes.io/docs/concepts/security/pod-security-standards |
