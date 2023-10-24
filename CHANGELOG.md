@@ -3,6 +3,10 @@
 Format: [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 
 ---
+## [3.0.4-bb.3] - 2023-10-22
+### Changed
+- ironbank/opensource/kubernetes/kubectl updated from 1.27.3 to v1.28.3 
+
 ## [3.0.4-bb.2] - 2023-10-11
 ### Changed
 - Added Kyverno Policy for Auditing Automount Service Account Token usage.
