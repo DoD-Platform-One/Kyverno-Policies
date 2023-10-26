@@ -3,6 +3,10 @@
 Format: [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 
 ---
+## [3.0.4-bb.4] - 2023-10-25
+### Changed
+- Removed exceptions for Kyverno Reporter, Gitlab Runners, and Gitlab Shared Secrets (moved to bigbang repo) 
+
 ## [3.0.4-bb.3] - 2023-10-22
 ### Changed
 - ironbank/opensource/kubernetes/kubectl updated from 1.27.3 to v1.28.3 
