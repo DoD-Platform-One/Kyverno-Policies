@@ -195,3 +195,10 @@ policies:
         to: registry1.dso.mil
   update-token-automount:
     enabled: true
+  update-automountserviceaccounttokens:
+    enabled: true
+    namespaces:
+      - namespace: update-automountserviceaccounttokens-2
+        serviceAccounts:
+        - update-token-automount-2
+
