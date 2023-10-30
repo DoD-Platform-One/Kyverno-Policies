@@ -1,6 +1,6 @@
 # kyverno-policies
 
-![Version: 3.0.4-bb.4](https://img.shields.io/badge/Version-3.0.4--bb.4-informational?style=flat-square) ![AppVersion: v1.10.3](https://img.shields.io/badge/AppVersion-v1.10.3-informational?style=flat-square)
+![Version: 3.0.4-bb.5](https://img.shields.io/badge/Version-3.0.4--bb.5-informational?style=flat-square) ![AppVersion: v1.10.3](https://img.shields.io/badge/AppVersion-v1.10.3-informational?style=flat-square)
 
 Collection of Kyverno security and best-practice policies for Kyverno
 
@@ -149,6 +149,7 @@ helm install kyverno-policies chart/
 | additionalPolicies.samplePolicy.spec | object | `{"rules":[{"match":{"any":[{"resources":{"kinds":["Pods"]}}]},"name":"sample-rule","validate":{"message":"Using 'default' namespace is not allowed.","pattern":{"metadata":{"namespace":"!default"}}}}]}` | Policy specification.  See `kubectl explain clusterpolicies.spec` |
 | additionalPolicies.samplePolicy.spec.rules | list | `[{"match":{"any":[{"resources":{"kinds":["Pods"]}}]},"name":"sample-rule","validate":{"message":"Using 'default' namespace is not allowed.","pattern":{"metadata":{"namespace":"!default"}}}}]` | Policy rules.  At least one is required |
 | bbtests | object | `{"enabled":false,"imagePullSecret":"private-registry","scripts":{"additionalVolumeMounts":[{"mountPath":"/yaml","name":"kyverno-policies-bbtest-manifests"},{"mountPath":"/.kube/cache","name":"kyverno-policies-bbtest-kube-cache"}],"additionalVolumes":[{"configMap":{"name":"kyverno-policies-bbtest-manifests"},"name":"kyverno-policies-bbtest-manifests"},{"emptyDir":{},"name":"kyverno-policies-bbtest-kube-cache"}],"envs":{"ENABLED_POLICIES":"{{ $p := list }}{{ range $k, $v := .Values.policies }}{{ if $v.enabled }}{{ $p = append $p $k }}{{ end }}{{ end }}{{ join \" \" $p }}","IMAGE_PULL_SECRET":"{{ .Values.bbtests.imagePullSecret }}"},"image":"registry1.dso.mil/ironbank/opensource/kubernetes/kubectl:v1.28.3"}}` | Reserved values for Big Bang test automation |
+| automountServiceAccountTokens | object | `{"enabled":true,"namespaces":[{"namespace":"istio-system","pods":["istiod-*","passthrough-ingressgateway-*","public-ingressgateway-*"],"serviceAccounts":["istiod","istio-reader-service-account","public-ingressgateway-service-account","passthrough-ingressgateway-service-account"]},{"namespace":"istio-operator","pods":["istiod-*","istio-operator-*"],"serviceAccounts":["istio-operator"]}]}` | TODO: drive a separate policy to disable the default serviceAccounts based on these namespaces |
 
 ## Contributing
 

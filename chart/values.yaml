@@ -505,6 +505,26 @@ policies:
   update-token-automount:
     enabled: false
 
+  # -- For each namespace provide a list of serviceAccounts to disable automounting their tokens 
+  # -- as volumes on the pods. 
+  # -- List pods to explictly enable mounting the serviceaccount token
+  # -- TODO: drive a separate policy to disable the default serviceAccounts based on these namespaces
+  update-automountserviceaccounttokens:
+    enabled: true
+#   namespaces:
+#     - namespace: istio-system
+#       serviceAccounts:
+#       - istiod
+#       pods:
+#       - istiod-*
+#     - namespace: istio-operator
+#       serviceAccounts:
+#       - istio-operator
+#       pods:
+#       - istiod-* 
+#       - istio-operator-*
+
+
 # -- Adds custom policies.  See https://kyverno.io/docs/writing-policies/.
 additionalPolicies:
   # -- Name of the policy.  Addtional policies can be added by adding a key.
@@ -564,3 +584,5 @@ bbtests:
       - name: "kyverno-policies-bbtest-kube-cache"
         emptyDir: {}
   imagePullSecret: private-registry
+   
+
