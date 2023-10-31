@@ -510,7 +510,7 @@ policies:
   # -- List pods to explictly enable mounting the serviceaccount token
   # -- TODO: drive a separate policy to disable the default serviceAccounts based on these namespaces
   update-automountserviceaccounttokens:
-    enabled: true
+    enabled: false
 #   namespaces:
 #     - namespace: istio-system
 #       serviceAccounts:
