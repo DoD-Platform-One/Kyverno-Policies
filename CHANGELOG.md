@@ -3,6 +3,10 @@
 Format: [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 
 ---
+## [3.0.4-bb.6] - 2023-10-31
+### Changed
+- Default ClusterPolicy automountserviceaccounttoken to disabled 
+
 ## [3.0.4-bb.5] - 2023-10-27
 ### Changed
 - Added ClusterPolicy to disable automountserviceaccounttoken on the serviceaccounts and enable on the pods
