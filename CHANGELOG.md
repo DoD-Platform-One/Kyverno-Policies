@@ -3,6 +3,10 @@
 Format: [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 
 ---
+## [3.0.4-bb.7] - 2023-11-01
+### Changed
+- Fixed test for ClusterPolicy automountserviceaccounttoken 
+
 ## [3.0.4-bb.6] - 2023-10-31
 ### Changed
 - Default ClusterPolicy automountserviceaccounttoken to disabled 
