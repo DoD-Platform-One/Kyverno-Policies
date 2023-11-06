@@ -1,5 +1,9 @@
 # Contributing
 
+Thanks for contributing to this repository!
+
+If you are coming from `repo1.dso.mil` and have an account at `login.dso.mil` please keep reading. If you are coming from or looking for the [project on Github](https://github.com/DoD-Platform-One) and wanting to make a Pull Request without a `dso.mil` account please see the last bullet [External Github Contributions](https://repo1.dso.mil/big-bang/bigbang/-/blob/master/CONTRIBUTING.md?ref_type=heads#community-contributions-to-dod-platform-one-via-github).
+
 This repository uses the following conventions:
 
 * [Semantic Versioning](https://semver.org/)
@@ -7,6 +11,7 @@ This repository uses the following conventions:
 * [Conventional Commits](https://www.conventionalcommits.org/)
 * [Policy Naming Guide](./docs/naming.md)
 * Scripted framework for testing.  See the [Testing Documentation](./docs/testing.md) for details.
+* [External Github Contributions](https://repo1.dso.mil/big-bang/bigbang/-/blob/master/CONTRIBUTING.md?ref_type=heads#community-contributions-to-dod-platform-one-via-github)
 
 Development requires the following tools
 
