@@ -1,6 +1,6 @@
 # kyverno-policies
 
-![Version: 3.0.4-bb.7](https://img.shields.io/badge/Version-3.0.4--bb.7-informational?style=flat-square) ![AppVersion: v1.10.3](https://img.shields.io/badge/AppVersion-v1.10.3-informational?style=flat-square)
+![Version: 3.0.4-bb.8](https://img.shields.io/badge/Version-3.0.4--bb.8-informational?style=flat-square) ![AppVersion: v1.10.3](https://img.shields.io/badge/AppVersion-v1.10.3-informational?style=flat-square)
 
 Collection of Kyverno security and best-practice policies for Kyverno
 
@@ -46,7 +46,7 @@ helm install kyverno-policies chart/
 | autogenControllers | string | `""` | Customize the target Pod controllers for the auto-generated rules. (Eg. `none`, `Deployment`, `DaemonSet,Deployment,StatefulSet`) For more info https://kyverno.io/docs/writing-policies/autogen/. |
 | customLabels | object | `{}` | Additional labels to apply to all policies. |
 | policyPreconditions | object | `{}` | Add preconditions to individual policies. Policies with multiple rules can have individual rules excluded by using the name of the rule as the key in the `policyPreconditions` map. |
-| waitforready.enabled | bool | `true` | Controls wait for ready deployment |
+| waitforready.enabled | bool | `false` | Controls wait for ready deployment |
 | waitforready.image | object | `{"repository":"registry1.dso.mil/ironbank/opensource/kubernetes/kubectl","tag":"v1.28.3"}` | Image to use in wait for ready job.  This must contain kubectl. |
 | waitforready.imagePullSecrets | list | `[]` | Pull secret for wait for ready job |
 | policies.sample | object | `{"enabled":false,"exclude":{},"match":{},"parameters":{"excludeContainers":[]},"validationFailureAction":"Audit","webhookTimeoutSeconds":""}` | Sample policy showing values that can be added to any policy |
@@ -149,6 +149,7 @@ helm install kyverno-policies chart/
 | additionalPolicies.samplePolicy.annotations."policies.kyverno.io/description" | string | `"This sample policy blocks pods from deploying into the 'default' namespace."` | Description of what the policy does, why it is important, and what items are allowed or unallowed. |
 | additionalPolicies.samplePolicy.spec | object | `{"rules":[{"match":{"any":[{"resources":{"kinds":["Pods"]}}]},"name":"sample-rule","validate":{"message":"Using 'default' namespace is not allowed.","pattern":{"metadata":{"namespace":"!default"}}}}]}` | Policy specification.  See `kubectl explain clusterpolicies.spec` |
 | additionalPolicies.samplePolicy.spec.rules | list | `[{"match":{"any":[{"resources":{"kinds":["Pods"]}}]},"name":"sample-rule","validate":{"message":"Using 'default' namespace is not allowed.","pattern":{"metadata":{"namespace":"!default"}}}}]` | Policy rules.  At least one is required |
+| istio | object | `{"enabled":false}` | BigBang Istio Toggle and Configuration |
 | bbtests | object | `{"enabled":false,"imagePullSecret":"private-registry","scripts":{"additionalVolumeMounts":[{"mountPath":"/yaml","name":"kyverno-policies-bbtest-manifests"},{"mountPath":"/.kube/cache","name":"kyverno-policies-bbtest-kube-cache"}],"additionalVolumes":[{"configMap":{"name":"kyverno-policies-bbtest-manifests"},"name":"kyverno-policies-bbtest-manifests"},{"emptyDir":{},"name":"kyverno-policies-bbtest-kube-cache"}],"envs":{"ENABLED_POLICIES":"{{ $p := list }}{{ range $k, $v := .Values.policies }}{{ if $v.enabled }}{{ $p = append $p $k }}{{ end }}{{ end }}{{ join \" \" $p }}","IMAGE_PULL_SECRET":"{{ .Values.bbtests.imagePullSecret }}"},"image":"registry1.dso.mil/ironbank/opensource/kubernetes/kubectl:v1.28.3"}}` | Reserved values for Big Bang test automation |
 
 ## Contributing

@@ -62,7 +62,7 @@ policyPreconditions: {}
 # -- Controls for the job that will wait for all policies to be ready.  This can be used with Helm's --wait-for-jobs to wait for all policies to be ready.
 waitforready:
   # -- Controls wait for ready deployment
-  enabled: true
+  enabled: false
   # -- Image to use in wait for ready job.  This must contain kubectl.
   image:
     repository: registry1.dso.mil/ironbank/opensource/kubernetes/kubectl
@@ -564,6 +564,10 @@ additionalPolicies:
             metadata:
               namespace: "!default"
 
+# -- BigBang Istio Toggle and Configuration
+istio:
+  enabled: false
+
 # -- Reserved values for Big Bang test automation
 bbtests:
   enabled: false
@@ -584,5 +588,3 @@ bbtests:
       - name: "kyverno-policies-bbtest-kube-cache"
         emptyDir: {}
   imagePullSecret: private-registry
-   
-

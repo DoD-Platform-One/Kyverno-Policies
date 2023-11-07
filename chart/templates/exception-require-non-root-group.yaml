@@ -1,0 +1,20 @@
+{{- $name := "require-non-root-group" }}
+{{- if and .Values.enabled (dig $name "enabled" false .Values.policies) .Values.istio.enabled }}
+apiVersion: kyverno.io/v2alpha1
+kind: PolicyException
+metadata:
+  name: {{ $name }}-exception
+namespace: {{ .Release.Namespace }}
+spec:
+  exceptions:
+  - policyName: {{ $name }}
+    ruleNames:
+    - run-as-group
+  match:
+    any:
+    - resources:
+        kinds:
+        - Pods/containers
+        names:
+        - istio-init
+{{- end }}
