@@ -3,6 +3,10 @@
 Format: [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 
 ---
+## [3.0.4-bb.9] - 2023-11-09
+### Added
+- require-non-root-user-exception template for istio-init containers
+
 ## [3.0.4-bb.8] - 2023-11-07
 ### Added
 - istio.enabled toggle for below PolicyException template
