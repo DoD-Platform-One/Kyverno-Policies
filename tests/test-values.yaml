@@ -193,8 +193,10 @@ policies:
       update:
       - from: replace.image.registry
         to: registry1.dso.mil
-  update-token-automount:
+  update-automountserviceaccounttokens-default:
     enabled: true
+    namespaces:
+      - disable-default-sa
   update-automountserviceaccounttokens:
     enabled: true
     namespaces:
