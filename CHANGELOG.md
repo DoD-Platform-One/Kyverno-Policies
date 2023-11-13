@@ -3,6 +3,10 @@
 Format: [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 
 ---
+## [3.0.4-bb.10] - 2023-11-13
+### Changed
+- Added ClusterPolicy to disable automountserviceaccounttoken on default serviceaccounts
+
 ## [3.0.4-bb.9] - 2023-11-09
 ### Added
 - require-non-root-user-exception template for istio-init containers

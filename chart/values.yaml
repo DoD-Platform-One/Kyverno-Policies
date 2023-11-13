@@ -501,14 +501,16 @@ policies:
       # - from: "registry.to.replace"
       #   to: "new.registry.to.use"
 
-  # -- Updates automount token on default service accounts to false
-  update-token-automount:
+  # -- List of namespaces to explictly disable mounting the serviceaccount token
+  update-automountserviceaccounttokens-default:
     enabled: false
-
+#   namespaces:
+#     - istio-system
+#     - istio-operator
+ 
   # -- For each namespace provide a list of serviceAccounts to disable automounting their tokens 
   # -- as volumes on the pods. 
   # -- List pods to explictly enable mounting the serviceaccount token
-  # -- TODO: drive a separate policy to disable the default serviceAccounts based on these namespaces
   update-automountserviceaccounttokens:
     enabled: false
 #   namespaces:
