@@ -1,11 +1,24 @@
-# Test 1: APIs deprecated and removed in 1.27 are not allowed
-apiVersion: storage.k8s.io/v1beta1
-kind: CSIStorageCapacity
+# Test 1: APIs deprecated and removed in 1.29 are not allowed
+apiVersion: flowcontrol.apiserver.k8s.io/v1beta2
+kind: FlowSchema
 metadata:
   name: disallow-deprecated-apis
-  namespace: default
   annotations:
     kyverno-policies-bbtest/type: validate
     kyverno-policies-bbtest/expected: fail
-storageClassName: local-path
-
+spec:
+  matchingPrecedence: 1000
+  priorityLevelConfiguration:
+    name: exempt
+  rules:
+    - nonResourceRules:
+      - nonResourceURLs:
+          - "/healthz"
+          - "/livez"
+          - "/readyz"
+        verbs:
+          - "*"
+      subjects:
+        - kind: Group
+          group:
+            name: "system:unauthenticated"
