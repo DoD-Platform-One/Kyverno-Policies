@@ -30,7 +30,7 @@ metadata:
 spec:
   containers:
   - name: c1
-    image: registry1.dso.mil/ironbank/redhat/ubi/ubi8-minimal:8.8
+    image: registry1.dso.mil/ironbank/redhat/ubi/ubi8-minimal:8.9
     args: ["sleep", "infinity"]
   initContainers:
   - name: i1
@@ -63,7 +63,7 @@ metadata:
 spec:
   containers:
   - name: c1
-    image: registry1.dso.mil/ironbank/redhat/ubi/ubi8-minimal:8.8
+    image: registry1.dso.mil/ironbank/redhat/ubi/ubi8-minimal:8.9
     args: ["sleep", "infinity"]
   initContainers:
   - name: i1
@@ -81,11 +81,11 @@ metadata:
 spec:
   containers:
   - name: c1
-    image: registry1.dso.mil/ironbank/redhat/ubi/ubi8-minimal:8.8
+    image: registry1.dso.mil/ironbank/redhat/ubi/ubi8-minimal:8.9
     args: ["sleep", "infinity"]
   initContainers:
   - name: i1
-    image: registry1.dso.mil/ironbank/redhat/ubi/ubi8-minimal:8.8
+    image: registry1.dso.mil/ironbank/redhat/ubi/ubi8-minimal:8.9
 ---
 # Test 6: Exclude container works
 apiVersion: v1
@@ -99,7 +99,7 @@ metadata:
 spec:
   containers:
   - name: c1
-    image: registry1.dso.mil/ironbank/redhat/ubi/ubi8-minimal:8.8
+    image: registry1.dso.mil/ironbank/redhat/ubi/ubi8-minimal:8.9
     args: ["sleep", "infinity"]
   initContainers:
   - name: not-me
