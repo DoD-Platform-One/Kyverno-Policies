@@ -3,6 +3,10 @@
 Format: [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 
 ---
+## [3.0.4-bb.12] - 2023-11-17
+### Changed
+- ironbank/opensource/kubernetes/kubectl updated from v1.28.3 to v1.28.4
+- ironbank/redhat/ubi/ubi8-minimal updated from 8.8 to 8.9
 ## [3.0.4-bb.11] - 2023-11-15
 ### Changed
 - Added support for checking deprecated API policy for Kubernetes v1.29.
