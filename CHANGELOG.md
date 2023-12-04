@@ -3,6 +3,9 @@
 Format: [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 
 ---
+## [3.0.4-bb.13] - 2023-12-01
+### Changed
+- Fix following upstream (Kyverno 1.11.0) changes in signature verification default behavior, adding new `ignoreTlog` and `url` fields to `require-image-signature` policy to ignore checking transaction logs for Iron Bank images.
 ## [3.0.4-bb.12] - 2023-11-17
 ### Changed
 - ironbank/opensource/kubernetes/kubectl updated from v1.28.3 to v1.28.4
@@ -26,11 +29,11 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 
 ## [3.0.4-bb.7] - 2023-11-01
 ### Changed
-- Fixed test for ClusterPolicy automountserviceaccounttoken 
+- Fixed test for ClusterPolicy automountserviceaccounttoken
 
 ## [3.0.4-bb.6] - 2023-10-31
 ### Changed
-- Default ClusterPolicy automountserviceaccounttoken to disabled 
+- Default ClusterPolicy automountserviceaccounttoken to disabled
 
 ## [3.0.4-bb.5] - 2023-10-27
 ### Changed
@@ -38,11 +41,11 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 
 ## [3.0.4-bb.4] - 2023-10-25
 ### Changed
-- Removed exceptions for Kyverno Reporter, Gitlab Runners, and Gitlab Shared Secrets (moved to bigbang repo) 
+- Removed exceptions for Kyverno Reporter, Gitlab Runners, and Gitlab Shared Secrets (moved to bigbang repo)
 
 ## [3.0.4-bb.3] - 2023-10-22
 ### Changed
-- ironbank/opensource/kubernetes/kubectl updated from 1.27.3 to v1.28.3 
+- ironbank/opensource/kubernetes/kubectl updated from 1.27.3 to v1.28.3
 
 ## [3.0.4-bb.2] - 2023-10-11
 ### Changed
@@ -149,7 +152,7 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 
 ## [1.0.1-bb.3] - 2022-08-31
 ### Changed
-- Added support for policy container exclusion 
+- Added support for policy container exclusion
 
 ## [1.0.1-bb-2] - 2022-08-30
 
