@@ -94,6 +94,10 @@ policies:
                 MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAE8nXRh950IZbRj8Ra/N9sbqOPZrfM
                 5/KAQN0/KjHcorm/J5yctVd7iEcnessRQjU917hmKO6JWVGHpDguIyakZA==
                 -----END PUBLIC KEY-----
+              # Skip Rekor Transparency log check
+              rekor:
+                url: ""
+                ignoreTlog: true
         mutateDigest: false
         verifyDigest: false
       - imageReferences:
@@ -107,6 +111,10 @@ policies:
                 MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAE7CjMGH005DFFz6mffqTIGurBt6fL
                 UfTZxuEDFRBS8mFJx1xw8DEVvjMibLTtqmAoJxUmzmGFgzz+LV875syVEg==
                 -----END PUBLIC KEY-----
+              # Skip Rekor Transparency log check
+              rekor:
+                url: ""
+                ignoreTlog: true
         # Ironbank images are rebuilt nightly and tags are not immutable
         mutateDigest: false
         verifyDigest: false

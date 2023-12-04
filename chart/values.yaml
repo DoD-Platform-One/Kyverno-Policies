@@ -86,7 +86,7 @@ policies:
     # -- Defines when this policy's rules should not be applied.  This completely overrides any default excludes.
     exclude: {}
     # -- Policy specific parameters that are added to the configMap for the policy rules
-    parameters: 
+    parameters:
       # -- Adds a container exclusion (by name) to a specific policy.  This is merged with any global excludeContainers.
       excludeContainers: []
 
@@ -259,6 +259,10 @@ policies:
                 MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAE7CjMGH005DFFz6mffqTIGurBt6fL
                 UfTZxuEDFRBS8mFJx1xw8DEVvjMibLTtqmAoJxUmzmGFgzz+LV875syVEg==
                 -----END PUBLIC KEY-----
+              # Skip Rekor Transparency log check
+              rekor:
+                ignoreTlog: true
+                url: ""
         # Ironbank images are rebuilt nightly and tags are not immutable
         mutateDigest: false
         verifyDigest: false
@@ -408,7 +412,7 @@ policies:
       # -- List of allowed registries that images may use
       allow:
       - registry1.dso.mil
-  
+
   # -- Restrict mounting /proc to the specified mask
   restrict-proc-mount:
     enabled: true
@@ -507,9 +511,9 @@ policies:
 #   namespaces:
 #     - istio-system
 #     - istio-operator
- 
-  # -- For each namespace provide a list of serviceAccounts to disable automounting their tokens 
-  # -- as volumes on the pods. 
+
+  # -- For each namespace provide a list of serviceAccounts to disable automounting their tokens
+  # -- as volumes on the pods.
   # -- List pods to explictly enable mounting the serviceaccount token
   update-automountserviceaccounttokens:
     enabled: false
@@ -523,7 +527,7 @@ policies:
 #       serviceAccounts:
 #       - istio-operator
 #       pods:
-#       - istiod-* 
+#       - istiod-*
 #       - istio-operator-*
 
 
