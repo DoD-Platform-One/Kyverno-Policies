@@ -1,6 +1,6 @@
 # kyverno-policies
 
-![Version: 3.0.4-bb.13](https://img.shields.io/badge/Version-3.0.4--bb.13-informational?style=flat-square) ![AppVersion: v1.11.0](https://img.shields.io/badge/AppVersion-v1.11.0-informational?style=flat-square)
+![Version: 3.0.4-bb.14](https://img.shields.io/badge/Version-3.0.4--bb.14-informational?style=flat-square) ![AppVersion: v1.11.0](https://img.shields.io/badge/AppVersion-v1.11.0-informational?style=flat-square)
 
 Collection of Kyverno security and best-practice policies for Kyverno
 

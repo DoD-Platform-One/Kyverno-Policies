@@ -3,13 +3,19 @@
 Format: [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 
 ---
+## [3.0.4-bb.14] - 2023-12-04
+### Changed
+- Exclude default SA from serviceaccount mutation in update-automountserviceaccounttokens
+
 ## [3.0.4-bb.13] - 2023-12-01
 ### Changed
 - Fix following upstream (Kyverno 1.11.0) changes in signature verification default behavior, adding new `ignoreTlog` and `url` fields to `require-image-signature` policy to ignore checking transaction logs for Iron Bank images.
+
 ## [3.0.4-bb.12] - 2023-11-17
 ### Changed
 - ironbank/opensource/kubernetes/kubectl updated from v1.28.3 to v1.28.4
 - ironbank/redhat/ubi/ubi8-minimal updated from 8.8 to 8.9
+
 ## [3.0.4-bb.11] - 2023-11-15
 ### Changed
 - Added support for checking deprecated API policy for Kubernetes v1.29.
