@@ -3,6 +3,10 @@
 Format: [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 
 ---
+## [3.0.4-bb.15] - 2023-12-05
+### Changed
+- set `failurePolicy` to `Ignore` by default for audit policies with new helper function
+
 ## [3.0.4-bb.14] - 2023-12-04
 ### Changed
 - Exclude default SA from serviceaccount mutation in update-automountserviceaccounttokens
