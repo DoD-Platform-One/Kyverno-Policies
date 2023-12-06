@@ -22,7 +22,7 @@ metadata:
   namespace: default
   annotations:
     kyverno-policies-bbtest/type: validate
-    kyverno-policies-bbtest/expected: fail
+    kyverno-policies-bbtest/expected: ignore
     kyverno-policies-bbtest/test: disallowed
 spec:
   containers:

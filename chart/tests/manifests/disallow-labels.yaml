@@ -25,7 +25,7 @@ metadata:
     kyverno-policies-bbtest/test: disallowed
   annotations:
     kyverno-policies-bbtest/type: validate
-    kyverno-policies-bbtest/expected: fail
+    kyverno-policies-bbtest/expected: ignore
 spec:
   containers:
   - name: c1

@@ -208,3 +208,10 @@ preconditions:
   {{- end -}}
 {{- end -}}
 {{- end -}}
+
+{{/* Set failurePolicy to ignore when validationFailureAction is audit or warn (see issue #9) */}}
+{{- define "setFailurePolicy" }}
+{{- if or (eq "audit" (lower . )) (eq "warn" (lower . )) }}
+{{- print "Ignore" -}}
+{{- end -}}
+{{- end -}}

@@ -1,4 +1,5 @@
 {{- $name := "restrict-group-id" }}
+{{- $failureAction := default (dig $name "validationFailureAction" nil .Values.policies) .Values.validationFailureAction }}
 {{- if and .Values.enabled (dig $name "enabled" false .Values.policies) }}
 apiVersion: kyverno.io/v1
 kind: ClusterPolicy
@@ -20,9 +21,9 @@ metadata:
   labels: {{- include "kyverno-policies.labels" . | nindent 4 }}
 spec:
   {{- include "kyverno-policies.webhookTimeoutSeconds" (merge (dict "name" $name) .) | indent 2 }}
-  validationFailureAction: {{ default (dig $name "validationFailureAction" nil .Values.policies) .Values.validationFailureAction }}
+  validationFailureAction: {{ $failureAction }} 
   background: {{ .Values.background }}
-  failurePolicy: {{ .Values.failurePolicy }}
+  failurePolicy: {{ default .Values.failurePolicy (include "setFailurePolicy" $failureAction) }}
   rules:
   - name: pod-validate-runasgroup
     {{- include "kyverno-policies.exclude" (merge (dict "name" $name) .) | indent 4 }}
