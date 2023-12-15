@@ -263,6 +263,8 @@ policies:
               rekor:
                 ignoreTlog: true
                 url: ""
+              ctlog:
+                ignoreSCT: true                
         # Ironbank images are rebuilt nightly and tags are not immutable
         mutateDigest: false
         verifyDigest: false
