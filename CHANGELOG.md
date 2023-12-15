@@ -3,6 +3,10 @@
 Format: [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 
 ---
+## [3.0.4-bb.16] - 2023-12-15
+### Changed
+- add `ctlog.ignoreSCT: true` to `require-image-signature` policy
+
 ## [3.0.4-bb.15] - 2023-12-05
 ### Changed
 - set `failurePolicy` to `Ignore` by default for audit policies with new helper function
