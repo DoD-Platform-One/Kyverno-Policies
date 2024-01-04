@@ -3,6 +3,11 @@
 Format: [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 
 ---
+## [3.0.4-bb.17] - 2023-12-21
+### Changed
+- Fixed issue with kyverno policy related to automountServiceAccountToken exemptions
+- Added kyverno policy related to mutating pods with respect to automountServiceAccountToken hardening
+
 ## [3.0.4-bb.16] - 2023-12-15
 ### Changed
 - add `ctlog.ignoreSCT: true` to `require-image-signature` policy
