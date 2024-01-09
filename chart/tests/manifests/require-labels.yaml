@@ -12,7 +12,7 @@ metadata:
 spec:
   containers:
   - name: c1
-    image: registry1.dso.mil/ironbank/redhat/ubi/ubi8-minimal
+    image: registry1.dso.mil/ironbank/redhat/ubi/ubi9-minimal
     args: ["sleep", "infinity"]
 ---
 # Test 2: Pods without the required label values are not allowed
@@ -30,7 +30,7 @@ metadata:
 spec:
   containers:
   - name: c1
-    image: registry1.dso.mil/ironbank/redhat/ubi/ubi8-minimal
+    image: registry1.dso.mil/ironbank/redhat/ubi/ubi9-minimal
     args: ["sleep", "infinity"]
 ---
 # Test 3: Pods with the required labels are allowed
@@ -48,5 +48,5 @@ metadata:
 spec:
   containers:
   - name: c1
-    image: registry1.dso.mil/ironbank/redhat/ubi/ubi8-minimal
+    image: registry1.dso.mil/ironbank/redhat/ubi/ubi9-minimal
     args: ["sleep", "infinity"]

@@ -10,7 +10,7 @@ metadata:
 spec:
   containers:
   - name: c1
-    image: registry1.dso.mil/ironbank/redhat/ubi/ubi8-minimal
+    image: registry1.dso.mil/ironbank/redhat/ubi/ubi9-minimal
     args: ["sleep", "infinity"]
 ---
 # Test 2: Pod + Init containers without a security context are not allowed
@@ -25,13 +25,13 @@ metadata:
 spec:
   containers:
   - name: c1
-    image: registry1.dso.mil/ironbank/redhat/ubi/ubi8-minimal
+    image: registry1.dso.mil/ironbank/redhat/ubi/ubi9-minimal
     args: ["sleep", "infinity"]
     securityContext:
       runAsGroup: 1000
   initContainers:
   - name: i1
-    image: registry1.dso.mil/ironbank/redhat/ubi/ubi8-minimal
+    image: registry1.dso.mil/ironbank/redhat/ubi/ubi9-minimal
 ---
 # Test 3: Pods that set runAsGroup to 0 are not allowed
 apiVersion: v1
@@ -48,7 +48,7 @@ spec:
     runAsGroup: 0
   containers:
   - name: c1
-    image: registry1.dso.mil/ironbank/redhat/ubi/ubi8-minimal
+    image: registry1.dso.mil/ironbank/redhat/ubi/ubi9-minimal
     args: ["sleep", "infinity"]
 ---
 # Test 4: Containers that override runAsGroup to 0 are not allowed
@@ -66,7 +66,7 @@ spec:
     runAsGroup: 1000
   containers:
   - name: c1
-    image: registry1.dso.mil/ironbank/redhat/ubi/ubi8-minimal
+    image: registry1.dso.mil/ironbank/redhat/ubi/ubi9-minimal
     args: ["sleep", "infinity"]
     securityContext:
       runAsGroup: 0
@@ -86,11 +86,11 @@ spec:
     runAsGroup: 1000
   containers:
   - name: c1
-    image: registry1.dso.mil/ironbank/redhat/ubi/ubi8-minimal
+    image: registry1.dso.mil/ironbank/redhat/ubi/ubi9-minimal
     args: ["sleep", "infinity"]
   initContainers:
   - name: i1
-    image: registry1.dso.mil/ironbank/redhat/ubi/ubi8-minimal
+    image: registry1.dso.mil/ironbank/redhat/ubi/ubi9-minimal
     securityContext:
       runAsGroup: 0
 ---
@@ -108,7 +108,7 @@ spec:
     fsGroup: 0
   containers:
   - name: c1
-    image: registry1.dso.mil/ironbank/redhat/ubi/ubi8-minimal
+    image: registry1.dso.mil/ironbank/redhat/ubi/ubi9-minimal
     args: ["sleep", "infinity"]
 ---
 # Test 7: Pods that set supplementalGroups to 0 are not allowed
@@ -125,7 +125,7 @@ spec:
     supplementalGroups: [1000,0]
   containers:
   - name: c1
-    image: registry1.dso.mil/ironbank/redhat/ubi/ubi8-minimal
+    image: registry1.dso.mil/ironbank/redhat/ubi/ubi9-minimal
     args: ["sleep", "infinity"]
 ---
 # Test 8: Pods that run non-root groups are allowed
@@ -145,11 +145,11 @@ spec:
     supplementalGroups: [1001,1002]
   containers:
   - name: c1
-    image: registry1.dso.mil/ironbank/redhat/ubi/ubi8-minimal
+    image: registry1.dso.mil/ironbank/redhat/ubi/ubi9-minimal
     args: ["sleep", "infinity"]
   initContainers:
   - name: i1
-    image: registry1.dso.mil/ironbank/redhat/ubi/ubi8-minimal
+    image: registry1.dso.mil/ironbank/redhat/ubi/ubi9-minimal
 ---
 # Test 9: Pods without a security context, and containers / init containers running as non-root are allowed
 apiVersion: v1
@@ -163,13 +163,13 @@ metadata:
 spec:
   containers:
   - name: c1
-    image: registry1.dso.mil/ironbank/redhat/ubi/ubi8-minimal
+    image: registry1.dso.mil/ironbank/redhat/ubi/ubi9-minimal
     args: ["sleep", "infinity"]
     securityContext:
       runAsGroup: 1000
   initContainers:
   - name: i1
-    image: registry1.dso.mil/ironbank/redhat/ubi/ubi8-minimal
+    image: registry1.dso.mil/ironbank/redhat/ubi/ubi9-minimal
     securityContext:
       runAsGroup: 1000
 ---

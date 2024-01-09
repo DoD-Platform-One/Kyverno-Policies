@@ -18,7 +18,7 @@ spec:
       value: "1024 4999"
   containers:
   - name: c1
-    image: registry1.dso.mil/ironbank/redhat/ubi/ubi8-minimal
+    image: registry1.dso.mil/ironbank/redhat/ubi/ubi9-minimal
     args: ["sleep", "infinity"]
 ---
 # Test 2: Pods that add allowed sysctls should be allowed
@@ -39,7 +39,7 @@ spec:
       value: "1024 4999"
   containers:
   - name: c1
-    image: registry1.dso.mil/ironbank/redhat/ubi/ubi8-minimal
+    image: registry1.dso.mil/ironbank/redhat/ubi/ubi9-minimal
     args: ["sleep", "infinity"]
 ---
 # Test 3: Pods that add no sysctls should be allowed
@@ -54,5 +54,5 @@ metadata:
 spec:
   containers:
   - name: c1
-    image: registry1.dso.mil/ironbank/redhat/ubi/ubi8-minimal
+    image: registry1.dso.mil/ironbank/redhat/ubi/ubi9-minimal
     args: ["sleep", "infinity"]

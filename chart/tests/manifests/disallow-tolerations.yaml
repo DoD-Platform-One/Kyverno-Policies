@@ -10,7 +10,7 @@ metadata:
 spec:
   containers:
   - name: c1
-    image: registry1.dso.mil/ironbank/redhat/ubi/ubi8-minimal
+    image: registry1.dso.mil/ironbank/redhat/ubi/ubi9-minimal
     args: ["sleep", "infinity"]
   tolerations:
   - operator: "Exists"
@@ -28,7 +28,7 @@ metadata:
 spec:
   containers:
   - name: c1
-    image: registry1.dso.mil/ironbank/redhat/ubi/ubi8-minimal
+    image: registry1.dso.mil/ironbank/redhat/ubi/ubi9-minimal
     args: ["sleep", "infinity"]
   tolerations:
   - key: "disallowed"
@@ -46,7 +46,7 @@ metadata:
 spec:
   containers:
   - name: c1
-    image: registry1.dso.mil/ironbank/redhat/ubi/ubi8-minimal
+    image: registry1.dso.mil/ironbank/redhat/ubi/ubi9-minimal
     args: ["sleep", "infinity"]
   tolerations:
   - key: "disallowed"
@@ -65,7 +65,7 @@ metadata:
 spec:
   containers:
   - name: c1
-    image: registry1.dso.mil/ironbank/redhat/ubi/ubi8-minimal
+    image: registry1.dso.mil/ironbank/redhat/ubi/ubi9-minimal
     args: ["sleep", "infinity"]
   tolerations:
   - key: "disallowed"
@@ -85,7 +85,7 @@ metadata:
 spec:
   containers:
   - name: c1
-    image: registry1.dso.mil/ironbank/redhat/ubi/ubi8-minimal
+    image: registry1.dso.mil/ironbank/redhat/ubi/ubi9-minimal
     args: ["sleep", "infinity"]
   tolerations:
   - operator: "Exists"
@@ -103,7 +103,7 @@ metadata:
 spec:
   containers:
   - name: c1
-    image: registry1.dso.mil/ironbank/redhat/ubi/ubi8-minimal
+    image: registry1.dso.mil/ironbank/redhat/ubi/ubi9-minimal
     args: ["sleep", "infinity"]
   tolerations:
   - key: "allowed"
@@ -121,7 +121,7 @@ metadata:
 spec:
   containers:
   - name: c1
-    image: registry1.dso.mil/ironbank/redhat/ubi/ubi8-minimal
+    image: registry1.dso.mil/ironbank/redhat/ubi/ubi9-minimal
     args: ["sleep", "infinity"]
   tolerations:
   - key: "disallowed"
@@ -140,7 +140,7 @@ metadata:
 spec:
   containers:
   - name: c1
-    image: registry1.dso.mil/ironbank/redhat/ubi/ubi8-minimal
+    image: registry1.dso.mil/ironbank/redhat/ubi/ubi9-minimal
     args: ["sleep", "infinity"]
   tolerations:
   - key: "disallowed"
@@ -160,7 +160,7 @@ metadata:
 spec:
   containers:
   - name: c1
-    image: registry1.dso.mil/ironbank/redhat/ubi/ubi8-minimal
+    image: registry1.dso.mil/ironbank/redhat/ubi/ubi9-minimal
     args: ["sleep", "infinity"]
 ---
 # Test 11: Runtime class tolerations that match the effect (global) are not allowed

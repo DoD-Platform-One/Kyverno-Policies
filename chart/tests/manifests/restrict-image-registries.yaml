@@ -25,7 +25,7 @@ metadata:
 spec:
   containers:
   - name: c1
-    image: registry1.dso.mil/ironbank/redhat/ubi/ubi8-minimal
+    image: registry1.dso.mil/ironbank/redhat/ubi/ubi9-minimal
     args: ["sleep", "infinity"]
   initContainers:
   - name: i1
@@ -43,5 +43,5 @@ metadata:
 spec:
   containers:
   - name: c1
-    image: registry1.dso.mil/ironbank/redhat/ubi/ubi8-minimal
+    image: registry1.dso.mil/ironbank/redhat/ubi/ubi9-minimal
     args: ["sleep", "infinity"]
