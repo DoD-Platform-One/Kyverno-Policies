@@ -3,6 +3,15 @@
 Format: [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 
 ---
+## [3.0.4-bb.18] - 2024-01-05
+### Changed
+- update to ironbank/redhat/ubi/ubi8-minimal to ironbank/redhat/ubi/ubi9-minimal
+
+## [3.0.4-bb.17] - 2023-12-21
+### Changed
+- Fixed issue with kyverno policy related to automountServiceAccountToken exemptions
+- Added kyverno policy related to mutating pods with respect to automountServiceAccountToken hardening
+
 ## [3.0.4-bb.17] - 2023-12-21
 ### Changed
 - Fixed issue with kyverno policy related to automountServiceAccountToken exemptions
@@ -97,7 +106,7 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 ## [1.1.0-bb.7] - 2023-06-16
 ### Changed
 - ironbank/opensource/kubernetes/kubectl updated from v1.26.4 to 1.27.3
-- ironbank/redhat/ubi/ubi8-minimal updated from 8.7 to 8.8
+- ironbank/redhat/ubi/ubi9-minimal updated from 8.7 to 8.8
 
 ## [1.1.0-bb.6] - 2023-04-15
 ### Changed
@@ -149,7 +158,7 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 ## [1.0.1-bb.8] - 2022-11-16
 ### Changed
 - ironbank/opensource/kubernetes/kubectl updated from v1.25.3 to v1.25.4
-- registry1.dso.mil/ironbank/redhat/ubi/ubi8-minimal updated from 8.6 to 8.7
+- registry1.dso.mil/ironbank/redhat/ubi/ubi9-minimal updated from 8.6 to 8.7
 
 ## [1.0.1-bb.7] - 2022-10-25
 ### Changed
