@@ -3,6 +3,10 @@
 Format: [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 
 ---
+## [3.0.4-bb.20] - 2024-01-25
+### Changed
+- Fixed issue with kyverno policy related to wildcarding serviceAccounts in the automountServiceAccountToken clusterPolicy 
+
 ## [3.0.4-bb.19] - 2024-01-19
 ### Changed
 - ironbank/opensource/kubernetes/kubectl updated from v1.28.4 to v1.28.6
