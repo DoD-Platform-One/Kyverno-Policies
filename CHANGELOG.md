@@ -3,6 +3,10 @@
 Format: [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 
 ---
+## [3.0.4-bb.21] - 2024-01-26
+### Changed
+- Refactored PodsToHarden format
+
 ## [3.0.4-bb.20] - 2024-01-25
 ### Changed
 - Fixed issue with kyverno policy related to wildcarding serviceAccounts in the automountServiceAccountToken clusterPolicy 

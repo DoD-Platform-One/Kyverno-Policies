@@ -212,7 +212,8 @@ policies:
         serviceAccounts:
         - update-token-automount-2
         pods:
-        - update-token-automount-pod
-        podsToHarden:
-        - update-token-automount-pod-harden
+          allow:
+          - update-token-automount-pod
+          deny:
+          - update-token-automount-pod-harden
 
