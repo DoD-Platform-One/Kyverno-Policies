@@ -20,7 +20,6 @@ metadata:
       and the default (empty) Namespace should not be used. This policy validates that resources
       specify a Namespace name other than `default`.
     # Pods will be deployed in same namespace as Pod controller if not specified in template
-    pod-policies.kyverno.io/autogen-controllers: none
   labels: {{- include "kyverno-policies.labels" . | nindent 4 }}
 spec:
   {{- include "kyverno-policies.webhookTimeoutSeconds" (merge (dict "name" $name) .) | indent 2 }}
