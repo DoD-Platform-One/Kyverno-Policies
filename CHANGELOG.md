@@ -3,6 +3,10 @@
 Format: [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 
 ---
+## [3.0.4-bb.23] - 2024-01-30
+### Changed
+- Fixed issue with kyverno policy related to wildcarding serviceAccounts in the automountServiceAccountToken clusterPolicy 
+
 ## [3.0.4-bb.22] - 2024-01-29
 ### Changed
 - Hardcoded annotation pod-policies.kyverno.io/autogen-controllers removed from disallowed-namespaces ClusterPolicy.
