@@ -1,6 +1,6 @@
 # kyverno-policies
 
-![Version: 3.0.4-bb.23](https://img.shields.io/badge/Version-3.0.4--bb.23-informational?style=flat-square) ![AppVersion: v1.11.0](https://img.shields.io/badge/AppVersion-v1.11.0-informational?style=flat-square)
+![Version: 3.0.4-bb.24](https://img.shields.io/badge/Version-3.0.4--bb.24-informational?style=flat-square) ![AppVersion: v1.11.0](https://img.shields.io/badge/AppVersion-v1.11.0-informational?style=flat-square)
 
 Collection of Kyverno security and best-practice policies for Kyverno
 
@@ -124,8 +124,8 @@ helm install kyverno-policies chart/
 | policies.restrict-seccomp.parameters.allow | list | `["RuntimeDefault","Localhost"]` | List of allowed seccomp profiles.  Valid values are `Localhost`, `RuntimeDefault`, and `Unconfined` Defaults pulled from https://kubernetes.io/docs/concepts/security/pod-security-standards/#restricted |
 | policies.restrict-selinux-type | object | `{"enabled":true,"parameters":{"allow":["container_t","container_init_t","container_kvm_t"]},"validationFailureAction":"Enforce"}` | Restrict SELinux types to the specified list. |
 | policies.restrict-selinux-type.parameters.allow | list | `["container_t","container_init_t","container_kvm_t"]` | List of allowed values for the `type` field Defaults pulled from https://kubernetes.io/docs/concepts/security/pod-security-standards |
-| policies.restrict-sysctls | object | `{"enabled":true,"parameters":{"allow":["kernel.shm_rmid_forced","net.ipv4.ip_local_port_range","net.ipv4.ip_unprivileged_port_start","net.ipv4.tcp_syncookies","net.ipv4.ping_group_range"]},"validationFailureAction":"Enforce"}` | Restrict sysctls to the specified list |
-| policies.restrict-sysctls.parameters.allow | list | `["kernel.shm_rmid_forced","net.ipv4.ip_local_port_range","net.ipv4.ip_unprivileged_port_start","net.ipv4.tcp_syncookies","net.ipv4.ping_group_range"]` | List of allowed sysctls. Defaults pulled from https://kubernetes.io/docs/concepts/security/pod-security-standards |
+| policies.restrict-sysctls | object | `{"enabled":true,"parameters":{"allow":["kernel.shm_rmid_forced","net.ipv4.ip_local_port_range","net.ipv4.ip_unprivileged_port_start","net.ipv4.tcp_syncookies","net.ipv4.ping_group_range","net.ipv4.ip_local_reserved_ports","net.ipv4.tcp_keepalive_time","net.ipv4.tcp_fin_timeout","net.ipv4.tcp_keepalive_intvl","net.ipv4.tcp_keepalive_probes"]},"validationFailureAction":"Enforce"}` | Restrict sysctls to the specified list |
+| policies.restrict-sysctls.parameters.allow | list | `["kernel.shm_rmid_forced","net.ipv4.ip_local_port_range","net.ipv4.ip_unprivileged_port_start","net.ipv4.tcp_syncookies","net.ipv4.ping_group_range","net.ipv4.ip_local_reserved_ports","net.ipv4.tcp_keepalive_time","net.ipv4.tcp_fin_timeout","net.ipv4.tcp_keepalive_intvl","net.ipv4.tcp_keepalive_probes"]` | List of allowed sysctls. Defaults pulled from https://kubernetes.io/docs/concepts/security/pod-security-standards |
 | policies.restrict-user-id | object | `{"enabled":false,"parameters":{"allow":[">=1000"]},"validationFailureAction":"Audit"}` | Restrict user IDs to the specified ranges NOTE: Using require-non-root-user will force runAsUser to be defined |
 | policies.restrict-user-id.parameters.allow | list | `[">=1000"]` | Allowed user IDs / ranges.  The following operators are valid: >, <, >=, <=, !, |, &. For a lower and upper limit, use ">=min & <=max" |
 | policies.restrict-volume-types | object | `{"enabled":true,"parameters":{"allow":["configMap","csi","downwardAPI","emptyDir","ephemeral","persistentVolumeClaim","projected","secret"]},"validationFailureAction":"Enforce"}` | Restrict the volume types to the specified list |
