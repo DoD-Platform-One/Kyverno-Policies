@@ -4,7 +4,7 @@
     "dependencyDashboard": true,
     "dependencyDashboardTitle": "Renovate: Upgrade Kyverno Policy Images",
     "draftPR": true,
-    "enabledManagers": ["helm-values","regex"],
+    "enabledManagers": ["helmv3","helm-values","regex"],
     "ignorePaths": ["chart/charts/**"],
     "labels": ["kyverno","renovate"],
     "packageRules": [
