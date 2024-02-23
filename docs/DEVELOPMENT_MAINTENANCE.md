@@ -15,24 +15,9 @@
 
 7. Once all manual testing is complete take your MR out of "Draft" status and add the review label on both the Issue and MR. 
 
-## Local Testing
-
-1. Deploy Kyverno using the Kyverno Helm chart
-2. Run the test values
-
-    ```shell
-    helm upgrade -i -n kyverno --create-namespace -f tests/test-values.yaml kyverno-policies chart
-    ```
-
-3. Run Helm tests
-
-    ```shell
-    helm test -n kyverno kyverno-policies
-    ```
-
 ## Testing with Big Bang
 
-> NOTE: For these testing steps it is good to do them on both a clean install and an upgrade. For clean install, point kyverno to your branch. For an upgrade do an install with kyverno pointing to the latest tag, then perform a helm upgrade with kyverno pointing to your branch.
+> NOTE: For these testing steps it is good to do them on both a clean install and an upgrade. For clean install, point kyvernoPolicies to your branch. For an upgrade do an install with kyvernoPolicies pointing to the latest tag, then perform a helm upgrade with kyverno pointing to your branch.
 
 Deploy Kyverno Policies using the Helm chart ( pointing to your branch )
 
@@ -45,13 +30,13 @@ Deploy Kyverno Policies using the Helm chart ( pointing to your branch )
 ```
 
 You will want to install with:
-- Kyverno Kyverno-Policies, and Kyverno-Reporter enabled
+- Kyverno, Kyverno-Policies, and Kyverno-Reporter enabled
 - Istio enabled
 - Monitoring enabled
 
 Checking Prometheus for Kyverno dashboards
 - Login to Prometheus, validate under `Status` -> `Targets` that all kyverno targets are showing as up
-- Login to Grafana, then navigate to the Kyverno daskboard ( Dashboards > Browse > Kyverno ) and validate that the dashboard displays data
+- Login to Grafana, then navigate to the Kyverno daskboard ( Dashboards > Browse > Kyverno ) and validate that the dashboard displays policy data
 
 > 📌 __NOTE__: if using MacOS make sure that you have gnu sed installed and add it to your PATH variable [GNU SED Instructions](https://gist.github.com/andre3k1/e3a1a7133fded5de5a9ee99c87c6fa0d)
 - [ ] Test secret sync in new namespace

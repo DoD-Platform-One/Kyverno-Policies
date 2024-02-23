@@ -3,6 +3,11 @@
 Format: [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 
 ---
+## [3.0.4-bb.25] - 2024-02-20
+### Changed
+- ironbank/opensource/kubernetes/kubectl updated from v1.28.6 to v1.28.7
+- gluon chart updated from 0.3.1 to 0.4.8
+
 ## [3.0.4-bb.24] - 2024-01-31
 ### Changed
 - Updated allowed `sysctls` per Pod Security Standards
