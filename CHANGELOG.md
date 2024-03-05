@@ -3,6 +3,10 @@
 Format: [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 
 ---
+## [3.0.4-bb.26] - 2024-02-29
+### Changed
+- Fixed audit and mutator for AutomountServiceAccountTokens for StatefulSet and Deployments
+
 ## [3.0.4-bb.25] - 2024-02-20
 ### Changed
 - ironbank/opensource/kubernetes/kubectl updated from v1.28.6 to v1.28.7
