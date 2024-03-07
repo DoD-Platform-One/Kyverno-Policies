@@ -3,6 +3,10 @@
 Format: [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 
 ---
+## [3.0.4-bb.27] - 2024-03-07
+### Changed
+- Removed duplicate `pod-policies.kyverno.io/autogen-controllers` annotation is disallow-tolerations ClusterPolicy.
+
 ## [3.0.4-bb.26] - 2024-02-29
 ### Changed
 - Fixed audit and mutator for AutomountServiceAccountTokens for StatefulSet and Deployments

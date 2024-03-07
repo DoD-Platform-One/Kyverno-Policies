@@ -23,7 +23,6 @@ metadata:
       taint list.
     # One of the rules matches "RuntimeClass", which prevents us from running autogen
     # Instead, we manually create rules below for the pod controllers
-    pod-policies.kyverno.io/autogen-controllers: none
   labels: {{- include "kyverno-policies.labels" . | nindent 4 }}
 spec:
   {{- include "kyverno-policies.webhookTimeoutSeconds" (merge (dict "name" $name) .) | indent 2 }}
