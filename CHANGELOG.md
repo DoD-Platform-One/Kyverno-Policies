@@ -3,6 +3,10 @@
 Format: [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 
 ---
+## [3.0.4-bb.28] - 2024-03-20
+### Changed
+- Ensuring `kube-system` namespace is excluded from policy action
+
 ## [3.0.4-bb.27] - 2024-03-07
 ### Changed
 - Removed duplicate `pod-policies.kyverno.io/autogen-controllers` annotation is disallow-tolerations ClusterPolicy.

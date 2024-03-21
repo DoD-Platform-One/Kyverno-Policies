@@ -21,7 +21,12 @@ kyvernoVersion: autodetect
 webhookTimeoutSeconds: 30
 
 # -- Adds an exclusion to all policies.  This is merged with any policy-specific excludes.  See https://kyverno.io/docs/writing-policies/match-exclude for fields.
-exclude: {}
+exclude:
+  #Do not want to block anything in kube-system
+  any:
+  - resources:
+      namespaces:
+      - kube-system
 
 # -- Adds an excludeContainers to all policies.  This is merged with any policy-specific excludeContainers.
 excludeContainers: []
