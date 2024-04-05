@@ -1,7 +1,7 @@
 {
   "bomFormat": "CycloneDX",
   "specVersion": "1.5",
-  "serialNumber": "urn:uuid:0ff48b02-ea1e-45da-8ba6-f97108d4b3ef",
+  "serialNumber": "urn:uuid:4fe3680a-4959-4366-a2d1-3a1d6f740802",
   "version": 1,
   "metadata": {
     "tools": null,
@@ -2133,11 +2133,11 @@
         },
         {
           "type": "library",
-          "bom-ref": "registry1.dso.mil/ironbank/opensource/kubernetes/kubectl@v1.28.7:pkg:golang/github.com/docker/distribution@v2.8.2\u002Bincompatible?package-id=755d3e2ecf965c70",
+          "bom-ref": "registry1.dso.mil/ironbank/opensource/kubernetes/kubectl@v1.28.7:pkg:golang/github.com/docker/distribution@v2.8.2%2Bincompatible?package-id=755d3e2ecf965c70",
           "name": "github.com/docker/distribution",
           "version": "v2.8.2\u002Bincompatible",
           "cpe": "cpe:2.3:a:docker:distribution:v2.8.2\\\u002Bincompatible:*:*:*:*:*:*:*",
-          "purl": "pkg:golang/github.com/docker/distribution@v2.8.2\u002Bincompatible",
+          "purl": "pkg:golang/github.com/docker/distribution@v2.8.2%2Bincompatible",
           "properties": [
             {
               "name": "syft:package:foundBy",
@@ -2229,11 +2229,11 @@
         },
         {
           "type": "library",
-          "bom-ref": "registry1.dso.mil/ironbank/opensource/kubernetes/kubectl@v1.28.7:pkg:golang/github.com/evanphx/json-patch@v4.12.0\u002Bincompatible?package-id=f3cc133e6e1f8475",
+          "bom-ref": "registry1.dso.mil/ironbank/opensource/kubernetes/kubectl@v1.28.7:pkg:golang/github.com/evanphx/json-patch@v4.12.0%2Bincompatible?package-id=f3cc133e6e1f8475",
           "name": "github.com/evanphx/json-patch",
           "version": "v4.12.0\u002Bincompatible",
           "cpe": "cpe:2.3:a:evanphx:json-patch:v4.12.0\\\u002Bincompatible:*:*:*:*:*:*:*",
-          "purl": "pkg:golang/github.com/evanphx/json-patch@v4.12.0\u002Bincompatible",
+          "purl": "pkg:golang/github.com/evanphx/json-patch@v4.12.0%2Bincompatible",
           "properties": [
             {
               "name": "syft:package:foundBy",
@@ -3943,11 +3943,11 @@
         },
         {
           "type": "library",
-          "bom-ref": "registry1.dso.mil/ironbank/opensource/kubernetes/kubectl@v1.28.7:pkg:golang/github.com/peterbourgon/diskv@v2.0.1\u002Bincompatible?package-id=af910b0f5206b41c",
+          "bom-ref": "registry1.dso.mil/ironbank/opensource/kubernetes/kubectl@v1.28.7:pkg:golang/github.com/peterbourgon/diskv@v2.0.1%2Bincompatible?package-id=af910b0f5206b41c",
           "name": "github.com/peterbourgon/diskv",
           "version": "v2.0.1\u002Bincompatible",
           "cpe": "cpe:2.3:a:peterbourgon:diskv:v2.0.1\\\u002Bincompatible:*:*:*:*:*:*:*",
-          "purl": "pkg:golang/github.com/peterbourgon/diskv@v2.0.1\u002Bincompatible",
+          "purl": "pkg:golang/github.com/peterbourgon/diskv@v2.0.1%2Bincompatible",
           "properties": [
             {
               "name": "syft:package:foundBy",
@@ -8392,7 +8392,7 @@
         },
         {
           "type": "library",
-          "bom-ref": "registry1.dso.mil/ironbank/opensource/kubernetes/kubectl@v1.28.7:pkg:rpm/rhel/libstdc\u002B\u002B@11.4.1-2.1.el9?arch=x86_64\u0026upstream=gcc-11.4.1-2.1.el9.src.rpm\u0026distro=rhel-9.3\u0026package-id=67a908dedb55a534",
+          "bom-ref": "registry1.dso.mil/ironbank/opensource/kubernetes/kubectl@v1.28.7:pkg:rpm/rhel/libstdc%2B%2B@11.4.1-2.1.el9?arch=x86_64\u0026upstream=gcc-11.4.1-2.1.el9.src.rpm\u0026distro=rhel-9.3\u0026package-id=67a908dedb55a534",
           "publisher": "Red Hat, Inc.",
           "name": "libstdc\u002B\u002B",
           "version": "11.4.1-2.1.el9",
@@ -8404,7 +8404,7 @@
             }
           ],
           "cpe": "cpe:2.3:a:libstdc\\\u002B\\\u002B:libstdc\\\u002B\\\u002B:11.4.1-2.1.el9:*:*:*:*:*:*:*",
-          "purl": "pkg:rpm/rhel/libstdc\u002B\u002B@11.4.1-2.1.el9?arch=x86_64\u0026upstream=gcc-11.4.1-2.1.el9.src.rpm\u0026distro=rhel-9.3",
+          "purl": "pkg:rpm/rhel/libstdc%2B%2B@11.4.1-2.1.el9?arch=x86_64\u0026upstream=gcc-11.4.1-2.1.el9.src.rpm\u0026distro=rhel-9.3",
           "properties": [
             {
               "name": "syft:package:foundBy",
