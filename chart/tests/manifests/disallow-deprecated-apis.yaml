@@ -1,5 +1,5 @@
-# Test 1: APIs deprecated and removed in 1.29 are not allowed
-apiVersion: flowcontrol.apiserver.k8s.io/v1beta2
+# Test 1: APIs deprecated and removed in 1.32 are not allowed
+apiVersion: flowcontrol.apiserver.k8s.io/v1beta3
 kind: FlowSchema
 metadata:
   name: disallow-deprecated-apis

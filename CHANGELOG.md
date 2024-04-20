@@ -3,6 +3,11 @@
 Format: [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 
 ---
+## [3.0.4-bb.29] - 2024-04-19
+### Changed
+- Added support for checking deprecated API policy for Kubernetes v1.32.
+- ironbank/opensource/kubernetes/kubectl updated from v1.28.7 to v1.29.3
+
 ## [3.0.4-bb.28] - 2024-03-20
 ### Changed
 - Ensuring `kube-system` namespace is excluded from policy action
