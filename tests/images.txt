@@ -1,1 +1,1 @@
-registry1.dso.mil/ironbank/opensource/kubernetes/kubectl:v1.29.3
+registry1.dso.mil/ironbank/opensource/kubernetes/kubectl:v1.29.4
