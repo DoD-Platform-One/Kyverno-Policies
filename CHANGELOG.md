@@ -3,6 +3,12 @@
 Format: [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 
 ---
+## [3.0.4-bb.30] - 2024-05-03
+### Changed
+- gluon updated from 0.4.8 to 0.5.0
+- ironbank/opensource/kubernetes/kubectl updated from v1.29.3 to v1.29.4
+- ironbank/redhat/ubi/ubi9-minimal updated from 9.3 to 9.4
+
 ## [3.0.4-bb.29] - 2024-04-19
 ### Changed
 - Added support for checking deprecated API policy for Kubernetes v1.32.
