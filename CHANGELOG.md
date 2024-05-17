@@ -3,6 +3,10 @@
 Format: [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 
 ---
+## [3.0.4-bb.31] - 2024-05-16
+### Changed
+- updated commentted example in values.yaml file for `update-automountserviceaccounttokens:`
+
 ## [3.0.4-bb.30] - 2024-05-03
 ### Changed
 - gluon updated from 0.4.8 to 0.5.0

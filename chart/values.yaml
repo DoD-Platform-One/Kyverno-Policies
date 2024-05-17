@@ -539,8 +539,9 @@ policies:
 #       serviceAccounts:
 #       - istio-operator
 #       pods:
-#       - istiod-*
-#       - istio-operator-*
+#          allow: 
+#          - istiod-*
+#          - istio-operator-*
 
 
 # -- Adds custom policies.  See https://kyverno.io/docs/writing-policies/.
