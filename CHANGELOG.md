@@ -3,6 +3,10 @@
 Format: [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 
 ---
+## [3.0.4-bb.32] - 2024-05-23
+### Changed
+- setting autogen rules to `Deployment,ReplicaSet,DaemonSet,StatefulSet` as default to mitagate false positive behavior
+
 ## [3.0.4-bb.31] - 2024-05-16
 ### Changed
 - updated commentted example in values.yaml file for `update-automountserviceaccounttokens:`

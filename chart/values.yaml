@@ -33,7 +33,7 @@ excludeContainers: []
 
 # -- Customize the target Pod controllers for the auto-generated rules. (Eg. `none`, `Deployment`, `DaemonSet,Deployment,StatefulSet`)
 # For more info https://kyverno.io/docs/writing-policies/autogen/.
-autogenControllers: none
+autogenControllers: "Deployment,ReplicaSet,DaemonSet,StatefulSet"
 
 # -- Additional labels to apply to all policies.
 customLabels: {}
