@@ -3,6 +3,10 @@
 Format: [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 
 ---
+## [3.0.4-bb.33] - 2024-06-17
+### Changed
+- Fixed error in execption-require-non-root-group.yaml and in the non-root-user.yaml
+
 ## [3.0.4-bb.32] - 2024-05-23
 ### Changed
 - setting autogen rules to `Deployment,ReplicaSet,DaemonSet,StatefulSet` as default to mitagate false positive behavior
