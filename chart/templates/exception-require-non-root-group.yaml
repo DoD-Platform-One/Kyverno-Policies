@@ -1,10 +1,10 @@
 {{- $name := "require-non-root-group" }}
 {{- if and .Values.enabled (dig $name "enabled" false .Values.policies) .Values.istio.enabled }}
-apiVersion: kyverno.io/v2alpha1
+apiVersion: kyverno.io/v2beta1 
 kind: PolicyException
 metadata:
   name: {{ $name }}-exception
-namespace: {{ .Release.Namespace }}
+  namespace: {{ .Release.Namespace }}
 spec:
   exceptions:
   - policyName: {{ $name }}
