@@ -13,15 +13,19 @@
 
 6. Open an MR in "Draft" status ( or the Renovate created MR ) and validate that CI passes. This will perform a number of smoke tests against the package, but it is good to manually deploy to test some things that CI doesn't. Follow the steps below for manual testing.
 
-7. Once all manual testing is complete take your MR out of "Draft" status and add the review label on both the Issue and MR. 
-
-## Testing with Big Bang
-
-> NOTE: For these testing steps it is good to do them on both a clean install and an upgrade. For clean install, point kyvernoPolicies to your branch. For an upgrade do an install with kyvernoPolicies pointing to the latest tag, then perform a helm upgrade with kyverno pointing to your branch.
+7. Test the package in a Big Bang pipeline using the instructions detailed here:  [test-package-against-bb](https://repo1.dso.mil/big-bang/bigbang/-/blob/master/docs/developer/test-package-against-bb.md?ref_type=heads) and modify [test-values](https://repo1.dso.mil/big-bang/bigbang/-/blob/master/tests/test-values.yaml?ref_type=heads) with the settings from the Helm chart below:
 
 Deploy Kyverno Policies using the Helm chart ( pointing to your branch )
 
 ```yaml
+    istioOperator:
+    enabled: true
+    istio:
+    enabled: true
+    monitoring:
+    enabled: true
+    kyverno:
+    enabled: true
     kyvernoPolicies:
       git:
         tag: null
@@ -33,6 +37,11 @@ You will want to install with:
 - Kyverno, Kyverno-Policies, and Kyverno-Reporter enabled
 - Istio enabled
 - Monitoring enabled
+
+
+## Manual Testing with Big Bang
+
+> NOTE: For these testing steps it is good to do them on both a clean install and an upgrade. For clean install, point kyvernoPolicies to your branch. For an upgrade do an install with kyvernoPolicies pointing to the latest tag, then perform a helm upgrade with kyverno pointing to your branch. Use the settings listed in above.
 
 Checking Prometheus for Kyverno dashboards
 - Login to Prometheus, validate under `Status` -> `Targets` that all kyverno targets are showing as up
@@ -66,3 +75,5 @@ Checking Prometheus for Kyverno dashboards
     kubectl delete secret kyverno-bbtest-secret -n kyverno
     kubectl delete ns kyverno-bbtest
     ```
+
+8. Once all testing is complete take your MR out of "Draft" status and add the review label on both the Issue and MR. When in doubt with any testing or upgrade steps, reach out to the CODEOWNERS for assistance.
