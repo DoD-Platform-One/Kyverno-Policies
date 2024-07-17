@@ -4,6 +4,12 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 
 ---
 
+## [3.0.4-bb.34] - 2024-07-16
+
+### Changed
+
+- Added metadata annotation to disallow-istio-injection-bypass policy
+
 ## [3.0.4-bb.33] - 2024-06-17
 
 ### Changed
