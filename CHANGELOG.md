@@ -4,6 +4,12 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 
 ---
 
+## [3.2.3-bb.0] - 2024-07-18
+
+### Changed
+
+- update helm chart from `kyverno-chart-3.0.4` to `kyverno-chart-3.2.3` and app version from `v1.11.0` to `v1.12.3`
+
 ## [3.0.4-bb.34] - 2024-07-16
 
 ### Changed
