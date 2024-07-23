@@ -4,6 +4,12 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 
 ---
 
+## [3.2.5-bb.0] - 2024-07-23
+
+### Changed
+
+- Updated versions in version and annotations under Chart.yaml to match Kyverno chart that we are currently using - 3.2.5
+
 ## [3.2.3-bb.0] - 2024-07-18
 
 ### Changed
