@@ -1,6 +1,6 @@
 {{- $name := "require-non-root-user" }}
 {{- if and .Values.enabled (dig $name "enabled" false .Values.policies) .Values.istio.enabled }}
-apiVersion: kyverno.io/v2beta1 
+apiVersion:  kyverno.io/v2
 kind: PolicyException
 metadata:
   name: {{ $name }}-exception
