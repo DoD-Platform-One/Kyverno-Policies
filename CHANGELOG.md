@@ -4,6 +4,13 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 
 ---
 
+## [3.2.5-bb.1] - 2024-07-27
+
+### Changed
+
+- Gluon updated from `0.5.0` to `0.5.2`
+- `ironbank/opensource/kubernetes/kubectl` updated from `v1.29.4` to `v1.29.7`
+
 ## [3.2.5-bb.0] - 2024-07-23
 
 ### Changed

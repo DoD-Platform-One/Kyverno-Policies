@@ -1,7 +1,7 @@
 apiVersion: v2
 name: kyverno-policies
-version: 3.2.5-bb.0
-appVersion: v1.12.3
+version: 3.2.5-bb.1
+appVersion: v1.12.5
 icon: https://github.com/kyverno/kyverno/raw/main/img/logo.png
 description: Collection of Kyverno security and best-practice policies for Kyverno
 keywords:
@@ -14,7 +14,7 @@ sources:
   - https://github.com/kyverno/policies
 dependencies:
   - name: gluon
-    version: 0.5.0
+    version: 0.5.2
     repository: oci://registry1.dso.mil/bigbang
 annotations:
   bigbang.dev/applicationVersions: |
@@ -22,5 +22,5 @@ annotations:
   # Kubectl image is used if waitforready.enabled or bbtests.enabled
   helm.sh/images: |
     - name: kubectl
-      image: registry1.dso.mil/ironbank/opensource/kubernetes/kubectl:v1.29.4
+      image: registry1.dso.mil/ironbank/opensource/kubernetes/kubectl:v1.29.7
       condition: waitforready.enabled
