@@ -4,6 +4,15 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 
 ---
 
+## [3.2.5-bb.2] - 2024-07-31
+
+### Changed
+
+- Updated chart/templates/exception-require-non-root-group.yaml:apiVersion: from `kyverno.io/v2beta1` to the latest version `kyverno.io/v2`
+- chart/templates/exception-require-non-root-user.yaml:apiVersion: from `kyverno.io/v2beta1` to `kyverno.io/v2`
+- chart/templates/update-automountserviceaccounttokens.yaml apiVersion:
+ from `kyverno.io/v2beta1` to the latest version`kyverno.io/v2`
+
 ## [3.2.5-bb.1] - 2024-07-27
 
 ### Changed
