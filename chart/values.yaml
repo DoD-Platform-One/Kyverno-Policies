@@ -281,7 +281,7 @@ policies:
 
   # -- Require specified labels to be on all pods
   require-labels:
-    enabled: false
+    enabled: true
     validationFailureAction: Audit
     parameters:
       # -- List of labels required on all pods.  Entries can be just a "key", or a quoted "key: value".  Wildcards '*' and '?' are supported.
@@ -291,6 +291,8 @@ policies:
       - app.kubernetes.io/name
       - app.kubernetes.io/instance
       - app.kubernetes.io/version
+      - app
+      - version
 
   # -- Require containers have memory limits defined and within the specified range
   require-memory-limit:
