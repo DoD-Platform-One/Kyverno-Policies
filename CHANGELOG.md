@@ -4,6 +4,12 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 
 ---
 
+## [3.2.5-bb.3] - 2024-08-02
+
+### Changed
+
+- Added app and version to require-labels policy & update manifest
+
 ## [3.2.5-bb.2] - 2024-07-31
 
 ### Changed
