@@ -1,7 +1,7 @@
 <!-- Warning: Do not manually edit this file. See notes on gluon + helm-docs at the end of this file for more information. -->
 # kyverno-policies
 
-![Version: 3.2.5-bb.3](https://img.shields.io/badge/Version-3.2.5--bb.3-informational?style=flat-square) ![AppVersion: v1.12.5](https://img.shields.io/badge/AppVersion-v1.12.5-informational?style=flat-square)
+![Version: 3.2.5-bb.4](https://img.shields.io/badge/Version-3.2.5--bb.4-informational?style=flat-square) ![AppVersion: v1.12.5](https://img.shields.io/badge/AppVersion-v1.12.5-informational?style=flat-square)
 
 Collection of Kyverno security and best-practice policies for Kyverno
 
@@ -13,8 +13,8 @@ Collection of Kyverno security and best-practice policies for Kyverno
 
 ### Upstream Release Notes
 
-* [Find our upstream chart's CHANGELOG here](https://link-goes-here/CHANGELOG.md)
-* [and our upstream application release notes here](https://another-link-here/RELEASE_NOTES.md)
+* [Find our upstream chart's CHANGELOG here](https://repo1.dso.mil/big-bang/product/packages/kyverno-policies/-/blob/main/CHANGELOG.md)
+* [and our upstream application release notes here](https://repo1.dso.mil/big-bang/product/packages/kyverno-policies/-/releases)
 
 ## Learn More
 
@@ -66,7 +66,7 @@ helm install kyverno-policies chart/
 | policies.sample.exclude | object | `{}` | Defines when this policy's rules should not be applied.  This completely overrides any default excludes. |
 | policies.sample.parameters | object | `{"excludeContainers":[]}` | Policy specific parameters that are added to the configMap for the policy rules |
 | policies.sample.parameters.excludeContainers | list | `[]` | Adds a container exclusion (by name) to a specific policy.  This is merged with any global excludeContainers. |
-| policies.clone-configs | object | `{"enabled":false,"parameters":{"clone":[]}}` | Clone existing configMap or secret in new Namespaces |
+| policies.clone-configs | object | `{"enabled":false,"generateExisting":true,"parameters":{"clone":[]}}` | Clone existing configMap or secret in new Namespaces |
 | policies.clone-configs.parameters.clone | list | `[]` | ConfigMap or Secrets that should be cloned.  Each item requres the kind, name, and namespace of the resource to clone |
 | policies.disallow-annotations | object | `{"enabled":false,"parameters":{"disallow":[]},"validationFailureAction":"Audit"}` | Prevent specified annotations on pods |
 | policies.disallow-annotations.parameters.disallow | list | `[]` | List of annotations disallowed on pods.  Entries can be just a "key", or a quoted "key: value".  Wildcards '*' and '?' are supported. |

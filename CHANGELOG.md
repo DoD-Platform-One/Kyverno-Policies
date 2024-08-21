@@ -4,6 +4,13 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 
 ---
 
+## [3.2.5-bb.4] - 2024-08-20
+
+### Changed
+
+- Added GenerateExisting option for clone-config.yaml
+- Updated gluon from 0.5.2 to 0.5.3
+
 ## [3.2.5-bb.3] - 2024-08-02
 
 ### Changed
