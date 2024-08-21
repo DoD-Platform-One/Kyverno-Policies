@@ -21,6 +21,7 @@ metadata:
   labels: {{- include "kyverno-policies.labels" . | nindent 4 }}
 spec:
   {{- include "kyverno-policies.webhookTimeoutSeconds" (merge (dict "name" $name) .) | indent 2 }}
+  generateExisting: {{ index .Values "policies" "clone-configs" "generateExisting" }}
   background: {{ .Values.background }}
   failurePolicy: {{ .Values.failurePolicy }}
   rules:
