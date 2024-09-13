@@ -107,7 +107,7 @@ policies:
         #   kind: ConfigMap
         #   # -- Namespace to find the ConfigMap/Secret.  This can be templated.
         #   namespace: "{{ .Release.Namespace }}"
-    generateExisting: true 
+    generateExisting: false 
 
   # -- Prevent specified annotations on pods
   disallow-annotations:
