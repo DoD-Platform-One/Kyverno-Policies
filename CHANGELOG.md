@@ -4,6 +4,12 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 
 ---
 
+## [3.2.5-bb.6] - 2024-09-09
+
+### Changed
+
+- update ironbank public container signing key
+
 ## [3.2.5-bb.5] - 2024-09-09
 
 ### Changed
