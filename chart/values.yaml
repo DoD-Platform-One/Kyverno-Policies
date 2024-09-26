@@ -261,8 +261,18 @@ policies:
           - keys:
               publicKeys: |-
                 -----BEGIN PUBLIC KEY-----
-                MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAE7CjMGH005DFFz6mffqTIGurBt6fL
-                UfTZxuEDFRBS8mFJx1xw8DEVvjMibLTtqmAoJxUmzmGFgzz+LV875syVEg==
+                MIICIjANBgkqhkiG9w0BAQEFAAOCAg8AMIICCgKCAgEAtQDv69q1kyiogpxvIVjh
+                eNMLsI1GTLm+BuLWJN2rq4AA4k3+I7WqdvA1tKJ218DyXExljI3NTD4J5BnLeB6y
+                WDvnTPXVu+pNj9W7Az0uyD73/WsMV1QR5VEzWMdMz+ZnN8IGd4JFl9p2N21YBD1R
+                Y93+K4XgrZ/iSRk+mGBAs87UpF1ku/nru0H2+XwJtoV7pLrrai/pLdQeRh5Ogg9J
+                z5qHer9EnZne6eBnZedvpf7bqfRt0Fqqk0pTzLQm4oFD3HnxdJUPt9ccoPx0IyF0
+                rB01a53LBTeRXeUcHd5BpwhwgkIm2insbDIp+lBKjUfq4CfqRQcXLLUgtRUij6ke
+                QfD7jgI9chBxbVE1U5Mc/RgftXuVGQzx1OrjenD4wIH4whtP1abTg6XLxqjgkgqq
+                EJy5kUpv+ut0n1RBiIdH6wYXDum90fq4qQl+gHaER0bOYAQTCIFRrhrWJ8Qxj4uL
+                xI+O5KgLX3TanMtfE7e2A86uzxiHBxEW4+AF2IMXuLviIQKc9z+/p93psfQ9nXXj
+                B5i6qFWkF0BMuWibB8e+HHWRKLfNWXGdfLraoMPKwCrJWhYQ+8SRrqR+gbSNWbEM
+                VardcwrQZ7NP7KIedquYQnfJ3ukbYikKgdBovGStFEPLaKKiYJiD5UIQhZ51SDdA
+                k+PgLW7CzKW4u2+WLdjfalkCAwEAAQ==
                 -----END PUBLIC KEY-----
               # Skip Rekor Transparency log check
               rekor:
