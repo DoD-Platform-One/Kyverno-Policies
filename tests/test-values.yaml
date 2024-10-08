@@ -35,8 +35,6 @@ policies:
       - kyverno-policies-bbtest/disallowed
   disallow-deprecated-apis:
     enabled: true
-  disallow-host-namespaces:
-    enabled: true
   disallow-image-tags:
     enabled: true
   disallow-istio-injection-bypass:
@@ -48,14 +46,6 @@ policies:
       - 'kyverno-policies-bbtest/test: disallowed'
       - kyverno-policies-bbtest/disallowed
   disallow-namespaces:
-    enabled: true
-  disallow-nodeport-services:
-    enabled: true
-  disallow-pod-exec:
-    enabled: false  # No way to test this
-  disallow-privilege-escalation:
-    enabled: true
-  disallow-privileged-containers:
     enabled: true
   disallow-rbac-on-default-serviceaccounts:
     enabled: true
@@ -77,10 +67,7 @@ policies:
       - kyverno-policies-bbtest/required
   require-cpu-limit:
     enabled: true
-  require-drop-all-capabilities:
-    enabled: true
   require-image-signature:
-    enabled: true
     parameters:
       require:
       - imageReferences:
@@ -131,16 +118,11 @@ policies:
   require-istio-on-namespaces:
     enabled: true
   require-labels:
-    enabled: true
     parameters:
       require:
       - 'kyverno-policies-bbtest/test: required'
       - kyverno-policies-bbtest/required
   require-memory-limit:
-    enabled: true
-  require-non-root-group:
-    enabled: true
-  require-non-root-user:
     enabled: true
   require-probes:
     enabled: true
@@ -148,63 +130,36 @@ policies:
     enabled: true
   require-ro-rootfs:
     enabled: true
-  restrict-apparmor:
-    enabled: true
-  restrict-capabilities:
-    enabled: true
   restrict-external-ips:
-    enabled: true
     parameters:
       allow:
       - 192.168.0.1
   restrict-external-names:
-    enabled: true
     parameters:
       allow:
       - allowed
   restrict-group-id:
     enabled: true
   restrict-host-path-mount:
-    enabled: true
     parameters:
       allow:
       - /tmp/allowed
   restrict-host-path-mount-pv:
-    enabled: true
     parameters:
       allow:
       - /tmp/allowed
   restrict-host-path-write:
-    enabled: true
     parameters:
       allow:
       - /tmp/allowed
   restrict-host-ports:
-    enabled: true
     parameters:
       allow:
       - '63999'
       - '>= 64000 & < 65000'
       - '> 65000'
-  restrict-image-registries:
-    enabled: true
-  restrict-proc-mount:
-    enabled: true
-  restrict-seccomp:
-    enabled: true
-  restrict-selinux-type:
-    enabled: true
-  restrict-sysctls:
-    enabled: true
   restrict-user-id:
     enabled: true
-  restrict-volume-types:
-    enabled: true
-  update-image-pull-policy:
-    enabled: true
-    parameters:
-      update:
-      - to: Always
   update-image-registry:
     enabled: true
     parameters:
