@@ -4,6 +4,13 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 
 ---
 
+## [3.2.5-bb.7] - 2024-09-16
+
+### Changed
+
+- add wait job
+- update gluon from 0.5.3 to 0.5.4
+
 ## [3.2.5-bb.6] - 2024-09-09
 
 ### Changed

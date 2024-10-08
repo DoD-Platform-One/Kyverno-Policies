@@ -3,9 +3,10 @@ bbtests:
   scripts:
     envs:
       PACKAGE_LEVEL_TEST: "true"
-waitforready:
-  imagePullSecrets:
-  - name: private-registry
+
+waitJob:
+  enabled: true
+
 excludeContainers:
   - not-me
   - or-me

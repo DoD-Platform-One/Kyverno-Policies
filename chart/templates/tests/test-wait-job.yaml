@@ -1,0 +1,46 @@
+{{- include "gluon.wait.wait-job-configmap.overrides" (list . "kyverno-policies-wait.wait-configmap") }}
+{{- define "kyverno-policies-wait.wait-configmap" }}
+metadata:
+  labels:
+    {{- include "kyverno-policies.labels" . | nindent 4 }}
+{{- end }}
+---
+{{ include "gluon.wait.wait-job.overrides" (list . "kyverno-policies-wait.wait-job") }}
+{{- define "kyverno-policies-wait.wait-job" }}
+metadata:
+  labels:
+    {{- include "kyverno-policies.labels" . | nindent 4 }}
+{{- end }}
+---
+{{ include "gluon.wait.wait-job-sa.overrides" (list . "kyverno-policies-wait.wait-job-sa") }}
+{{- define "kyverno-policies-wait.wait-job-sa" }}
+metadata:
+  labels:
+    {{- include "kyverno-policies.labels" . | nindent 4 }}
+{{- end }}
+---
+{{ include "gluon.wait.wait-job-role.overrides" (list . "kyverno-policies-wait.wait-job-role") }}
+{{- define "kyverno-policies-wait.wait-job-role" }}
+kind: {{ .Values.waitJob.kind | default "Role" }}
+metadata:
+  labels:
+    {{- include "kyverno-policies.labels" . | nindent 4 }}
+  {{- if ne .Values.waitJob.kind "ClusterRole" }}
+  namespace: {{ .Release.Namespace }}
+  {{- end }}
+{{- end }}
+---
+{{ include "gluon.wait.wait-job-rolebinding.overrides" (list . "kyverno-policies-wait.wait-job-rolebinding") }}
+{{- define "kyverno-policies-wait.wait-job-rolebinding" }}
+kind: ClusterRoleBinding 
+metadata:
+  labels:
+    {{- include "kyverno-policies.labels" . | nindent 4 }}
+  {{- if ne .Values.waitJob.kind "ClusterRole" }}
+  namespace: {{ .Release.Namespace }}
+  {{- end }}
+roleRef:
+  kind: ClusterRole
+  name: "{{ .Chart.Name }}-wait-job-role"
+  apiGroup: rbac.authorization.k8s.io
+{{- end }}
