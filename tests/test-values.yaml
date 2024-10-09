@@ -4,9 +4,6 @@ bbtests:
     envs:
       PACKAGE_LEVEL_TEST: "true"
 
-waitJob:
-  enabled: true
-
 excludeContainers:
   - not-me
   - or-me
