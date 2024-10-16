@@ -29,6 +29,9 @@ help() {
   echo "Example: Lint a specific chart against a specific policy:"
   echo "        ./bb_validate.sh -p require-image-signature -c elasticsearch"
   echo ""
+  echo "Is all testing complete? Remove all the packages from your repository by running:"
+  echo "        rm -rf ./docs/tools/repos"
+  echo ""
 }
 
 #image pull secret is required in each namespace to pull IB images
@@ -84,7 +87,7 @@ get_policies() {
 #install kyverno-policies, enabling only the desired policy for testing
 enable_policy () {
   #check that the provided policy is valid  
-  if [[ $(echo ${POLICIES[@]} | tr -d '"'| egrep -o $1) == "" ]]; then echo "Error: Policy $1 not found. Please check that the policy name is valid any try again."; exit 1; fi
+  if [[ $(echo ${POLICIES[@]} | tr -d '"'| egrep -o $1) == "" ]]; then echo "Error: Policy $1 not found. Please check that the policy name is valid and try again."; exit 1; fi
   echo "[*] Enabling policy $1..."
   #render kyverno-policies chart where just the desired policy is enabled
   helm template ./repos/kyverno-policies/chart -f ./$DISABLED_VALUES --set policies.$1.enabled=true --set policies.$1.validationFailureAction=Enforce| kubectl apply -f - >/dev/null 2>&1
@@ -117,6 +120,11 @@ while getopts "hc:p:" flag; do
     h | *) help; exit 0 ;;
   esac
 done
+
+cleanup () {
+  echo "[*] Running cleanup of package $1..."
+  rm -rf ./docs/tools/repos
+}
 
 download_artifact
 install_kyverno
