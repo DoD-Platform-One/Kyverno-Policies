@@ -4,6 +4,14 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 
 ---
 
+## [3.2.6-bb.0] - 2024-10-09
+
+### Changed
+
+- `ironbank/opensource/kubernetes/kubectl` updated from `v1.29.7` to `v1.30.5`
+- updated chart from `kyverno-chart-3.2.5` to `kyverno-chart-3.2.6` and app version from `v1.12.5` to `v1.12.6`
+- updated `ironbank/opensource/kubernetes/kubectl` updated from `v1.29.7` to `v1.30.5`
+
 ## [3.2.5-bb.7] - 2024-09-16
 
 ### Changed
