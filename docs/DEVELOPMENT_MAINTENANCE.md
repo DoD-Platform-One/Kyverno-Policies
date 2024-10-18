@@ -3,7 +3,7 @@
 
 1. Create a development branch and merge request from the Gitlab issue or use the existing `renovate/ironbank` branch and existing MR created by Renovate.
 
-2. Kyervno Policies only uses a Gluon dependency. Validate it is on the latest version in `chart/Chart.yaml` then run `helm dependency update chart`.
+2. Kyverno Policies only uses a Gluon dependency. Validate it is on the latest version in `chart/Chart.yaml` then run `helm dependency update chart`.
 
 3. Append `-bb.x` to the `version` in `chart/Chart.yaml`.
 
