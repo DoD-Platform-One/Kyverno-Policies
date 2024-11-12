@@ -1,0 +1,12 @@
+dependencies:
+- name: grafana
+  repository: ""
+  version: 3.2.7
+- name: crds
+  repository: file://./charts/crds
+  version: 3.2.7
+- name: gluon
+  repository: oci://registry1.dso.mil/bigbang
+  version: 0.5.2
+digest: sha256:9c81eb483d6694f7ebec2b68d7a78e6f30c09c6100a9ed4eb509a345017ef040
+generated: "2024-10-10T14:49:35.642863437-04:00"

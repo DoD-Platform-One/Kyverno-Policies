@@ -9,11 +9,19 @@ metadata:
     "helm.sh/hook": test
 rules:
 - apiGroups:
+  - ""
   - "kyverno.io"
   resources:
-  - clusterpolicies
+  - pods
+  - pods/log
+  - secrets
+  - namespaces
   - policies
+  - clusterpolicies
+  
   verbs:
+  - create
+  - delete
   - get
   - list
   - patch

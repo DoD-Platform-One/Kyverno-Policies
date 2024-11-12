@@ -4,6 +4,12 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 
 ---
 
+## [3.2.6-bb.1] - 2024-10-16
+
+### Changed
+
+- Added kyverno as a dependency
+
 ## [3.2.6-bb.0] - 2024-10-09
 
 ### Changed
