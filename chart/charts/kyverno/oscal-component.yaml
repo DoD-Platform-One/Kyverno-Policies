@@ -1,0 +1,109 @@
+component-definition:
+  uuid: 839794c7-32c4-4329-b05c-6acd53de20ee
+  metadata: 
+    title: Kyverno Component
+    last-modified: '2022-04-13T12:00:00Z'
+    version: "20220413"
+    oscal-version: 1.1.1
+    parties:
+      # Should be consistent across all of the packages, but where is ground truth?
+    - uuid: 72134592-08C2-4A77-ABAD-C880F109367A 
+      type: organization
+      name: Platform One
+      links:
+      - href: https://p1.dso.mil
+        rel: website
+  components:
+  - uuid: 33d8fdde-f6ab-462a-8923-e6e4446d7a10
+    type: software
+    title: Kyverno
+    description: |
+      Deployment as Kyverno as an admission controller for a Kubernetes cluster
+    purpose: Admission controller for the Kubernetes API
+    responsible-roles:
+    - role-id: provider
+      party-uuids:
+      - 72134592-08C2-4A77-ABAD-C880F109367A # matches parties entry for p1
+    control-implementations:
+    - uuid: d2afb4c4-2cd8-5305-a6cc-d1bc7b388d0c
+      source: https://raw.githubusercontent.com/GSA/fedramp-automation/93ca0e20ff5e54fc04140613476fba80f08e3c7d/dist/content/rev5/baselines/json/FedRAMP_rev5_HIGH-baseline-resolved-profile_catalog.json
+      description:
+        Controls implemented by Kyverno for inheritance by applications
+      implemented-requirements:
+      - uuid: 7D019F27-294F-4759-A44F-BA6E15370ED8
+        control-id: cm-4
+        description: >-
+          The CLI can be used in CI/CD pipelines to assist with the resource authoring process to ensure they conform to standards prior to them being deployed.
+
+      - uuid: 91302CE7-181E-4464-9E26-2A1E42D8909F
+        control-id: cm-4.1
+        description: >-
+          Use of auditing validationFailureAction state in a test environment would allow changes to be tested against policies without blocking development. Allowing for policies to be mirrored and enforced in production.
+
+      - uuid: BE54EDE4-8279-4AE6-B8C3-5B68CC235E5E
+        control-id: cm-6
+        description: >-
+          Kyverno can be configured for cluster-wide and namespaced policies for system configuration. Exceptions can be implemented to policies that will allow for explicit deviations approved by policies/configurations declared in git.
+
+      - uuid: 6e1f05fc-3eab-45a2-9b16-d2c5acfed20b
+        control-id: cm-7
+        description: >-
+          Kyverno can enact policies that prevent the use of specific service types (IE, LoadBalancer or NodePort).
+
+      - uuid: C14EA5F8-3926-4BB4-BE44-B134513F143D
+        control-id: cm-7.5
+        description: >-
+          Policies can be written to enact deny-all for workloads unless exceptions are identified.
+
+      - uuid: 69A5689A-DAA5-48F6-9953-AEF482B0FEE0
+        control-id: cm-8.3
+        description: >-
+          Policies can be written to validate all software workloads can be verified against a signature.
+
+      - uuid: D0CEE97B-A884-4ECB-B56E-34048148144C
+        control-id: sc.5
+        description: >-
+          Policies can be written to limit the effects of a denial of service attack.
+          For example, when a Pod requests an emptyDir, by default it does not have a size limit which may allow it to consume excess or all of the space in the medium backing the volume. 
+          This can quickly overrun a Node and may result in a denial of service for other workloads. This policy adds a sizeLimit field to all Pods mounting emptyDir volumes, if not present, and sets it to 100Mi.
+
+      - uuid: 860527a1-60d5-4b14-bae8-bf203f9e5be8
+        control-id: sc-7.20
+        description: >-
+          Policies can be written to Kubernetes Namespaces as a feature that provide a way to segment and isolate cluster resources across multiple applications and users. As a best practice, workloads should be isolated with Namespaces. 
+
+      - uuid: a6a241df-e2d3-4b2f-9d3c-2c00b9f79be9
+        control-id: sc-7.21
+        description: >-
+          Policies can be written to the boundary needed for incoming (ingress) and outgoing (egress) traffic and configure a network policy and/or a constraint configuration.
+
+      - uuid: c1063293-602f-4e4d-a662-c7f516fd6608
+        control-id: sc-7.25
+        description: >-
+          Policies can be written to get block outgoing (egress) traffic to a specific external network. Configure a network policy and/or a constraint configuration.
+
+      - uuid: ea6d451f-a44b-4394-be85-5b5ff2c846ff
+        control-id: sc-10
+        description: >-
+          JMESpath can be used to set specific parameters of time, and Kyverno policies can be used to terminate a connection based on those parameters. 
+
+      - uuid: c5301f91-bd60-4049-9210-a14a47a1fddf
+        control-id: si-4.22
+        description: >-
+          A validation rule can be made for network services that are not approved/authorized and a policy report can  be created to audit the event.
+
+      - uuid: CBCB72ED-3161-4A6F-B522-FB7082E6E380
+        control-id: sr-11
+        description: >-
+          Cluster-Wide Policies can be written to require all images be verified through signature verification.
+
+  back-matter: 
+    resources:
+    - uuid: 0711df1f-d740-4e39-a25f-15cc7a017f57
+      title: Kyverno
+      rlinks:
+      - href: https://github.com/kyverno/kyverno
+    - uuid: 611ba6d8-8023-4858-b74f-957b15461ac5
+      title: Big Bang Kyverno package
+      rlinks:
+        - href: https://repo1.dso.mil/platform-one/big-bang/apps/sandbox/kyverno

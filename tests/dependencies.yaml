@@ -1,5 +1,0 @@
-kyverno:
-  git:
-    repo: "https://repo1.dso.mil/big-bang/product/packages/kyverno.git"
-    branch: "main"
-  namespace: "kyverno"

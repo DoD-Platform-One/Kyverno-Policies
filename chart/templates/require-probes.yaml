@@ -6,6 +6,7 @@ kind: ClusterPolicy
 metadata:
   name: {{ $name }}
   annotations:
+    {{- include "kyverno-policies.annotations" . | nindent 4 }}
     pod-policies.kyverno.io/autogen-controllers: DaemonSet,Deployment,StatefulSet
     policies.kyverno.io/title: Require Probes
     policies.kyverno.io/category: Best Practices

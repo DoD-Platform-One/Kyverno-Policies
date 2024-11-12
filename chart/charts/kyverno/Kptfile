@@ -1,0 +1,11 @@
+apiVersion: kpt.dev/v1alpha1
+kind: Kptfile
+metadata:
+  name: chart
+upstream:
+  type: git
+  git:
+    commit: bf047e463beba8fc124793112e9fb92895cac1a2
+    repo: https://github.com/kyverno/kyverno
+    directory: charts/kyverno
+    ref: kyverno-chart-3.2.7

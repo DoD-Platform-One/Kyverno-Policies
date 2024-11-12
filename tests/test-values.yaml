@@ -1,8 +1,13 @@
+networkPolicies:
+  enabled: true
 bbtests:
   enabled: true
   scripts:
     envs:
       PACKAGE_LEVEL_TEST: "true"
+
+kyverno: 
+  install: true
 
 excludeContainers:
   - not-me

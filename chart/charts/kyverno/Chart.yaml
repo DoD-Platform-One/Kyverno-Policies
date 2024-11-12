@@ -1,0 +1,68 @@
+apiVersion: v2
+type: application
+name: kyverno
+version: 3.2.7-bb.0
+appVersion: v1.12.6
+icon: https://github.com/kyverno/kyverno/raw/main/img/logo.png
+description: Kubernetes Native Policy Management
+keywords:
+  - kubernetes
+  - nirmata
+  - policy agent
+  - policy
+  - validating webhook
+  - admission controller
+  - mutation
+  - mutate
+  - validate
+  - generate
+  - supply chain
+  - security
+home: https://kyverno.io/
+sources:
+  - https://github.com/kyverno/kyverno
+maintainers:
+  - name: Nirmata
+    url: https://kyverno.io/
+kubeVersion: ">=1.25.0-0"
+annotations:
+  bigbang.dev/applicationVersions: |
+    - Kyverno: v1.12.6
+  # Kubectl image is used if webhooksCleanup.enable or bbtests.enabled
+  helm.sh/images: |
+    - name: kyverno
+      image: registry1.dso.mil/ironbank/opensource/kyverno:v1.12.6
+    - name: kyvernopre
+      image: registry1.dso.mil/ironbank/opensource/kyverno/kyvernopre:v1.12.6
+    - name: kubectl
+      image: registry1.dso.mil/ironbank/opensource/kubernetes/kubectl:v1.30.5
+    - name: ubi9-minimal
+      image: registry1.dso.mil/ironbank/redhat/ubi/ubi9-minimal:9.4
+    - name: reports-controller
+      image: registry1.dso.mil/ironbank/opensource/kyverno/kyverno/reports-controller:v1.12.6
+    - name: background-controller
+      image: registry1.dso.mil/ironbank/opensource/kyverno/kyverno/background-controller:v1.12.6
+    - name: cleanup-controller
+      image: registry1.dso.mil/ironbank/opensource/kyverno/kyverno/cleanup-controller:v1.12.6
+    - name: kyvernocli
+      image: registry1.dso.mil/ironbank/opensource/kyverno/kyvernocli:v1.12.6
+    
+  artifacthub.io/operator: "false"
+  artifacthub.io/prerelease: "false"
+  artifacthub.io/links: |
+    - name: Documentation
+      url: https://kyverno.io/docs
+  # valid kinds are: added, changed, deprecated, removed, fixed and security
+  artifacthub.io/changes: |
+    - kind: added
+      description: Add a key to preserve configmap settings during upgrade
+    - kind: added
+      description: Make admission reports breaker threshold configurable
+dependencies:
+  - name: grafana
+    version: 3.2.7
+    condition: grafana.enabled
+  - name: crds
+    version: 3.2.7
+    condition: crds.install
+
