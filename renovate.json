@@ -2,37 +2,43 @@
     "baseBranches": ["main"],
     "configWarningReuseIssue": false,
     "dependencyDashboard": true,
-    "dependencyDashboardTitle": "Renovate: Upgrade Kyverno Images",
+    "dependencyDashboardTitle": "Renovate: Upgrade Kyverno Policy Images",
     "draftPR": true,
-    "enabledManagers": ["helm-values","regex"],
-    "ignorePaths": [""],
+    "enabledManagers": ["helmv3","helm-values","regex"],
+    "ignorePaths": ["chart/charts/**"],
     "labels": ["kyverno","renovate"],
-    "commitMessagePrefix": "SKIP UPDATE CHECK",
     "packageRules": [
         {
             "matchDatasources": ["docker"],
-            "groupName": "Ironbank"
-        }
+            "groupName": "Ironbank",
+            "registryUrls": ["https://registry1.dso.mil"],
+            "postUpgradeTasks": {
+              "commands": [
+                  "bump-chart-yaml",
+                  "regenerate-helm-docs",
+                  "bump-changelog '- {{{replace 'registry1.dso.mil/' '' depName}}} updated from {{{currentVersion}}} to {{{newVersion}}}'"
+              ],
+              "fileFilters": ["chart/Chart.yaml", "README.md", "CHANGELOG.md"]
+            }
+          }
     ],
     "regexManagers": [
         {
-            "fileMatch": ["^chart/charts/kyverno/Chart\\.yaml$"],
+            "fileMatch": ["^chart/tests/manifests/.*\\.yaml$"],
             "matchStrings": [
-                "appVersion:\\s+(?<currentValue>.+)",
-                "- Kyverno:\\s+(?<currentValue>.+)"
+                "image:\\s+(?<depName>.+):(?<currentValue>.+)",
+                "kyverno-policies-bbtest/value:\\s+(?<depName>.+):(?<currentValue>.+)"
             ],
-            "depNameTemplate": "registry1.dso.mil/ironbank/opensource/kyverno",
             "datasourceTemplate": "docker"
         },
         {
-            "fileMatch": ["^chart/charts/kyverno/Chart\\.yaml$"],
+            "fileMatch": ["^chart/Chart\\.yaml$"],
             "matchStrings": [
                 "image:[^\\S\\r\\n]+(?<depName>.+):(?<currentValue>.+)"
             ],
-            "depNameTemplate": "registry1.dso.mil/ironbank/opensource/kyverno",
             "datasourceTemplate": "docker"
         }
     ],
     "separateMajorMinor": false,
     "postUpdateOptions": ["helmUpdateSubChartArchives"]
-  }
+}

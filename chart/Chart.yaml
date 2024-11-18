@@ -1,6 +1,6 @@
 apiVersion: v2
 name: kyverno-policies
-version: 3.2.6-bb.1
+version: 3.2.6-bb.0
 appVersion: v1.12.6
 icon: https://github.com/kyverno/kyverno/raw/main/img/logo.png
 description: Collection of Kyverno security and best-practice policies for Kyverno
@@ -13,10 +13,6 @@ home: https://kyverno.io/policies/
 sources:
   - https://github.com/kyverno/policies
 dependencies:
-  - name: kyverno
-    version: 3.2.7-bb.0
-    #repository: file://./charts/kyverno
-    condition: kyverno.install
   - name: gluon
     version: 0.5.4
     repository: oci://registry1.dso.mil/bigbang
@@ -25,22 +21,9 @@ annotations:
     - Kyverno Policies: 3.2.6
   # Kubectl image is used if waitJob.enabled or bbtests.enabled
   helm.sh/images: |
-    - name: kyverno
-      image: registry1.dso.mil/ironbank/opensource/kyverno:v1.12.6
-    - name: kyvernopre
-      image: registry1.dso.mil/ironbank/opensource/kyverno/kyvernopre:v1.12.6
     - name: kubectl
       image: registry1.dso.mil/ironbank/opensource/kubernetes/kubectl:v1.30.5
-    - name: ubi9-minimal
-      image: registry1.dso.mil/ironbank/redhat/ubi/ubi9-minimal:9.4
-    - name: reports-controller
-      image: registry1.dso.mil/ironbank/opensource/kyverno/kyverno/reports-controller:v1.12.6
-    - name: background-controller
-      image: registry1.dso.mil/ironbank/opensource/kyverno/kyverno/background-controller:v1.12.6
-    - name: cleanup-controller
-      image: registry1.dso.mil/ironbank/opensource/kyverno/kyverno/cleanup-controller:v1.12.6
-    - name: kyvernocli
-      image: registry1.dso.mil/ironbank/opensource/kyverno/kyvernocli:v1.12.6
+      condition: waitJob.enabled
   bigbang.dev/upstreamReleaseNotesMarkdown: |
     - [Find our upstream chart's CHANGELOG here](https://repo1.dso.mil/big-bang/product/packages/kyverno-policies/-/blob/main/CHANGELOG.md)
     - [and our upstream application release notes here](https://repo1.dso.mil/big-bang/product/packages/kyverno-policies/-/releases)

@@ -5,8 +5,6 @@ kind: PolicyException
 metadata:
   name: {{ $name }}-exception
   namespace: {{ .Release.Namespace }}
-  annotations:
-    {{- include "kyverno-policies.annotations" . | nindent 4 }}
 spec:
   exceptions:
   - policyName: {{ $name }}

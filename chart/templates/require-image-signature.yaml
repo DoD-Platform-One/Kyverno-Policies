@@ -7,7 +7,6 @@ kind: ClusterPolicy
 metadata:
   name: {{ $name }}
   annotations:
-    {{- include "kyverno-policies.annotations" . | nindent 4 }}
     {{- with .Values.autogenControllers }}
     pod-policies.kyverno.io/autogen-controllers: {{ . }}
     {{- end }}
