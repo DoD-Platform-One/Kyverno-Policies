@@ -1,62 +1,54 @@
 # How to update Kyverno Policies
+## Update dependencies
 
-# How to update the Kyverno Package chart
+1. Create a development branch and merge request from the Gitlab issue or use the existing `renovate/ironbank` branch and existing MR created by Renovate.
 
-Kyverno within Big Bang is a modified version of an upstream chart. Kyverno is located as subchart under `./chart/charts/kyverno`. `kpt` is used to handle any automatic updates from upstream. The below details the steps required to update to a new version of the Kyverno package.
+2. Kyverno Policies only uses a Gluon dependency. Validate it is on the latest version in `chart/Chart.yaml` then run `helm dependency update chart`.
 
-1. Review the upstream [changelog](https://github.com/kyverno/kyverno/blob/main/CHANGELOG.md) for potential breaking changes.
-1. Navigate to the upstream [kyverno helm chart repo](https://github.com/kyverno/kyverno/tree/main/charts/kyverno) and find the latest chart version that works with the image update. For example, if updating to 1.9.1 I would look at the [Chart.yaml](https://github.com/kyverno/kyverno/blob/main/charts/kyverno/Chart.yaml) `appVersion` field and switch through the latest git tags until I find one that matches 1.9.1. For this example that would be [`v1.9.1`](https://github.com/kyverno/kyverno/blob/v1.9.1/charts/kyverno/Chart.yaml#L5).
-1. Update the Chart.yaml in the kyverno-policies parent chart to match the updated chart and app versions of kyverno.
-1. Check out the existing `renovate/ironbank` branch created by the renovate-runner, an MR for this branch should be linked in the Renovate issue.
-1. From the `./chart/charts/kyverno/chart` directory run `kpt pkg update chart@{GIT TAG} --strategy alpha-git-patch` replacing `{GIT TAG}` with the tag you found in step one. You may run into some merge conflicts, resolve these in the way that makes the most sense. In general, if something is a BB addition you will want to keep it, otherwise go with the upstream change.
-1. Check if there's a need to update any Kyverno Policies in `.chart/templates/`. For example, if the API version needs to be updated.
-1. Append `-bb.0` to the `version` in `./chart/charts/kyverno/chart/Chart.yaml` and update `./chart/Chart.yaml` to match the same version. 
-1. Check for a new version of gluon prior to running helm dependency update. <https://repo1.dso.mil/big-bang/product/packages/gluon/-/tags>. If found, update the version in Chart.yaml.
-1. Run `helm dependency update` from the `/chart/charts/kyverno` directory to regenerate kyverno dependencies.
-1. Run `helm dependency update` from the `./chart` directory to regenerate kyverno-policies dependencies.
-1. Update `CHANGELOG.md` adding an entry for the new version and noting all changes (at minimum should include `Updated Kyverno to x.x.x`).
-1. Generate the `README.md` updates by following the [guide in gluon](https://repo1.dso.mil/platform-one/big-bang/apps/library-charts/gluon/-/blob/master/docs/bb-package-readme.md).
-1. Open an MR in "Draft" status ( or the Renovate created MR ) and validate that CI passes. This will perform a number of smoke tests against the package, but it is good to manually deploy to test some things that CI doesn't. Follow the steps below for manual testing. For automated CI testing follow the steps in [test-package-against-bb](https://repo1.dso.mil/big-bang/bigbang/-/blob/master/docs/developer/test-package-against-bb.md?ref_type=heads) and modify test-values with the following settings:
+3. Append `-bb.x` to the `version` in `chart/Chart.yaml`.
+
+4. Update `CHANGELOG.md` adding an entry for the new version and noting all changes (Example: `Updated kubectl from x.x.x to x.x.x`).
+
+5. Generate the `README.md` updates by following the [guide in gluon](https://repo1.dso.mil/platform-one/big-bang/apps/library-charts/gluon/-/blob/master/docs/bb-package-readme.md).
+
+6. Open an MR in "Draft" status ( or the Renovate created MR ) and validate that CI passes. This will perform a number of smoke tests against the package, but it is good to manually deploy to test some things that CI doesn't. Follow the steps below for manual testing.
+
+7. Test the package in a Big Bang pipeline using the instructions detailed here:  [test-package-against-bb](https://repo1.dso.mil/big-bang/bigbang/-/blob/master/docs/developer/test-package-against-bb.md?ref_type=heads) and modify [test-values](https://repo1.dso.mil/big-bang/bigbang/-/blob/master/tests/test-values.yaml?ref_type=heads) with the settings from the Helm chart below:
 
 Deploy Kyverno Policies using the Helm chart ( pointing to your branch )
 
 ```yaml
-  istioOperator:
+    istioOperator:
     enabled: true
-  istio:
+    istio:
     enabled: true
-  monitoring:
+    monitoring:
     enabled: true
-  kyverno-Reporter:
+    kyverno:
     enabled: true
-  kyvernoPolicies:
-    git:
-      tag: null
-      branch: "renovate/ironbank" # (your branch)
-    enabled: true
+    kyvernoPolicies:
+      git:
+        tag: null
+        branch: "renovate/ironbank" # Or your branch
+      enabled: true
 ```
 
-1. Once all manual testing is complete take your MR out of "Draft" status and add the review label.
-
-# Manual Testing of New Kyverno Version
-
-NOTE: For these testing steps it is good to do them on both a clean install and an upgrade. For clean install, point kyverno to your branch. For an upgrade do an install with kyverno pointing to the latest tag, then perform a helm upgrade with kyverno pointing to your branch.
-
 You will want to install with:
-
-- Kyverno Kyverno-Policies, and Kyverno-Reporter enabled
+- Kyverno, Kyverno-Policies, and Kyverno-Reporter enabled
 - Istio enabled
 - Monitoring enabled
 
-Checking Prometheus for Kyverno dashboards
 
-- Login to Prometheus, validate under `Status` -> `Targets` that all kyverno controller targets are showing as up
-- Login to Grafana, then navigate to the Kyverno daskboard ( Dashboards > Browse > Kyverno Metrics ) and validate that the dashboard displays data
+## Manual Testing with Big Bang
+
+> NOTE: For these testing steps it is good to do them on both a clean install and an upgrade. For clean install, point kyvernoPolicies to your branch. For an upgrade do an install with kyvernoPolicies pointing to the latest tag, then perform a helm upgrade with kyverno pointing to your branch. Use the settings listed in above.
+
+Checking Prometheus for Kyverno dashboards
+- Login to Prometheus, validate under `Status` -> `Targets` that all kyverno targets are showing as up
+- Login to Grafana, then navigate to the Kyverno daskboard ( Dashboards > Browse > Kyverno ) and validate that the dashboard displays policy data
 
 > 📌 __NOTE__: if using MacOS make sure that you have gnu sed installed and add it to your PATH variable [GNU SED Instructions](https://gist.github.com/andre3k1/e3a1a7133fded5de5a9ee99c87c6fa0d)
-
 - [ ] Test secret sync in new namespace
-
     ```Shell
     # create secret in kyverno NS
     kubectl create secret generic \
@@ -65,7 +57,7 @@ Checking Prometheus for Kyverno dashboards
       --from-literal=password='password'
 
     # Create Kyverno Policy
-    kubectl apply -f https://repo1.dso.mil/big-bang/product/packages/kyverno-policies/-/raw/main/chart/tests/manifests/sync-secrets.yaml
+    kubectl apply -f https://repo1.dso.mil/big-bang/product/packages/kyverno/-/raw/main/chart/tests/manifests/sync-secrets.yaml
 
     # Wait until the policy shows as ready before proceeding
     kubectl get clusterpolicy sync-secrets
@@ -76,9 +68,7 @@ Checking Prometheus for Kyverno dashboards
     # Check for the secret that should be synced - if it exists this test is successful
     kubectl get secrets kyverno-bbtest-secret -n kyverno-bbtest
     ```
-
 - [ ] Delete the test resources
-
     ```shell
     # If above is successful, delete test resources
     kubectl delete -f https://repo1.dso.mil/big-bang/product/packages/kyverno/-/raw/main/chart/tests/manifests/sync-secrets.yaml
@@ -86,206 +76,4 @@ Checking Prometheus for Kyverno dashboards
     kubectl delete ns kyverno-bbtest
     ```
 
-# Modifications made to upstream chart
-
-## Main
-
-### chart/Chart.yaml
-
-- Added `-bb` to chart `version`
-- Added `bigbang.dev/applicationVersions` and `helm.sh/images` to `annotations`
-- Added `gluon` to `dependencies`
-
-### chart/values.yaml
-
-- Set `upgrade.fromV2` to `true`
-
-- Set `apiVersionOverride.podDisruptionBudget` to `policy/v1`
-
-- Set `defaultRegistry` to `registry1.dso.mil`
-
-- Set `existingImagePullSecrets` to `private-registry`
-
-- Set `image` fields to use ironbank images, as follows:
-
-  ```
-  image:
-    registry: registry1.dso.mil
-    repository: ironbank/{repository_path}
-    tag: {tag}
-  imagePullSecrets:
-  - name: private-registry
-  ```
-
-  *in the following locations*
-  - `test`
-  - `webhooksCleanup`
-  - `cleanupJobs.admissionReports`
-  - `cleanupJobs.clusterAdmissionReports`
-  - `admissionController.initContainer`
-  - `admissionController.container`
-  - `backgroundController`
-  - `cleanupController`
-  - `reportsController`
-  - `policyReportsCleanup`
-
-- Set `podSecurityContext` and `securityContext`, as follows:
-
-  ```
-  podSecurityContext:
-    runAsUser: {id}
-    runAsGroup: {id}
-    runAsNonRoot: true
-  securityContext:
-    runAsUser: {id}
-    runAsGroup: {id}
-  ```
-
-  *according to the chart below*
-  | key | id |
-  | --- | -- |
-  | `test` | 65534 |
-  | `webhooksCleanup` | 1001 |
-  | `cleanupJobs.admissionReports` | 1000 |
-  | `cleanupJobs.clusterAdmissionReports` | 1000 |
-  | `admissionController` | 10001 |
-  | `backgroundController` | 1000 |
-  | `cleanupController` | 1000 |
-  | `reportsController` | 1000 |
-  | `policyReportsCleanup` | 1001 |
-
-- Set `features.policyExceptions.namespace` to `kyverno`
-
-- Set `admissionController.replicas` to `3`
-
-- Set `admissionController.container.resources` as follows:
-
-  ```
-  resources:
-  limits:
-    cpu: 500m
-    memory: 512Mi
-  requests:
-    cpu: 500m
-    memory: 512Mi
-  ```
-
-- Add service accounts rule to `backgroundController.rbac.coreClusterRole.extraResources` as follows:
-
-  ```
-  - apiGroups: 
-      - ''
-    resources: 
-      - serviceaccounts
-    verbs: 
-      - get
-      - list 
-      - watch
-      - update
-      - patch
-  ```
-
-- Added Big Bang `monitoring`, `networkPolicies`, `istio`, `openshift`, and `bbtests` fields
-
-- `automountServiceAccountToken.enabled` added to:
-  - `admissionController.rbac.serviceAccount`
-  - `admissionController.rbac.deployment`
-  - `backgroundController.rbac.serviceAccount`
-  - `backgroundController.rbac.deployment`
-  - `cleanupJobs.admissionReports`
-  - `cleanupJobs.clusterAdmissionReports`
-  - `cleanupJobs.rbac.serviceAccount`
-  - `cleanupController.deployment.serviceAccount`
-  - `cleanupController.rbac.serviceAccount`
-  - `reportsController.deployment.serviceAccount`
-  - `reportsController.rbac.serviceAccount`
-  - `webhooksCleanup`
-
-### chart/charts
-
-- Generate `gluon` dependency
-
-### chart/tests/
-
-- Add test files `/manifests/sync-secrets.yaml` and `scripts/secrets.sh`
-
-### chart/crds/
-
-- Add `crd-servicemonitors.yaml` from monitoring package
-
-## Templates
-
-### chart/templates/bigbang/network-policy
-
-- Add Big Bang network policy templates
-
-### chart/templates/_helpers.tpl
-
-- Add `kyverno.test-labels` definition for required helm labels
-
-### chart/templates/cleanup-controller/role.yaml
-
-- Add rule for core API group on configmaps:
-
-  ```
-  - apiGroups:
-      - ''
-    resources:
-      - configmaps
-    verbs:
-      - get
-      - list
-      - watch
-  ```
-
-### chart/templates/tests/
-
-- In each of the upstream tests, `admission-controller-liveness`, `admission-controller-metrics`, `admission-controller-readiness`, `cleanup-controller-liveness`, `cleanup-controller-metrics`, `cleanup-controller-readiness`, and `reports-controller-metrics`:
-  - Check whether `bbtests` is enabled
-
-    ```
-    {{- if dig "bbtests" "enabled" false (merge .Values dict) }}
-      ...
-    {{- end }}
-    ```
-
-  - Add `podSecurityContext` and `imagePullSecrets`
-
-    ```
-    {{- with .Values.test.podSecurityContext }}
-    securityContext:
-      {{- tpl (toYaml .) $ | nindent 4 }}
-    {{- end }}
-    {{- with .Values.test.imagePullSecrets }}
-    imagePullSecrets: {{ tpl (toYaml .) $ | nindent 8 }}
-    {{- end }}
-    ```
-
-  - Replace `wget` with `curl`
-
-- Add Big Bang test files `clusterrole`, `clusterrolebinding`, `configmap`, `gluon`, `serviceaccount`, and `test`
-
-## `automountServiceAccountToken`
-
-The following files have been updated to manage the auto-mounting of ServiceAccount tokens and can be disabling/enabling per SA and/or deployment
-
-```
-templates/admission-controller/deployment.yaml
-templates/admission-controller/serviceaccount.yaml
-templates/background-controller/deployment.yaml
-templates/background-controller/serviceaccount.yaml
-templates/cleanup-controller/deployment.yaml
-templates/cleanup-controller/serviceaccount.yaml
-templates/cleanup/cleanup-admission-reports.yaml
-templates/cleanup/cleanup-cluster-admission-reports.yaml
-templates/cleanup/cleanup-cluster-ephemeral-reports.yaml
-templates/cleanup/cleanup-ephemeral-reports.yaml
-templates/cleanup/cleanup-update-requests.yaml
-templates/cleanup/serviceaccount.yaml
-templates/hooks/post-upgrade-clean-reports.yaml
-templates/hooks/post-upgrade-migrate-resources.yaml
-templates/hooks/pre-delete-scale-to-zero.yaml
-templates/reports-controller/deployment.yaml
-templates/reports-controller/serviceaccount.yaml
-values.yaml
-```
+8. Once all testing is complete take your MR out of "Draft" status and add the review label on both the Issue and MR. When in doubt with any testing or upgrade steps, reach out to the CODEOWNERS for assistance.

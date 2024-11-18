@@ -10,13 +10,6 @@
 {{- end -}}
 
 {{/* Helm required labels */}}
-{{- define "kyverno-policies.annotations" -}}
-helm.sh/hook: post-install, post-upgrade
-helm.sh/hook-weight: "10"
-helm.sh/hook-delete-policy: before-hook-creation
-{{- end -}}
-
-{{/* Helm required labels */}}
 {{- define "kyverno-policies.labels" -}}
 app.kubernetes.io/name: {{ template "kyverno-policies.name" . }}
 helm.sh/chart: {{ template "kyverno-policies.chart" . }}
