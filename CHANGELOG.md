@@ -4,6 +4,12 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 
 ---
 
+## [3.2.6-bb.1] - 2024-10-23
+
+### Changed
+
+- Added block-ephemeral-containers policy and test-ephemeral.sh as test
+
 ## [3.2.6-bb.0] - 2024-10-09
 
 ### Changed

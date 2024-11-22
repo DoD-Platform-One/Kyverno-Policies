@@ -1,31 +1,31 @@
 <!-- Warning: Do not manually edit this file. See notes on gluon + helm-docs at the end of this file for more information. -->
 # kyverno-policies
 
-![Version: 3.2.6-bb.0](https://img.shields.io/badge/Version-3.2.6--bb.0-informational?style=flat-square) ![AppVersion: v1.12.6](https://img.shields.io/badge/AppVersion-v1.12.6-informational?style=flat-square)
+![Version: 3.2.6-bb.1](https://img.shields.io/badge/Version-3.2.6--bb.1-informational?style=flat-square) ![AppVersion: v1.12.6](https://img.shields.io/badge/AppVersion-v1.12.6-informational?style=flat-square)
 
 Collection of Kyverno security and best-practice policies for Kyverno
 
 ## Upstream References
 
-* <https://kyverno.io/policies/>
+- <https://kyverno.io/policies/>
 
-* <https://github.com/kyverno/policies>
+- <https://github.com/kyverno/policies>
 
-### Upstream Release Notes
+## Upstream Release Notes
 
-* [Find our upstream chart's CHANGELOG here](https://repo1.dso.mil/big-bang/product/packages/kyverno-policies/-/blob/main/CHANGELOG.md)
-* [and our upstream application release notes here](https://repo1.dso.mil/big-bang/product/packages/kyverno-policies/-/releases)
+- [Find our upstream chart's CHANGELOG here](https://repo1.dso.mil/big-bang/product/packages/kyverno-policies/-/blob/main/CHANGELOG.md)
+- [and our upstream application release notes here](https://repo1.dso.mil/big-bang/product/packages/kyverno-policies/-/releases)
 
 ## Learn More
 
-* [Application Overview](docs/overview.md)
-* [Other Documentation](docs/)
+- [Application Overview](docs/overview.md)
+- [Other Documentation](docs/)
 
 ## Pre-Requisites
 
-* Kubernetes Cluster deployed
-* Kubernetes config installed in `~/.kube/config`
-* Helm installed
+- Kubernetes Cluster deployed
+- Kubernetes config installed in `~/.kube/config`
+- Helm installed
 
 Install Helm
 
@@ -33,8 +33,8 @@ Install Helm
 
 ## Deployment
 
-* Clone down the repository
-* cd into directory
+- Clone down the repository
+- cd into directory
 
 ```bash
 helm install kyverno-policies chart/
@@ -66,6 +66,8 @@ helm install kyverno-policies chart/
 | policies.sample.exclude | object | `{}` | Defines when this policy's rules should not be applied.  This completely overrides any default excludes. |
 | policies.sample.parameters | object | `{"excludeContainers":[]}` | Policy specific parameters that are added to the configMap for the policy rules |
 | policies.sample.parameters.excludeContainers | list | `[]` | Adds a container exclusion (by name) to a specific policy.  This is merged with any global excludeContainers. |
+| policies.block-ephemeral-containers.enabled | bool | `true` |  |
+| policies.block-ephemeral-containers.validationFailureAction | string | `"Enforce"` |  |
 | policies.clone-configs | object | `{"enabled":false,"generateExisting":false,"parameters":{"clone":[]}}` | Clone existing configMap or secret in new Namespaces |
 | policies.clone-configs.parameters.clone | list | `[]` | ConfigMap or Secrets that should be cloned.  Each item requres the kind, name, and namespace of the resource to clone |
 | policies.disallow-annotations | object | `{"enabled":false,"parameters":{"disallow":[]},"validationFailureAction":"Audit"}` | Prevent specified annotations on pods |

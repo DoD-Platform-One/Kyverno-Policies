@@ -19,6 +19,7 @@ rules:
   - patch
 - apiGroups:
   - "*"
+  - ""
   resources:
   - configmaps
   - cronjobs
@@ -26,6 +27,7 @@ rules:
   - leases
   - namespaces
   - pods
+  - pods/ephemeralcontainers
   - persistentvolumes
   - secrets
   - serviceaccounts
@@ -37,6 +39,7 @@ rules:
   - get
   - list
   - watch
+  - patch
 - apiGroups:
   - "rbac.authorization.k8s.io"
   resources:
