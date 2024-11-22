@@ -11,6 +11,7 @@ References:
 
 |Name|Type|Scope|Category|Background|Description|CIS 1.6 Ref|Notes|
 |--|--|--|--|--|--|--|--|
+|block-ephemeral-containers|Validate|Pod|Best Practices(Security)|Validates that ephemeral containers do not allow privilege escalation. |Ensures `allowPrivilegeEscalation` is set to `false`.|5.2.5|| 
 |clone-configs|Generate|ConfigMap; Secret|Helper|Configuration held in ConfigMaps or Secrets, like registry credentials, often need to exist in multiple Namespaces so Pods there have access.  Manually duplicating these is time consuming and error prone.|Copies ConfigMaps or Secrets to new Namespaces when they are created.  Will also push updates should the source be changed.|||
 |disallow-annotations|Validate|Pod|Best Practices|Some annotations control functionality driven by other cluster-wide tools and are not normally set by some class of users.|Prevents the use of annotations contained in the specified list.||Ensures users either don't set reserved annotations or use a newer version of annotations.|
 |disallow-auto-mount-service-account-token|Validate|Pod; ServiceAccount|Best Practices|Automouting of Kubernetes API credentials is not ideal in all circumstances.|Prevents the use of Pods and Service Accounts that automount kubernetes api credentials.|||

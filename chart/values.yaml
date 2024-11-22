@@ -95,6 +95,11 @@ policies:
       # -- Adds a container exclusion (by name) to a specific policy.  This is merged with any global excludeContainers.
       excludeContainers: []
 
+ # Block ephemeral containers with privilege escalation.
+  block-ephemeral-containers:
+    enabled: true
+    validationFailureAction: Enforce
+
   # -- Clone existing configMap or secret in new Namespaces
   clone-configs:
     enabled: false
