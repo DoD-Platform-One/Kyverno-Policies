@@ -17,6 +17,7 @@ dependencies:
     version: 0.5.4
     repository: oci://registry1.dso.mil/bigbang
 annotations:
+  bigbang.dev/maintenanceTrack: bb_integrated
   bigbang.dev/applicationVersions: |
     - Kyverno Policies: 3.2.6
   # Kubectl image is used if waitJob.enabled or bbtests.enabled
