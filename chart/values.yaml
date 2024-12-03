@@ -306,8 +306,6 @@ policies:
       - app.kubernetes.io/name
       - app.kubernetes.io/instance
       - app.kubernetes.io/version
-      - app
-      - version
 
   # -- Require containers have memory limits defined and within the specified range
   require-memory-limit:
