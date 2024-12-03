@@ -4,6 +4,12 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 
 ---
 
+## [3.2.6-bb.2] - 2024-12-03
+
+### Changed
+
+- Cleaned up `require-labels` policy to match current Kiali label requirements
+
 ## [3.2.6-bb.1] - 2024-10-23
 
 ### Changed
