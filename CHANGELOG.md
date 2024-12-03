@@ -4,6 +4,12 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 
 ---
 
+## [3.2.6-bb.3] - 2024-12-03
+
+### Changed
+
+- Updated `require-labels` test manifest
+
 ## [3.2.6-bb.2] - 2024-12-03
 
 ### Changed
