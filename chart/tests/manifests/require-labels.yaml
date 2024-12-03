@@ -42,8 +42,8 @@ metadata:
   labels:
     kyverno-policies-bbtest/test: required
     kyverno-policies-bbtest/required: test
-    app: app
-    version: version
+    app.kubernetes.io/name: app
+    app.kubernetes.io/version: version
   annotations:
     kyverno-policies-bbtest/type: validate
     kyverno-policies-bbtest/expected: pass
