@@ -53,7 +53,7 @@ done
 #######################################
 
 # Get initial status of deployed policies
-READY=$(kubectl get cpol -o jsonpath='{.items[?(.status.ready==true)].metadata.name}')
+READY=$(kubectl get cpol -o jsonpath='{.items[?(.status.conditions[0].status=="True")].metadata.name}')
 
 # Test each policy individually
 for POLICY in "${POLICIES[@]}"; do
@@ -92,7 +92,7 @@ for POLICY in "${POLICIES[@]}"; do
   while [ "$ATTEMPT" -le 240 ] && ! echo $READY | grep $POLICY > /dev/null; do
     ((ATTEMPT+=1))
     sleep 1
-    READY=$(kubectl get cpol -o jsonpath='{.items[?(.status.ready==true)].metadata.name}')
+    READY=$(kubectl get cpol -o jsonpath='{.items[?(.status.conditions[0].status=="True")].metadata.name}')
   done
   if [ "$ATTEMPT" -gt 240 ]; then
     echo -e "${RED}FAIL${NC}"

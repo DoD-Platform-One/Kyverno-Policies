@@ -1,7 +1,8 @@
 #!/bin/sh
 timeElapsed=0
 POLICIES=($(kubectl get cpol -o jsonpath='{.items[*].metadata.name}'))
-READY=$(kubectl get cpol -o jsonpath='{.items[?(.status.ready==true)].metadata.name}')
+READY=$(kubectl get cpol -o jsonpath='{.items[?(.status.conditions[0].status=="True")].metadata.name}')
+
 echo
 for POLICY in "${POLICIES[@]}"; do
     echo -n "$POLICY:"
@@ -12,7 +13,7 @@ for POLICY in "${POLICIES[@]}"; do
             echo "Timeout"
             exit 1
         fi
-        READY=$(kubectl get cpol -o jsonpath='{.items[?(.status.ready==true)].metadata.name}')
+        READY=$(kubectl get cpol -o jsonpath='{.items[?(.status.conditions[0].status=="True")].metadata.name}')
     done
     echo "Ready"
 done

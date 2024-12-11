@@ -4,6 +4,12 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 
 ---
 
+## [3.3.4-bb.0] - 2024-12-10
+
+### Changed
+
+- Updated chart from `kyverno-chart-3.2.6` to `kyverno-chart-3.3.4` and app version from `v1.12.6` to `v1.13.2`
+
 ## [3.2.6-bb.3] - 2024-12-03
 
 ### Changed

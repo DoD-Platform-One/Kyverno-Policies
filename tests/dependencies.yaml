@@ -1,5 +1,5 @@
 kyverno:
   git:
     repo: "https://repo1.dso.mil/big-bang/product/packages/kyverno.git"
-    branch: "main"
+    branch: "renovate/ironbank"
   namespace: "kyverno"
