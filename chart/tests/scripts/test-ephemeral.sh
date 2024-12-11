@@ -44,21 +44,22 @@ sleep 10s
 
 set +e
 echo "Step 3: Executing Command: 'kubectl debug $POD_NAME -it --image=busybox'"
-result=$(kubectl debug $POD_NAME -it --image=busybox -n $NAMESPACE 2>&1)
-set -e
+result=$(timeout 10 kubectl debug $POD_NAME -it --image=busybox -n $NAMESPACE 2>&1)
 
 echo "output from command:"
 echo $result
 
-result=$(echo $result | grep "rule block-ephemeral-containers failed"| grep -oP failed)
+result=$(echo $result | grep -oP "rule block-ephemeral-containers failed" | grep -oP failed)
 
-if [ $result == "failed" ]; then 
+set -e
+
+if [ "$result" == "failed" ]; then
   echo "ephemeral container creation was sucessfully blocked"
   echo "Cleanup: Deleting test pod $POD_NAME and $NAMESPACE"
   kubectl delete pod $POD_NAME -n $NAMESPACE
   kubectl delete namespace $NAMESPACE --wait=false
   echo -e "TEST: ${GRN}PASS${NC}"
-else 
+else
   echo "Cleanup: Deleting test pod $POD_NAME and $NAMESPACE"
   kubectl delete pod $POD_NAME -n $NAMESPACE
   kubectl delete namespace $NAMESPACE --wait=false

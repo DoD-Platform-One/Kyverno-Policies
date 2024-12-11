@@ -166,14 +166,14 @@ policies:
         to: registry1.dso.mil
   update-automountserviceaccounttokens-default:
     enabled: true
-    namespaces: 
+    namespaces:
       - namespace: update-automountserviceaccounttokens-default
-        
+
   update-automountserviceaccounttokens:
     enabled: true
     namespaces:
       - namespace: update-automountserviceaccounttokens-2
-        serviceAccounts: 
+        serviceAccounts:
         - update-token-automount-2
         pods:
           allow:

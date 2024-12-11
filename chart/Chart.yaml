@@ -1,7 +1,7 @@
 apiVersion: v2
 name: kyverno-policies
-version: 3.2.6-bb.3
-appVersion: v1.12.6
+version: 3.3.4-bb.0
+appVersion: v1.13.2
 icon: https://github.com/kyverno/kyverno/raw/main/img/logo.png
 description: Collection of Kyverno security and best-practice policies for Kyverno
 keywords:
@@ -19,11 +19,11 @@ dependencies:
 annotations:
   bigbang.dev/maintenanceTrack: bb_integrated
   bigbang.dev/applicationVersions: |
-    - Kyverno Policies: 3.2.6
+    - Kyverno Policies: 3.3.4
   # Kubectl image is used if waitJob.enabled or bbtests.enabled
   helm.sh/images: |
     - name: kubectl
-      image: registry1.dso.mil/ironbank/opensource/kubernetes/kubectl:v1.30.5
+      image: registry1.dso.mil/ironbank/opensource/kubernetes/kubectl:v1.30.6
       condition: waitJob.enabled
   bigbang.dev/upstreamReleaseNotesMarkdown: |
     - [Find our upstream chart's CHANGELOG here](https://repo1.dso.mil/big-bang/product/packages/kyverno-policies/-/blob/main/CHANGELOG.md)
