@@ -1,19 +1,19 @@
-# Test 1: Pod + Containers without a security context are not allowed
+# Test 1: Pod + Containers without a security context will be assigned the default security context by add-default-securitycontext policy. Verfied in test-defaultsecuritycontext.sh
 apiVersion: v1
 kind: Pod
 metadata:
   name: require-non-root-group-1
   namespace: default
   annotations:
-    kyverno-policies-bbtest/type: validate
-    kyverno-policies-bbtest/expected: fail
+    kyverno-policies-bbtest/type: ignore
+    kyverno-policies-bbtest/expected: pass
 spec:
   containers:
   - name: c1
     image: registry1.dso.mil/ironbank/redhat/ubi/ubi9-minimal
     args: ["sleep", "infinity"]
 ---
-# Test 2: Pod + Init containers without a security context are not allowed
+# Test 2: Pod + Init containers without a security context will be assigned the default security context by add-default-securitycontext policy. Verfied in test-defaultsecuritycontext.sh
 apiVersion: v1
 kind: Pod
 metadata:
@@ -21,7 +21,7 @@ metadata:
   namespace: default
   annotations:
     kyverno-policies-bbtest/type: validate
-    kyverno-policies-bbtest/expected: fail
+    kyverno-policies-bbtest/expected: pass
 spec:
   containers:
   - name: c1
@@ -197,7 +197,7 @@ spec:
     securityContext:
       runAsGroup: 0
 ---
-# Test 10: Init pods that run non-root groups are allowed
+# Test 11: Init pods that run non-root groups are allowed
 apiVersion: v1
 kind: Pod
 metadata:
@@ -221,7 +221,7 @@ spec:
     securityContext:
       runAsGroup: 1337
 ---
-# Test 10: non Istio-Init pods that run root groups are not allowed
+# Test 12: non Istio-Init pods that run root groups are not allowed
 apiVersion: v1
 kind: Pod
 metadata:

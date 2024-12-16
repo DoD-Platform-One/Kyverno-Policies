@@ -4,6 +4,12 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 
 ---
 
+## [3.3.4-bb.1] - 2024-12-12
+
+### Changed
+
+- Added `add-a-default-securitycontext` policy and `test-defaultsecuritycontext.sh`
+
 ## [3.3.4-bb.0] - 2024-12-10
 
 ### Changed

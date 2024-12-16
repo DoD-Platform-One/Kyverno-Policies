@@ -1,0 +1,29 @@
+# Test 1: Add default security context
+apiVersion: v1
+kind: Pod
+metadata:
+  name: add-default-securitycontext-1
+  namespace: default
+  annotations:
+    kyverno-policies-bbtest/type: validate
+    kyverno-policies-bbtest/expected: pass
+spec:
+  containers:
+  - name: c1
+    image: registry1.dso.mil/ironbank/redhat/ubi/ubi9-minimal
+    args: ["sleep", "infinity"]
+---
+# Test 2: Add default security context
+apiVersion: v1
+kind: Pod
+metadata:
+  name: add-default-securitycontext-2
+  namespace: default
+  annotations:
+    kyverno-policies-bbtest/type: ignore
+    kyverno-policies-bbtest/expected: fail
+spec:
+  containers:
+  - name: c1
+    image: registry1.dso.mil/ironbank/redhat/ubi/ubi9-minimal
+    args: ["sleep", "infinity"]
