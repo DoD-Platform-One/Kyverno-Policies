@@ -1,7 +1,7 @@
 <!-- Warning: Do not manually edit this file. See notes on gluon + helm-docs at the end of this file for more information. -->
 # kyverno-policies
 
-![Version: 3.3.4-bb.0](https://img.shields.io/badge/Version-3.3.4--bb.0-informational?style=flat-square) ![AppVersion: v1.13.2](https://img.shields.io/badge/AppVersion-v1.13.2-informational?style=flat-square) ![Maintenance Track: bb_integrated](https://img.shields.io/badge/Maintenance_Track-bb_integrated-green?style=flat-square)
+![Version: 3.3.4-bb.1](https://img.shields.io/badge/Version-3.3.4--bb.1-informational?style=flat-square) ![AppVersion: v1.13.2](https://img.shields.io/badge/AppVersion-v1.13.2-informational?style=flat-square) ![Maintenance Track: bb_integrated](https://img.shields.io/badge/Maintenance_Track-bb_integrated-green?style=flat-square)
 
 Collection of Kyverno security and best-practice policies for Kyverno
 
@@ -102,6 +102,8 @@ helm install kyverno-policies chart/
 | policies.require-labels.parameters.require | list | `["app.kubernetes.io/name","app.kubernetes.io/instance","app.kubernetes.io/version"]` | List of labels required on all pods.  Entries can be just a "key", or a quoted "key: value".  Wildcards '*' and '?' are supported. See <https://kubernetes.io/docs/concepts/overview/working-with-objects/common-labels/#labels> See <https://helm.sh/docs/chart_best_practices/labels/#standard-labels> |
 | policies.require-memory-limit | object | `{"enabled":false,"parameters":{"require":["<64Gi"]},"validationFailureAction":"Audit"}` | Require containers have memory limits defined and within the specified range |
 | policies.require-memory-limit.parameters.require | list | `["<64Gi"]` | Memory limitations (only one required condition needs to be met).  Can use standard Kubernetes resource units (e.g. Mi, Gi).  The following operators are valid: >, <, >=, <=, !, \|, &. |
+| policies.add-default-securitycontext.enabled | bool | `false` |  |
+| policies.add-default-securitycontext.validationFailureAction | string | `"Enforce"` |  |
 | policies.require-non-root-group | object | `{"enabled":true,"validationFailureAction":"Enforce"}` | Require containers to run with non-root group |
 | policies.require-non-root-user | object | `{"enabled":true,"validationFailureAction":"Enforce"}` | Require containers to run as non-root user |
 | policies.require-probes | object | `{"enabled":false,"parameters":{"require":["readinessProbe","livenessProbe"]},"validationFailureAction":"Audit"}` | Require specified probes on pods |

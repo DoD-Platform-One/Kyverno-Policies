@@ -1,4 +1,4 @@
-# Test 1: Pod + Containers without a security context are not allowed
+# Test 1: Pod + Containers without a security context will be assigned the default security context by add-default-securitycontext policy. Verfied in test-defaultsecuritycontext.sh
 apiVersion: v1
 kind: Pod
 metadata:
@@ -6,14 +6,14 @@ metadata:
   namespace: default
   annotations:
     kyverno-policies-bbtest/type: validate
-    kyverno-policies-bbtest/expected: fail
+    kyverno-policies-bbtest/expected: pass
 spec:
   containers:
   - name: c1
     image: registry1.dso.mil/ironbank/redhat/ubi/ubi9-minimal
     args: ["sleep", "infinity"]
 ---
-# Test 2: Pod + Init containers without a security context are not allowed
+# Test 2: Pod + Init containers without a security context will be assigned the default security context by add-default-securitycontext policy. Verfied in test-defaultsecuritycontext.sh
 apiVersion: v1
 kind: Pod
 metadata:
@@ -21,7 +21,7 @@ metadata:
   namespace: default
   annotations:
     kyverno-policies-bbtest/type: validate
-    kyverno-policies-bbtest/expected: fail
+    kyverno-policies-bbtest/expected: pass
 spec:
   containers:
   - name: c1
@@ -34,7 +34,7 @@ spec:
   - name: i1
     image: registry1.dso.mil/ironbank/redhat/ubi/ubi9-minimal
 ---
-# Test 3: Pods that set runAsNonRoot to false are not allowed
+# Test 3: Pods that set runAsNonRoot to false are not allowed. add-default-securitycontext policy will set "runAsUser":1000 which will cause the following configuration to pass since the non-root policy is "or"
 apiVersion: v1
 kind: Pod
 metadata:
@@ -42,7 +42,7 @@ metadata:
   namespace: default
   annotations:
     kyverno-policies-bbtest/type: validate
-    kyverno-policies-bbtest/expected: fail
+    kyverno-policies-bbtest/expected: pass
 spec:
   securityContext:
     runAsNonRoot: false
@@ -92,7 +92,7 @@ spec:
     securityContext:
       runAsNonRoot: false
 ---
-# Test 6: Pods that set runAsUser to 0 are not allowed
+# Test 6: Pods that set runAsUser to 0 are not allowed. add-default-securitycontext policy will set "runAsNonRoot":true which will cause the following configuration to pass:
 apiVersion: v1
 kind: Pod
 metadata:
@@ -100,7 +100,7 @@ metadata:
   namespace: default
   annotations:
     kyverno-policies-bbtest/type: validate
-    kyverno-policies-bbtest/expected: fail
+    kyverno-policies-bbtest/expected: pass
 spec:
   securityContext:
     runAsUser: 0

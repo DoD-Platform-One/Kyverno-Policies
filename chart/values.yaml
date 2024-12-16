@@ -316,6 +316,11 @@ policies:
       require:
       - <64Gi
 
+ # -- This policy will mutate a Pod to set `runAsNonRoot`, `runAsUser`, `runAsGroup`, and `fsGroup` fields within the Pod securityContext if they are not already set.
+  add-default-securitycontext:
+    enabled: true
+    validationFailureAction: Enforce
+
   # -- Require containers to run with non-root group
   require-non-root-group:
     enabled: true

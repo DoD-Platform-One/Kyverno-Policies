@@ -11,7 +11,7 @@ NC='\033[0m'
 POD_NAME="ephemeral-container-test"
 NAMESPACE="kyverno-policies-bbtest"
 
-kubectl get namespace $NAMESPACE || kubectl create namespace $NAMESPACE
+kubectl get namespace $NAMESPACE 2> /dev/null || kubectl create namespace $NAMESPACE
 
 echo "Step 1: Creating test pod $POD_NAME"
 kubectl apply -f - <<- EOF
@@ -21,11 +21,6 @@ metadata:
   name: $POD_NAME
   namespace: $NAMESPACE
 spec:
-  securityContext:
-    runAsUser: 1000
-    runAsGroup: 1000
-    fsGroup: 1000
-    supplementalGroups: [1001,1002]
   containers:
   - name: c1
     image: registry1.dso.mil/ironbank/redhat/ubi/ubi9-minimal:latest-amd64
@@ -52,17 +47,17 @@ echo $result
 result=$(echo $result | grep -oP "rule block-ephemeral-containers failed" | grep -oP failed)
 
 set -e
+echo "Step 4: Cleanup - Deleting test pod $POD_NAME and $NAMESPACE"
+kubectl delete pod $POD_NAME -n $NAMESPACE
+kubectl delete namespace $NAMESPACE --wait=false
+
+echo "Step 5: Block Emphemeral container Test Results:"
 
 if [ "$result" == "failed" ]; then
   echo "ephemeral container creation was sucessfully blocked"
-  echo "Cleanup: Deleting test pod $POD_NAME and $NAMESPACE"
-  kubectl delete pod $POD_NAME -n $NAMESPACE
-  kubectl delete namespace $NAMESPACE --wait=false
   echo -e "TEST: ${GRN}PASS${NC}"
 else
-  echo "Cleanup: Deleting test pod $POD_NAME and $NAMESPACE"
-  kubectl delete pod $POD_NAME -n $NAMESPACE
-  kubectl delete namespace $NAMESPACE --wait=false
+  echo "ephemeral container creation was not blocked"
   echo -e "TEST: ${RED}FAIL${NC}"
   exit 1
 fi
