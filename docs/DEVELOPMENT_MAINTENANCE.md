@@ -1,4 +1,5 @@
 # How to update Kyverno Policies
+
 ## Update dependencies
 
 1. Create a development branch and merge request from the Gitlab issue or use the existing `renovate/ironbank` branch and existing MR created by Renovate.
@@ -34,21 +35,24 @@ Deploy Kyverno Policies using the Helm chart ( pointing to your branch )
 ```
 
 You will want to install with:
+
 - Kyverno, Kyverno-Policies, and Kyverno-Reporter enabled
 - Istio enabled
 - Monitoring enabled
-
 
 ## Manual Testing with Big Bang
 
 > NOTE: For these testing steps it is good to do them on both a clean install and an upgrade. For clean install, point kyvernoPolicies to your branch. For an upgrade do an install with kyvernoPolicies pointing to the latest tag, then perform a helm upgrade with kyverno pointing to your branch. Use the settings listed in above.
 
 Checking Prometheus for Kyverno dashboards
+
 - Login to Prometheus, validate under `Status` -> `Targets` that all kyverno targets are showing as up
 - Login to Grafana, then navigate to the Kyverno daskboard ( Dashboards > Browse > Kyverno ) and validate that the dashboard displays policy data
 
 > 📌 __NOTE__: if using MacOS make sure that you have gnu sed installed and add it to your PATH variable [GNU SED Instructions](https://gist.github.com/andre3k1/e3a1a7133fded5de5a9ee99c87c6fa0d)
+
 - [ ] Test secret sync in new namespace
+
     ```Shell
     # create secret in kyverno NS
     kubectl create secret generic \
@@ -68,7 +72,9 @@ Checking Prometheus for Kyverno dashboards
     # Check for the secret that should be synced - if it exists this test is successful
     kubectl get secrets kyverno-bbtest-secret -n kyverno-bbtest
     ```
+
 - [ ] Delete the test resources
+
     ```shell
     # If above is successful, delete test resources
     kubectl delete -f https://repo1.dso.mil/big-bang/product/packages/kyverno/-/raw/main/chart/tests/manifests/sync-secrets.yaml
