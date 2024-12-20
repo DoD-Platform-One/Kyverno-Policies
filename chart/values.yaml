@@ -603,6 +603,48 @@ additionalPolicies:
             metadata:
               namespace: "!default"
 
+# -- Adds additional policyExceptions.  See https://kyverno.io/docs/writing-policies/exceptions/
+additionalPolicyExceptions:
+  # -- Name of the policy.  Addtional policyexceptions can be added by adding a key.
+  samplePolicyException:
+    # -- Controls policy deployment
+    enabled: false
+    # -- Kind of PolicyException
+    kind: PolicyException
+    # -- If kind is "PolicyException", which namespace to target.  The namespace must already exist.
+    namespace: ""
+    # -- Policy annotations to add
+    annotations:
+      # -- Human readable name of policyException
+      policies.kyverno.io/title: Sample PolicyException
+      # -- Category of policy.  Arbitrary.
+      policies.kyverno.io/category: Examples
+      # -- Type of resource PolicyException applies to (e.g. Pod, Service, Namespace)
+      policies.kyverno.io/subject: Pod
+      # -- Description of why the PolicyException is necessary and what items are allowed or unallowed.
+      policies.kyverno.io/description: >-
+        This sample PolicyException allows pods from deploying busybox for debugging.
+    # -- PolicyException specification.  See `kubectl explain policyexceptions.spec`
+    spec:
+      exceptions:
+      #Name of Policy for exception
+      - policyName: samplePolicy
+        ruleNames:
+        - sample-rule
+      match:
+        any:
+        - resources:
+            kinds:
+            - Pod
+            names:
+            - important-tool*
+      conditions:
+        any:
+        - key: "{{ request.object.metadata.labels.app || '' }}"
+          operator: Equals
+          value: busybox
+
+
 # -- BigBang Istio Toggle and Configuration
 istio:
   enabled: false

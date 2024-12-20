@@ -4,6 +4,13 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 
 ---
 
+## [3.3.4-bb.2] - 2024-12-15
+
+### Changed
+
+- Added `additionalPolicyExceptions` to values.yaml
+- Added `additional-PolicyExceptions.yaml`
+
 ## [3.3.4-bb.1] - 2024-12-12
 
 ### Changed
@@ -22,17 +29,11 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 
 - Updated `require-labels` test manifest
 
-## [3.2.6-bb.2] - 2024-12-03
-
-### Changed
-
-- Cleaned up `require-labels` policy to match current Kiali label requirements
-
 ## [3.2.6-bb.1] - 2024-10-23
 
 ### Changed
 
-- Added block-ephemeral-containers policy and test-ephemeral.sh as test
+- Added `block-ephemeral-containers` policy and `test-ephemeral.sh` as test
 - Added the maintenance track annotation and badge
 
 ## [3.2.6-bb.0] - 2024-10-09
