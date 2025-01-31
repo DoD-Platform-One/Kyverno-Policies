@@ -15,6 +15,16 @@ exclude:
       names:
       - kyverno-policies-script-test*
 policies:
+  add-default-capability-drop:
+    exclude:
+      any:
+      - resources:
+          namespaces:
+          - default
+          names:
+          # Need to be able to test the `require-drop-all-capabilities` policy
+          # without this policy mutating the podspecs and adding the "missing" capability
+          - require-drop-all-capabilities*
   clone-configs:
     enabled: true
     parameters:

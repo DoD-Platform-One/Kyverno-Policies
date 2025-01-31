@@ -4,6 +4,12 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 
 ---
 
+## [3.3.4-bb.3] - 2025-01-21
+
+### Changed
+
+- Added `add-default-capability-drop` policy
+
 ## [3.3.4-bb.2] - 2024-12-15
 
 ### Changed
@@ -83,7 +89,7 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 - Updated chart/templates/exception-require-non-root-group.yaml:apiVersion: from `kyverno.io/v2beta1` to the latest version `kyverno.io/v2`
 - chart/templates/exception-require-non-root-user.yaml:apiVersion: from `kyverno.io/v2beta1` to `kyverno.io/v2`
 - chart/templates/update-automountserviceaccounttokens.yaml apiVersion:
- from `kyverno.io/v2beta1` to the latest version`kyverno.io/v2`
+  from `kyverno.io/v2beta1` to the latest version`kyverno.io/v2`
 
 ## [3.2.5-bb.1] - 2024-07-27
 
@@ -530,7 +536,7 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 
 ### Changed
 
-- Renamed `disallow-default-namespace` to `disallow-namespaces`.  Parameterized list of disallowed namespaces, with `default` as the default.
+- Renamed `disallow-default-namespace` to `disallow-namespaces`. Parameterized list of disallowed namespaces, with `default` as the default.
 - Decoupled testing from namespace
 - Used default namespace for testing
 - Updated test script to set policy action automatically
@@ -548,7 +554,7 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 - Fixed `disallow-deprecated-apis` matching to work with exclusions
 - Updated `disallow-deprecated-apis` with Kubernetes 1.26 deprecations
 - Updated `require-requests-equal-limits` to work with Kyverno 1.6.0
-- Add `system:service-account-issuer-discovery` to the exclusion list for `disallow-rbac-on-default-serviceaccounts`.  Clusters allow service accounts access to discovery.
+- Add `system:service-account-issuer-discovery` to the exclusion list for `disallow-rbac-on-default-serviceaccounts`. Clusters allow service accounts access to discovery.
 - Fixed `disallow-rbac-on-default-serviceaccounts` to ignore role bindings without a subject.
 - Fixed `require-non-root-user` to allow either `runAsNonRoot: true` or `runAsUser: >0`.
 - Fixed `disallow-tolerations` to check pod controllers

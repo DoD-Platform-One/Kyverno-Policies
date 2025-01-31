@@ -1,0 +1,72 @@
+{{- $name := "add-default-capability-drop" }}
+{{- $failureAction := default (dig $name "validationFailureAction" nil .Values.policies) .Values.validationFailureAction  }}
+{{- if and .Values.enabled (dig $name "enabled" false .Values.policies) }}
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: {{ $name }}
+  annotations:
+    policies.kyverno.io/title: Add Default Capability Drop
+    policies.kyverno.io/category: Security
+    policies.kyverno.io/severity: medium
+    policies.kyverno.io/description: >-
+      This policy mutates all containers in pods to drop `ALL` capabilities by default.
+  labels: {{- include "kyverno-policies.labels" . | nindent 4 }} 
+spec:
+  {{- include "kyverno-policies.webhookTimeoutSeconds" (merge (dict "name" $name) .) | indent 2 }}
+  validationFailureAction: {{ $failureAction }}
+  background: {{ .Values.background }}
+  failurePolicy: {{ default .Values.failurePolicy (include "setFailurePolicy" $failureAction) }}
+  rules:
+  - name: {{ $name }}
+    {{- include "kyverno-policies.exclude" (merge (dict "name" $name) .) | indent 4 }}
+    {{- include "kyverno-policies.match" (merge (dict "name" $name "kinds" (list "Pod")) .) | nindent 4 }}
+    mutate:
+      foreach:
+      - list: request.object.spec.containers[]
+        patchStrategicMerge:
+          spec:
+            containers:
+            - name: "{{`{{ element.name }}`}}"
+              securityContext:
+                capabilities:
+                  drop:
+                  - ALL
+        preconditions:
+          any:
+          - key: "{{`{{ contains((element.securityContext.capabilities.drop[] || '[]'), 'ALL') }}`}}"
+            operator: Equals
+            value: false
+      - list: request.object.spec.ephemeralContainers[]
+        patchStrategicMerge:
+          spec:
+            ephemeralContainers:
+            - name: "{{`{{ element.name }}`}}"
+              securityContext:
+                capabilities:
+                  drop:
+                  - ALL
+        preconditions:
+          any:
+          - key: "{{`{{ contains((element.securityContext.capabilities.drop[] || '[]'), 'ALL') }}`}}"
+            operator: Equals
+            value: false
+      - list: request.object.spec.initContainers[]
+        patchStrategicMerge:
+          spec:
+            initContainers:
+            - name: "{{`{{ element.name }}`}}"
+              securityContext:
+                capabilities:
+                  drop:
+                  - ALL
+        preconditions:
+          any:
+          - key: "{{`{{ contains((element.securityContext.capabilities.drop[] || '[]'), 'ALL') }}`}}"
+            operator: Equals
+            value: false
+    {{- with index .Values "policyPreconditions" $name }}
+    preconditions:
+      {{- toYaml . | nindent 6 }}
+    {{- end }}
+{{- end }}

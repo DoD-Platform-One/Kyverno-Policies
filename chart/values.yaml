@@ -315,8 +315,12 @@ policies:
       # -- Memory limitations (only one required condition needs to be met).  Can use standard Kubernetes resource units (e.g. Mi, Gi).  The following operators are valid: >, <, >=, <=, !, |, &.
       require:
       - <64Gi
+  # -- This policy will mutate a Pod to set `spec.(initC|ephemeralC|c)ontainers[].securityContext.capabilities.drop` to 'ALL' if it is not already set.
+  add-default-capability-drop:
+    enabled: true
+    validationFailureAction: Enforce
 
- # -- This policy will mutate a Pod to set `runAsNonRoot`, `runAsUser`, `runAsGroup`, and `fsGroup` fields within the Pod securityContext if they are not already set.
+  # -- This policy will mutate a Pod to set `runAsNonRoot`, `runAsUser`, `runAsGroup`, and `fsGroup` fields within the Pod securityContext if they are not already set.
   add-default-securitycontext:
     enabled: true
     validationFailureAction: Enforce
