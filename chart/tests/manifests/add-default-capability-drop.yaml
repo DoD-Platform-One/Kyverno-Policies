@@ -1,0 +1,78 @@
+# Test 1: Add default capability drop when no capability drops specified
+apiVersion: v1
+kind: Pod
+metadata:
+  name: add-default-capability-drop-1
+  namespace: default
+  annotations:
+    kyverno-policies-bbtest/type: mutate
+    kyverno-policies-bbtest/expected: mutated
+    kyverno-policies-bbtest/key: .spec.containers[0].securityContext.capabilities.drop
+    kyverno-policies-bbtest/value: \["ALL"\]
+spec:
+  containers:
+  - name: c1
+    image: registry1.dso.mil/ironbank/redhat/ubi/ubi9-minimal
+    args: ["sleep", "infinity"]
+    # A security context should be added with drop: ["ALL"]
+---
+# Test 2: Add default capability drop when capability drops specified
+# but not ALL
+apiVersion: v1
+kind: Pod
+metadata:
+  name: add-default-capability-drop-2
+  namespace: default
+  annotations:
+    kyverno-policies-bbtest/type: mutate
+    kyverno-policies-bbtest/expected: mutate
+    kyverno-policies-bbtest/key: .spec.containers[0].securityContext.capabilities.drop
+    kyverno-policies-bbtest/value: \["ALL"\]
+spec:
+  containers:
+  - name: c1
+    image: registry1.dso.mil/ironbank/redhat/ubi/ubi9-minimal
+    args: ["sleep", "infinity"]
+    securityContext:
+      capabilities:
+        # This should be replaced with ["ALL"]
+        drop: ["NET_RAW"]
+---
+# Test 3: Don't modify capability drops when ALL is specified
+apiVersion: v1
+kind: Pod
+metadata:
+  name: add-default-capability-drop-3
+  namespace: default
+  annotations:
+    kyverno-policies-bbtest/type: mutate
+    kyverno-policies-bbtest/expected: ignore
+spec:
+  containers:
+  - name: c1
+    image: registry1.dso.mil/ironbank/redhat/ubi/ubi9-minimal
+    args: ["sleep", "infinity"]
+    securityContext:
+      capabilities:
+        # This should not be touched since it contains ALL
+        drop: ["ALL"]
+---
+# Test 4: Don't modify capability drops when ALL is specified
+# in addition to other capabilities
+apiVersion: v1
+kind: Pod
+metadata:
+  name: add-default-capability-drop-4
+  namespace: default
+  annotations:
+    kyverno-policies-bbtest/type: mutate
+    kyverno-policies-bbtest/expected: ignore
+spec:
+  containers:
+  - name: c1
+    image: registry1.dso.mil/ironbank/redhat/ubi/ubi9-minimal
+    args: ["sleep", "infinity"]
+    securityContext:
+      capabilities:
+        # This should not be touched since it contains ALL
+        drop: ["ALL", "NET_RAW"]
