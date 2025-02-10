@@ -4,6 +4,12 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 
 ---
 
+## [3.3.4-bb.4] - 2025-02-10
+
+### Changed
+
+- Edited `additionalPolicyExceptions` to be in kyverno-policies namespace.
+
 ## [3.3.4-bb.3] - 2025-01-21
 
 ### Changed

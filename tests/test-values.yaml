@@ -191,3 +191,34 @@ policies:
           deny:
           - update-token-automount-pod-harden
 
+
+additionalPolicyExceptions:
+  testpolicyexception:
+    enabled: true
+    kind: PolicyException
+    namespace: "kyverno-policies"
+    annotations:
+      policies.kyverno.io/title: Test PolicyException
+      policies.kyverno.io/category: Test
+      policies.kyverno.io/subject: Pod
+      policies.kyverno.io/description: >-
+        This Test PolicyException allows pods from deploying busybox for debugging.
+    # -- PolicyException specification.  See `kubectl explain policyexceptions.spec`
+    spec:
+      exceptions:
+      #Name of Policy for exception
+      - policyName: block-ephemeral-containers
+        ruleNames:
+        - block-ephemeral-containers
+      match:
+        any:
+        - resources:
+            kinds:
+            - Pod
+            names:
+            - important-tool*
+      conditions:
+        any:
+        - key: "{{ request.object.metadata.labels.app || '' }}"
+          operator: Equals
+          value: busybox
