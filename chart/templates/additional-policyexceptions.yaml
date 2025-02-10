@@ -4,7 +4,7 @@
 {{- fail (printf "Invalid kind (%s) for policy named %s." $values.kind $name) }}
 {{- end }}
 ---
-apiVersion: kyverno.io/v1
+apiVersion: kyverno.io/v2
 kind: {{ default $values.kind "PolicyException" }}
 metadata:
   name: {{ $name }}
