@@ -4,6 +4,13 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 
 ---
 
+## [3.3.4-bb.5] - 2025-02-12
+
+### Changed
+
+- Fixed the default registry url to prevent subdomains from being used
+- update gluon dependency chart -> v0.5.14
+
 ## [3.3.4-bb.4] - 2025-02-10
 
 ### Changed
