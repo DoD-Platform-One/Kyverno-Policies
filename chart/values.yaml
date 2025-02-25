@@ -442,7 +442,7 @@ policies:
     parameters:
       # -- List of allowed registries that images may use
       allow:
-      - registry1.dso.mil
+      - registry1.dso.mil/
 
   # -- Restrict mounting /proc to the specified mask
   restrict-proc-mount:
