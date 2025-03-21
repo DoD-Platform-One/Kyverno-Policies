@@ -22,17 +22,17 @@ metadata:
 spec:
   initContainers:
   - name: ic1
-    image: registry1.dso.mil/ironbank/opensource/kubernetes/kubectl:v1.30.6
+    image: registry1.dso.mil/ironbank/opensource/kubernetes/kubectl:v1.30.11
     command: ["exit"]
   - name: ic2
-    image: registry1.dso.mil/ironbank/opensource/kubernetes/kubectl:v1.30.6
+    image: registry1.dso.mil/ironbank/opensource/kubernetes/kubectl:v1.30.11
     command: ["exit"]
     securityContext:
       capabilities:
         drop:
         - NET_RAW
   - name: ic3
-    image: registry1.dso.mil/ironbank/opensource/kubernetes/kubectl:v1.30.6
+    image: registry1.dso.mil/ironbank/opensource/kubernetes/kubectl:v1.30.11
     command: ["exit"]
     securityContext:
       capabilities:
@@ -41,17 +41,17 @@ spec:
         - ALL
   containers:
   - name: c1
-    image: registry1.dso.mil/ironbank/opensource/kubernetes/kubectl:v1.30.6
+    image: registry1.dso.mil/ironbank/opensource/kubernetes/kubectl:v1.30.11
     command: ["sleep","infinity"]
   - name: c2
-    image: registry1.dso.mil/ironbank/opensource/kubernetes/kubectl:v1.30.6
+    image: registry1.dso.mil/ironbank/opensource/kubernetes/kubectl:v1.30.11
     command: ["sleep","infinity"]
     securityContext:
       capabilities:
         drop:
         - NET_RAW
   - name: c3
-    image: registry1.dso.mil/ironbank/opensource/kubernetes/kubectl:v1.30.6
+    image: registry1.dso.mil/ironbank/opensource/kubernetes/kubectl:v1.30.11
     command: ["sleep","infinity"]
     securityContext:
       capabilities:

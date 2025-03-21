@@ -4,6 +4,13 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 
 ---
 
+## [3.3.4-bb.6] - 2025-03-17
+
+### Changed
+
+- ironbank/opensource/kubernetes/kubectl updated from v1.30.6 to v1.30.11
+- ironbank/redhat/ubi/ubi9-minimal updated from 9.4 to 9.5
+
 ## [3.3.4-bb.5] - 2025-02-12
 
 ### Changed
