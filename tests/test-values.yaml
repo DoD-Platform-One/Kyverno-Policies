@@ -1,224 +1,33 @@
-bbtests:
-  enabled: true
-  scripts:
-    envs:
-      PACKAGE_LEVEL_TEST: "true"
-
-excludeContainers:
-  - not-me
-  - or-me
-exclude:
-  any:
-  - resources:
-      namespaces:
-      - kyverno-policies
-      names:
-      - kyverno-policies-script-test*
-policies:
-  add-default-capability-drop:
-    exclude:
-      any:
-      - resources:
-          namespaces:
-          - default
-          names:
-          # Need to be able to test the `require-drop-all-capabilities` policy
-          # without this policy mutating the podspecs and adding the "missing" capability
-          - require-drop-all-capabilities*
-  clone-configs:
-    enabled: true
-    parameters:
-      clone:
-      - name: clone-configs-1
-        kind: ConfigMap
-        namespace: "{{ .Release.Namespace }}"
-      - name: clone-configs-2
-        kind: Secret
-        namespace: "{{ .Release.Namespace }}"
-  disallow-annotations:
-    enabled: true
-    parameters:
-      disallow:
-      - 'kyverno-policies-bbtest/test: disallowed'
-      - kyverno-policies-bbtest/disallowed
-  disallow-deprecated-apis:
-    enabled: true
-  disallow-image-tags:
-    enabled: true
-  disallow-istio-injection-bypass:
-    enabled: true
-  disallow-labels:
-    enabled: true
-    parameters:
-      disallow:
-      - 'kyverno-policies-bbtest/test: disallowed'
-      - kyverno-policies-bbtest/disallowed
-  disallow-namespaces:
-    enabled: true
-  disallow-rbac-on-default-serviceaccounts:
-    enabled: true
-  disallow-tolerations:
-    enabled: true
-    parameters:
-      disallow:
-      - effect: NoSchedule
-        key: notallowed
-        value: 'false'
-      - effect: '*NoSchedule'
-        key: disa??owed
-        value: 'true'
-  require-annotations:
-    enabled: true
-    parameters:
-      require:
-      - 'kyverno-policies-bbtest/test: required'
-      - kyverno-policies-bbtest/required
-  require-cpu-limit:
-    enabled: true
-  require-image-signature:
-    parameters:
-      require:
-      - imageReferences:
-        - "ghcr.io/kyverno/test-verify-image:*"
-        attestors:
-        - count: 1
-          entries:
-          - keys:
-              publicKeys: |-
-                -----BEGIN PUBLIC KEY-----
-                MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAE8nXRh950IZbRj8Ra/N9sbqOPZrfM
-                5/KAQN0/KjHcorm/J5yctVd7iEcnessRQjU917hmKO6JWVGHpDguIyakZA==
-                -----END PUBLIC KEY-----
-              # Skip Rekor Transparency log check
-              rekor:
-                url: ""
-                ignoreTlog: true
-        mutateDigest: false
-        verifyDigest: false
-      - imageReferences:
-        - "registry1.dso.mil/ironbank/*"
-        attestors:
-        - count: 1
-          entries:
-          - keys:
-              publicKeys: |-
-                -----BEGIN PUBLIC KEY-----
-                MIICIjANBgkqhkiG9w0BAQEFAAOCAg8AMIICCgKCAgEAtQDv69q1kyiogpxvIVjh
-                eNMLsI1GTLm+BuLWJN2rq4AA4k3+I7WqdvA1tKJ218DyXExljI3NTD4J5BnLeB6y
-                WDvnTPXVu+pNj9W7Az0uyD73/WsMV1QR5VEzWMdMz+ZnN8IGd4JFl9p2N21YBD1R
-                Y93+K4XgrZ/iSRk+mGBAs87UpF1ku/nru0H2+XwJtoV7pLrrai/pLdQeRh5Ogg9J
-                z5qHer9EnZne6eBnZedvpf7bqfRt0Fqqk0pTzLQm4oFD3HnxdJUPt9ccoPx0IyF0
-                rB01a53LBTeRXeUcHd5BpwhwgkIm2insbDIp+lBKjUfq4CfqRQcXLLUgtRUij6ke
-                QfD7jgI9chBxbVE1U5Mc/RgftXuVGQzx1OrjenD4wIH4whtP1abTg6XLxqjgkgqq
-                EJy5kUpv+ut0n1RBiIdH6wYXDum90fq4qQl+gHaER0bOYAQTCIFRrhrWJ8Qxj4uL
-                xI+O5KgLX3TanMtfE7e2A86uzxiHBxEW4+AF2IMXuLviIQKc9z+/p93psfQ9nXXj
-                B5i6qFWkF0BMuWibB8e+HHWRKLfNWXGdfLraoMPKwCrJWhYQ+8SRrqR+gbSNWbEM
-                VardcwrQZ7NP7KIedquYQnfJ3ukbYikKgdBovGStFEPLaKKiYJiD5UIQhZ51SDdA
-                k+PgLW7CzKW4u2+WLdjfalkCAwEAAQ==
-                -----END PUBLIC KEY-----
-              # Skip Rekor Transparency log check
-              rekor:
-                url: ""
-                ignoreTlog: true
-        # Ironbank images are rebuilt nightly and tags are not immutable
-        mutateDigest: false
-        verifyDigest: false
-  require-istio-on-namespaces:
-    enabled: true
-  require-labels:
-    parameters:
-      require:
-      - 'kyverno-policies-bbtest/test: required'
-      - kyverno-policies-bbtest/required
-  require-memory-limit:
-    enabled: true
-  require-probes:
-    enabled: true
-  require-requests-equal-limits:
-    enabled: true
-  require-ro-rootfs:
-    enabled: true
-  restrict-external-ips:
-    parameters:
-      allow:
-      - 192.168.0.1
-  restrict-external-names:
-    parameters:
-      allow:
-      - allowed
-  restrict-group-id:
-    enabled: true
-  restrict-host-path-mount:
-    parameters:
-      allow:
-      - /tmp/allowed
-  restrict-host-path-mount-pv:
-    parameters:
-      allow:
-      - /tmp/allowed
-  restrict-host-path-write:
-    parameters:
-      allow:
-      - /tmp/allowed
-  restrict-host-ports:
-    parameters:
-      allow:
-      - '63999'
-      - '>= 64000 & < 65000'
-      - '> 65000'
-  restrict-user-id:
-    enabled: true
-  update-image-registry:
-    enabled: true
-    parameters:
-      update:
-      - from: replace.image.registry
-        to: registry1.dso.mil
-  update-automountserviceaccounttokens-default:
-    enabled: true
-    namespaces:
-      - namespace: update-automountserviceaccounttokens-default
-
-  update-automountserviceaccounttokens:
-    enabled: true
-    namespaces:
-      - namespace: update-automountserviceaccounttokens-2
-        serviceAccounts:
-        - update-token-automount-2
-        pods:
-          allow:
-          - update-token-automount-pod
-          deny:
-          - update-token-automount-pod-harden
-
-
-additionalPolicyExceptions:
-  testpolicyexception:
-    enabled: true
-    kind: PolicyException
-    namespace: "kyverno"
-    annotations:
-      policies.kyverno.io/title: Test PolicyException
-      policies.kyverno.io/category: Test
-      policies.kyverno.io/subject: Pod
-      policies.kyverno.io/description: >-
-        This Test PolicyException allows pods from deploying busybox for debugging.
-    # -- PolicyException specification.  See `kubectl explain policyexceptions.spec`
-    spec:
-      exceptions:
-      #Name of Policy for exception
-      - policyName: block-ephemeral-containers
-        ruleNames:
-        - block-ephemeral-containers
-      match:
-        any:
-        - resources:
-            kinds:
-            - Pod
-            names:
-            - important-tool*
-      conditions:
-        any:
-        - key: "{{ request.object.metadata.labels.app || '' }}"
-          operator: Equals
-          value: busybox
+#########################
+# Disable Core Packages #
+#########################
+monitoring:
+  enabled: false
+grafana:
+  enabled: false
+kyvernoReporter:
+  enabled: false
+neuvector:
+  enabled: false
+loki:
+  enabled: false
+promtail:
+  enabled: false
+tempo:
+  enabled: false
+kiali:
+  enabled: false
+addons:
+  minioOperator:
+    enabled: false
+########################
+# Required for package #
+########################
+kyverno:
+  values:
+    bbtests:
+      enabled: false
+kyvernoPolicies:
+  values:
+    bbtests:
+      enabled: true
