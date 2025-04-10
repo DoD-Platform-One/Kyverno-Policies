@@ -24,7 +24,7 @@ metadata:
 spec:
   containers:
   - name: c1
-    image: registry1.dso.mil/ironbank/opensource/kubernetes/kubectl:v1.30.11
+    image: registry1.dso.mil/ironbank/opensource/kubernetes/kubectl:v1.32.3
     command: ["sleep","infinity"]
     securityContext:
       capabilities:

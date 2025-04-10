@@ -4,6 +4,14 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 
 ---
 
+## [3.3.4-bb.7] - 2025-04-04
+
+### Changed
+
+- Fix Gatekeeper migration docs that is inaccurate
+- Updated Gluon from 0.5.14 -> 0.5.15
+- Updated registry1.dso.mil/ironbank/opensource/kubernetes/kubectl from v1.30.10 -> v1.32.3
+
 ## [3.3.4-bb.6] - 2025-03-17
 
 ### Changed

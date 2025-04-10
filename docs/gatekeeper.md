@@ -27,7 +27,7 @@ The following table shows the policies implemented in Big Bang under Gatekeeper 
 |Linux Capabilities|Pod Security Standards (Restricted)|Require all capabilities to be dropped and restrict added capabilities to allowed list|`allowedCapabilities`|`require-drop-all-capabilities`; `restrict-capabilities`| KY adds `NET_BIND_SERVICE` to the default allowed list|
 |Node Ports|Best Practices (Security)|Disallow NodePort services|`blockNodePort`|`disallow-nodeport-services`||
 |Privileged Containers|Pod Security Standards (Baseline)|Disallow containers that run as privileged|`noPrivilegedContainers`|`disallow-privileged-containers`||
-|Privileged Escalation|Pod Security Standards (Restricted)|Disallow privilege escalation permissions|`noPrivilegedEscalation`|`disallow-privileged-containers`||
+|Privileged Escalation|Pod Security Standards (Restricted)|Disallow privilege escalation permissions|`noPrivilegedEscalation`|`disallow-privileged-escalation`||
 |Probes|Best Practices|Require probes on pods|`requiredProbes`|`require-probes`|KY removes validation of probe types (e.g. `tcpSocket`, `httpGet`, `exec`)|
 |Proc Mount|Pod Security Standards (Baseline)|Restrict proc mount to allowed list|`allowedProcMount`|`restrict-proc-mount`||
 |Read-only Root Filesystem|Best Practices (Security)|Require root file systems to be read only|`readOnlyRoot`|`require-ro-rootfs`||
@@ -35,7 +35,7 @@ The following table shows the policies implemented in Big Bang under Gatekeeper 
 |Resources - Ratio|Best Practices|Ensure CPU and memory limits are not disproportionate to requests|`containerRatio`|Will not implement|No use case.  Policy value is below threshold for implementation.|
 |SecComp|Pod Security Standards (Baseline)|Restrict SecComp profiles to allowed list|`allowedSecCompProfiles`|`restrict-seccomp`|KY adds `Localhost` to the default allowed list|
 |SELinux|Pod Security Standards (Baseline)|Restrict SELinux options to allowed list|`seLinuxPolicy`|`disallow-selinux-options`; `restrict-selinux-type`|KY adds additional allowed values to the default allowed list|
-|SysCtl|Pod Security Standards (Baseline)|Restrict SysCtls to allowed list|`noSysctls`|`restrict-sysctl`|KY adds additional sysctl values to the default allowed list|
+|SysCtl|Pod Security Standards (Baseline)|Restrict SysCtls to allowed list|`noSysctls`|`restrict-sysctls`|KY adds additional sysctl values to the default allowed list|
 |Tolerations|Best Practices (Security)|Tolerations must not match specified list of taints|`restrictedTaint`|`disallow-tolerations`|KY also prevents tolerations on `RuntimeClasses`|
 |User IDs - Non-root|Pod Security Standards (Restricted)|Require user to run as non-root|`allowedUsers`|`require-non-root-user`||
 |User IDs - Range|Best Practices (Security)|Restrict user IDs to a specified range|`allowedUsers`|`restrict-user-id`||
