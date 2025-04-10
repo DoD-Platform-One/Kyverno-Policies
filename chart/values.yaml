@@ -112,7 +112,7 @@ policies:
         #   kind: ConfigMap
         #   # -- Namespace to find the ConfigMap/Secret.  This can be templated.
         #   namespace: "{{ .Release.Namespace }}"
-    generateExisting: false 
+    generateExisting: false
 
   # -- Prevent specified annotations on pods
   disallow-annotations:
@@ -242,7 +242,7 @@ policies:
     enabled: false
     validationFailureAction: Audit
     parameters:
-      # -- CPU limitations (only one required condition needs to be met).  The following operators are valid: >, <, >=, <=, !, |, &.
+      # -- CPU limitations (only one required condition needs to be met).  The following operators are valid: >, <, >=, <=, !, \|, &.
       require:
       - <10
 
@@ -284,7 +284,7 @@ policies:
                 ignoreTlog: true
                 url: ""
               ctlog:
-                ignoreSCT: true                
+                ignoreSCT: true
         # Ironbank images are rebuilt nightly and tags are not immutable
         mutateDigest: false
         verifyDigest: false
@@ -312,10 +312,10 @@ policies:
     enabled: false
     validationFailureAction: Audit
     parameters:
-      # -- Memory limitations (only one required condition needs to be met).  Can use standard Kubernetes resource units (e.g. Mi, Gi).  The following operators are valid: >, <, >=, <=, !, |, &.
+      # -- Memory limitations (only one required condition needs to be met).  Can use standard Kubernetes resource units (e.g. Mi, Gi).  The following operators are valid: >, <, >=, <=, !, \|, &.
       require:
       - <64Gi
-  # -- This policy will mutate a Pod to set `spec.(initC|ephemeralC|c)ontainers[].securityContext.capabilities.drop` to 'ALL' if it is not already set.
+  # -- This policy will mutate a Pod to set `spec.(initEphemeralC\|c)ontainers[].securityContext.capabilities.drop` to 'ALL' if it is not already set.
   add-default-capability-drop:
     enabled: true
     validationFailureAction: Enforce
@@ -399,7 +399,7 @@ policies:
     enabled: false
     validationFailureAction: Audit
     parameters:
-      # -- Allowed group IDs / ranges.  The following operators are valid: >, <, >=, <=, !, |, &.
+      # -- Allowed group IDs / ranges.  The following operators are valid: ">, <, >=, <=, !, \|, &."
       # For a lower and upper limit, use ">=min & <=max"
       allow:
       - ">=1000"
@@ -502,7 +502,7 @@ policies:
     enabled: false
     validationFailureAction: Audit
     parameters:
-      # -- Allowed user IDs / ranges.  The following operators are valid: >, <, >=, <=, !, |, &.
+      # -- Allowed user IDs / ranges.  The following operators are valid: >, <, >=, <=, !, \|, &.
       # For a lower and upper limit, use ">=min & <=max"
       allow:
       - ">=1000"
@@ -563,7 +563,7 @@ policies:
 #       serviceAccounts:
 #       - istio-operator
 #       pods:
-#          allow: 
+#          allow:
 #          - istiod-*
 #          - istio-operator-*
 
@@ -629,9 +629,10 @@ additionalPolicyExceptions:
       policies.kyverno.io/description: >-
         This sample PolicyException allows pods from deploying busybox for debugging.
     # -- PolicyException specification.  See `kubectl explain policyexceptions.spec`
+    # @ignored
     spec:
       exceptions:
-      #Name of Policy for exception
+      # -- Name of Policy for exception
       - policyName: samplePolicy
         ruleNames:
         - sample-rule
@@ -657,7 +658,7 @@ istio:
 bbtests:
   enabled: false
   scripts:
-    image: registry1.dso.mil/ironbank/opensource/kubernetes/kubectl:v1.30.11
+    image: registry1.dso.mil/ironbank/opensource/kubernetes/kubectl:v1.32.3
     envs:
       ENABLED_POLICIES: '{{ $p := list }}{{ range $k, $v := .Values.policies }}{{ if $v.enabled }}{{ $p = append $p $k }}{{ end }}{{ end }}{{ join " " $p }}'
       IMAGE_PULL_SECRET: '{{ .Values.bbtests.imagePullSecret }}'
@@ -678,7 +679,7 @@ waitJob:
   enabled: true
   kind: ClusterRole
   scripts:
-    image: registry1.dso.mil/ironbank/opensource/kubernetes/kubectl:v1.30.11
+    image: registry1.dso.mil/ironbank/opensource/kubernetes/kubectl:v1.32.3
   permissions:
     apiGroups:
       - kyverno.io
