@@ -4,6 +4,12 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 
 ---
 
+## [3.3.4-bb.8] - 2025-04-11
+
+### Changed
+
+- Update Gatekeeper migration doc
+
 ## [3.3.4-bb.7] - 2025-04-04
 
 ### Changed

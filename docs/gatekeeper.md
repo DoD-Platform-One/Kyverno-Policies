@@ -27,7 +27,7 @@ The following table shows the policies implemented in Big Bang under Gatekeeper 
 |Linux Capabilities|Pod Security Standards (Restricted)|Require all capabilities to be dropped and restrict added capabilities to allowed list|`allowedCapabilities`|`require-drop-all-capabilities`; `restrict-capabilities`| KY adds `NET_BIND_SERVICE` to the default allowed list|
 |Node Ports|Best Practices (Security)|Disallow NodePort services|`blockNodePort`|`disallow-nodeport-services`||
 |Privileged Containers|Pod Security Standards (Baseline)|Disallow containers that run as privileged|`noPrivilegedContainers`|`disallow-privileged-containers`||
-|Privileged Escalation|Pod Security Standards (Restricted)|Disallow privilege escalation permissions|`noPrivilegedEscalation`|`disallow-privileged-escalation`||
+|Privileged Escalation|Pod Security Standards (Restricted)|Disallow privilege escalation permissions|`noPrivilegedEscalation`|`disallow-privilege-escalation`||
 |Probes|Best Practices|Require probes on pods|`requiredProbes`|`require-probes`|KY removes validation of probe types (e.g. `tcpSocket`, `httpGet`, `exec`)|
 |Proc Mount|Pod Security Standards (Baseline)|Restrict proc mount to allowed list|`allowedProcMount`|`restrict-proc-mount`||
 |Read-only Root Filesystem|Best Practices (Security)|Require root file systems to be read only|`readOnlyRoot`|`require-ro-rootfs`||
