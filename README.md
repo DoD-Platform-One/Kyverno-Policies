@@ -1,7 +1,7 @@
 <!-- Warning: Do not manually edit this file. See notes on gluon + helm-docs at the end of this file for more information. -->
 # kyverno-policies
 
-![Version: 3.3.4-bb.8](https://img.shields.io/badge/Version-3.3.4--bb.8-informational?style=flat-square) ![AppVersion: v1.13.2](https://img.shields.io/badge/AppVersion-v1.13.2-informational?style=flat-square) ![Maintenance Track: bb_integrated](https://img.shields.io/badge/Maintenance_Track-bb_integrated-green?style=flat-square)
+![Version: 3.3.4-bb.9](https://img.shields.io/badge/Version-3.3.4--bb.9-informational?style=flat-square) ![AppVersion: v1.13.2](https://img.shields.io/badge/AppVersion-v1.13.2-informational?style=flat-square) ![Maintenance Track: bb_integrated](https://img.shields.io/badge/Maintenance_Track-bb_integrated-green?style=flat-square)
 
 Collection of Kyverno security and best-practice policies for Kyverno
 
@@ -54,9 +54,6 @@ helm install kyverno-policies chart/
 | autogenControllers | string | `"Deployment,ReplicaSet,DaemonSet,StatefulSet"` | Customize the target Pod controllers for the auto-generated rules. (Eg. `none`, `Deployment`, `DaemonSet,Deployment,StatefulSet`) For more info <https://kyverno.io/docs/writing-policies/autogen/>. |
 | customLabels | object | `{}` | Additional labels to apply to all policies. |
 | policyPreconditions | object | `{}` | Add preconditions to individual policies. Policies with multiple rules can have individual rules excluded by using the name of the rule as the key in the `policyPreconditions` map. |
-| waitforready.enabled | bool | `false` | Controls wait for ready deployment |
-| waitforready.image | object | `{"repository":"registry1.dso.mil/ironbank/opensource/kubernetes/kubectl","tag":"v1.30.11"}` | Image to use in wait for ready job.  This must contain kubectl. |
-| waitforready.imagePullSecrets | list | `[]` | Pull secret for wait for ready job |
 | policies.sample | object | `{"enabled":false,"exclude":{},"match":{},"parameters":{"excludeContainers":[]},"validationFailureAction":"Audit","webhookTimeoutSeconds":""}` | Sample policy showing values that can be added to any policy |
 | policies.sample.enabled | bool | `false` | Controls policy deployment |
 | policies.sample.validationFailureAction | string | `"Audit"` | Controls if a validation policy rule failure should disallow (Enforce) or allow (Audit) the admission |

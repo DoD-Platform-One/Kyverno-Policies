@@ -64,17 +64,6 @@ policyPreconditions: {}
 # exclude: can be added to any policy to add specific exclusions to the policy
 # See https://kyverno.io/docs/writing-policies/match-exclude on how to format match/exclude
 
-# -- Controls for the job that will wait for all policies to be ready.  This can be used with Helm's --wait-for-jobs to wait for all policies to be ready.
-waitforready:
-  # -- Controls wait for ready deployment
-  enabled: false
-  # -- Image to use in wait for ready job.  This must contain kubectl.
-  image:
-    repository: registry1.dso.mil/ironbank/opensource/kubernetes/kubectl
-    tag: v1.30.11
-  # -- Pull secret for wait for ready job
-  imagePullSecrets: []
-
 policies:
   # Keep policies in alphabetical order and name them the same as the .yaml file to help with configuration and troubleshooting
 
