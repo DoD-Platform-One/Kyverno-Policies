@@ -4,6 +4,13 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 
 ---
 
+## [3.3.4-bb.9] - 2025-05-14
+
+### Changed
+
+- Removed waitforready job
+- Updated gluon from 0.5.15 -> 0.5.19
+
 ## [3.3.4-bb.8] - 2025-04-11
 
 ### Changed
