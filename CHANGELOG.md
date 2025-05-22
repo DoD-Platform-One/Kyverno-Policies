@@ -3,6 +3,12 @@
 Format: [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 
 ---
+## [3.3.4-bb.9] - 2025-05-16
+
+### Changed
+
+- updated renovate.json
+
 
 ## [3.3.4-bb.9] - 2025-05-14
 

@@ -1,30 +1,52 @@
 {
-    "baseBranches": ["main"],
+    "baseBranches": [
+        "main"
+    ],
     "configWarningReuseIssue": false,
     "dependencyDashboard": true,
     "dependencyDashboardTitle": "Renovate: Upgrade Kyverno Policy Images",
     "draftPR": true,
-    "enabledManagers": ["helmv3","helm-values","regex"],
-    "ignorePaths": ["chart/charts/**"],
-    "labels": ["kyverno","renovate"],
+    "enabledManagers": [
+        "helmv3",
+        "helm-values",
+        "custom.regex"
+    ],
+    "ignorePaths": [
+        "chart/charts/**"
+    ],
+    "labels": [
+        "kyverno",
+        "renovate"
+    ],
     "packageRules": [
         {
-            "matchDatasources": ["docker"],
+            "matchDatasources": [
+                "docker"
+            ],
             "groupName": "Ironbank",
-            "registryUrls": ["https://registry1.dso.mil"],
+            "registryUrls": [
+                "https://registry1.dso.mil"
+            ],
             "postUpgradeTasks": {
-              "commands": [
-                  "bump-chart-yaml",
-                  "regenerate-helm-docs",
-                  "bump-changelog '- {{{replace 'registry1.dso.mil/' '' depName}}} updated from {{{currentVersion}}} to {{{newVersion}}}'"
-              ],
-              "fileFilters": ["chart/Chart.yaml", "README.md", "CHANGELOG.md"]
+                "commands": [
+                    "bump-chart-yaml",
+                    "regenerate-helm-docs",
+                    "bump-changelog '- {{{replace 'registry1.dso.mil/' '' depName}}} updated from {{{currentVersion}}} to {{{newVersion}}}'"
+                ],
+                "fileFilters": [
+                    "chart/Chart.yaml",
+                    "README.md",
+                    "CHANGELOG.md"
+                ]
             }
-          }
+        }
     ],
-    "regexManagers": [
+    "customManagers": [
         {
-            "fileMatch": ["^chart/tests/manifests/.*\\.yaml$"],
+            "customType": "regex",
+            "fileMatch": [
+                "^chart/tests/manifests/.*\\.yaml$"
+            ],
             "matchStrings": [
                 "image:\\s+(?<depName>.+):(?<currentValue>.+)",
                 "kyverno-policies-bbtest/value:\\s+(?<depName>.+):(?<currentValue>.+)"
@@ -32,7 +54,10 @@
             "datasourceTemplate": "docker"
         },
         {
-            "fileMatch": ["^chart/Chart\\.yaml$"],
+            "customType": "regex",
+            "fileMatch": [
+                "^chart/Chart\\.yaml$"
+            ],
             "matchStrings": [
                 "image:[^\\S\\r\\n]+(?<depName>.+):(?<currentValue>.+)"
             ],
@@ -40,5 +65,7 @@
         }
     ],
     "separateMajorMinor": false,
-    "postUpdateOptions": ["helmUpdateSubChartArchives"]
+    "postUpdateOptions": [
+        "helmUpdateSubChartArchives"
+    ]
 }
