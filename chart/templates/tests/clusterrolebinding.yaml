@@ -13,6 +13,6 @@ roleRef:
   name: {{ template "kyverno-policies.name" . }}-bbtest-clusterrole
 subjects:
 - kind: ServiceAccount
-  name: {{ template "kyverno-policies.name" . }}-bbtest-account
+  name: {{ template "kyverno-policies.name" . }}-script-sa
   namespace: {{ .Release.Namespace }}
 {{- end }}

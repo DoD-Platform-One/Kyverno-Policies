@@ -3,12 +3,14 @@
 Format: [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 
 ---
-## [3.3.4-bb.9] - 2025-05-16
+
+## [3.3.4-bb.10] (2025-05-22)
 
 ### Changed
 
-- updated renovate.json
-
+- kubectl updated from 1.32.3 to 1.32.5
+- ubi9-minimal from 9.5 to 9.6
+- updated gluon from 0.5.19 to 0.6.2
 
 ## [3.3.4-bb.9] - 2025-05-14
 

@@ -647,7 +647,18 @@ istio:
 bbtests:
   enabled: false
   scripts:
-    image: registry1.dso.mil/ironbank/opensource/kubernetes/kubectl:v1.32.3
+    image: registry1.dso.mil/ironbank/opensource/kubernetes/kubectl:v1.32.5
+    permissions:
+      apiGroups:
+        - ""
+      resources:
+        - configmaps
+        - namespaces
+      verbs:
+        - create
+        - delete
+        - list
+        - get
     envs:
       ENABLED_POLICIES: '{{ $p := list }}{{ range $k, $v := .Values.policies }}{{ if $v.enabled }}{{ $p = append $p $k }}{{ end }}{{ end }}{{ join " " $p }}'
       IMAGE_PULL_SECRET: '{{ .Values.bbtests.imagePullSecret }}'
@@ -668,7 +679,7 @@ waitJob:
   enabled: true
   kind: ClusterRole
   scripts:
-    image: registry1.dso.mil/ironbank/opensource/kubernetes/kubectl:v1.32.3
+    image: registry1.dso.mil/ironbank/opensource/kubernetes/kubectl:v1.32.5
   permissions:
     apiGroups:
       - kyverno.io
