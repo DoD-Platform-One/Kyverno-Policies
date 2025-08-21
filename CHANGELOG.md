@@ -4,6 +4,12 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 
 ---
 
+## [3.3.4-bb.11] (2025-08-14)
+
+### Changed
+
+- adding disallow-deprecated-apis policy
+
 ## [3.3.4-bb.10] (2025-05-22)
 
 ### Changed

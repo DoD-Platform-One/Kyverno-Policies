@@ -1,11 +1,11 @@
 # Test 1: APIs deprecated and removed in 1.32 are not allowed
-apiVersion: flowcontrol.apiserver.k8s.io/v1beta3
+apiVersion: flowcontrol.apiserver.k8s.io/v1
 kind: FlowSchema
 metadata:
   name: disallow-deprecated-apis
   annotations:
     kyverno-policies-bbtest/type: validate
-    kyverno-policies-bbtest/expected: fail
+    kyverno-policies-bbtest/expected: pass
 spec:
   matchingPrecedence: 1000
   priorityLevelConfiguration:
