@@ -113,7 +113,7 @@ policies:
 
   # -- Prevent resources that use deprecated or removed APIs (through Kubernetes 1.26)
   disallow-deprecated-apis:
-    enabled: false
+    enabled: true
     validationFailureAction: Audit
 
   # -- Prevent use of the host namespace (PID, IPC, Network) by pods
