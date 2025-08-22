@@ -24,7 +24,7 @@ addons:
 kyverno:
   values:
     bbtests:
-      enabled: false
+      enabled: true
 kyvernoPolicies:
   values:
     bbtests:

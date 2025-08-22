@@ -4,6 +4,14 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 
 ---
 
+## [3.3.4-bb.12] (2025-08-20)
+
+### Changed
+
+- gluon updated from 0.6.2 to 0.7.0
+- kubectl updated from v1.32.5 to v1.32.8
+- updated sha256 for ubi9-minimal image
+
 ## [3.3.4-bb.11] (2025-08-14)
 
 ### Changed

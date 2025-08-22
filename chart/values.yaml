@@ -647,7 +647,7 @@ istio:
 bbtests:
   enabled: false
   scripts:
-    image: registry1.dso.mil/ironbank/opensource/kubernetes/kubectl:v1.32.5
+    image: registry1.dso.mil/ironbank/opensource/kubernetes/kubectl:v1.32.8
     permissions:
       apiGroups:
         - ""
@@ -679,7 +679,7 @@ waitJob:
   enabled: true
   kind: ClusterRole
   scripts:
-    image: registry1.dso.mil/ironbank/opensource/kubernetes/kubectl:v1.32.5
+    image: registry1.dso.mil/ironbank/opensource/kubernetes/kubectl:v1.32.8
   permissions:
     apiGroups:
       - kyverno.io
