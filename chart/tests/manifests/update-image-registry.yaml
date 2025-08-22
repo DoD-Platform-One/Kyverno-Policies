@@ -8,11 +8,11 @@ metadata:
     kyverno-policies-bbtest/type: mutate
     kyverno-policies-bbtest/expected: mutate
     kyverno-policies-bbtest/key: .spec.containers[0].image
-    kyverno-policies-bbtest/value: registry1.dso.mil/ironbank/redhat/ubi/ubi9-minimal@sha256:6cd0df997ed70512b5bcc3aa10063101e6d2b399a7799679401da9edd155b0db
+    kyverno-policies-bbtest/value: registry1.dso.mil/ironbank/redhat/ubi/ubi9-minimal@sha256:fc2cf3050528e50508d19d1e43028efe81fe48abd5d3cf80e6c73b54fe38eccb
 spec:
   containers:
   - name: c1
-    image: replace.image.registry/ironbank/redhat/ubi/ubi9-minimal@sha256:6cd0df997ed70512b5bcc3aa10063101e6d2b399a7799679401da9edd155b0db
+    image: replace.image.registry/ironbank/redhat/ubi/ubi9-minimal@sha256:fc2cf3050528e50508d19d1e43028efe81fe48abd5d3cf80e6c73b54fe38eccb
     args: ["sleep", "infinity"]
 ---
 # Test 2: Init containers with the image registry are mutated
@@ -25,12 +25,12 @@ metadata:
     kyverno-policies-bbtest/type: mutate
     kyverno-policies-bbtest/expected: mutate
     kyverno-policies-bbtest/key: .spec.initContainers[0].image
-    kyverno-policies-bbtest/value: registry1.dso.mil/ironbank/redhat/ubi/ubi9-minimal@sha256:6cd0df997ed70512b5bcc3aa10063101e6d2b399a7799679401da9edd155b0db
+    kyverno-policies-bbtest/value: registry1.dso.mil/ironbank/redhat/ubi/ubi9-minimal@sha256:fc2cf3050528e50508d19d1e43028efe81fe48abd5d3cf80e6c73b54fe38eccb
 spec:
   containers:
   - name: c1
-    image: registry1.dso.mil/ironbank/redhat/ubi/ubi9-minimal@sha256:6cd0df997ed70512b5bcc3aa10063101e6d2b399a7799679401da9edd155b0db
+    image: registry1.dso.mil/ironbank/redhat/ubi/ubi9-minimal@sha256:fc2cf3050528e50508d19d1e43028efe81fe48abd5d3cf80e6c73b54fe38eccb
     args: ["sleep", "infinity"]
   initContainers:
   - name: i1
-    image: replace.image.registry/ironbank/redhat/ubi/ubi9-minimal@sha256:6cd0df997ed70512b5bcc3aa10063101e6d2b399a7799679401da9edd155b0db
+    image: replace.image.registry/ironbank/redhat/ubi/ubi9-minimal@sha256:fc2cf3050528e50508d19d1e43028efe81fe48abd5d3cf80e6c73b54fe38eccb
