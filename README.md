@@ -1,7 +1,7 @@
 <!-- Warning: Do not manually edit this file. See notes on gluon + helm-docs at the end of this file for more information. -->
 # kyverno-policies
 
-![Version: 3.3.4-bb.12](https://img.shields.io/badge/Version-3.3.4--bb.12-informational?style=flat-square) ![AppVersion: v1.13.2](https://img.shields.io/badge/AppVersion-v1.13.2-informational?style=flat-square) ![Maintenance Track: bb_integrated](https://img.shields.io/badge/Maintenance_Track-bb_integrated-green?style=flat-square)
+![Version: 3.3.4-bb.13](https://img.shields.io/badge/Version-3.3.4--bb.13-informational?style=flat-square) ![AppVersion: v1.13.2](https://img.shields.io/badge/AppVersion-v1.13.2-informational?style=flat-square) ![Maintenance Track: bb_integrated](https://img.shields.io/badge/Maintenance_Track-bb_integrated-green?style=flat-square)
 
 Collection of Kyverno security and best-practice policies for Kyverno
 
@@ -169,10 +169,10 @@ helm install kyverno-policies chart/
 | additionalPolicyExceptions.samplePolicyException.annotations."policies.kyverno.io/subject" | string | `"Pod"` | Type of resource PolicyException applies to (e.g. Pod, Service, Namespace) |
 | additionalPolicyExceptions.samplePolicyException.annotations."policies.kyverno.io/description" | string | `"This sample PolicyException allows pods from deploying busybox for debugging."` | Description of why the PolicyException is necessary and what items are allowed or unallowed. |
 | istio | object | `{"enabled":false}` | BigBang Istio Toggle and Configuration |
-| bbtests | object | `{"enabled":false,"imagePullSecret":"private-registry","scripts":{"additionalVolumeMounts":[{"mountPath":"/yaml","name":"kyverno-policies-bbtest-manifests"},{"mountPath":"/.kube/cache","name":"kyverno-policies-bbtest-kube-cache"}],"additionalVolumes":[{"configMap":{"name":"kyverno-policies-bbtest-manifests"},"name":"kyverno-policies-bbtest-manifests"},{"emptyDir":{},"name":"kyverno-policies-bbtest-kube-cache"}],"envs":{"ENABLED_POLICIES":"{{ $p := list }}{{ range $k, $v := .Values.policies }}{{ if $v.enabled }}{{ $p = append $p $k }}{{ end }}{{ end }}{{ join \" \" $p }}","IMAGE_PULL_SECRET":"{{ .Values.bbtests.imagePullSecret }}"},"image":"registry1.dso.mil/ironbank/opensource/kubernetes/kubectl:v1.32.8","permissions":{"apiGroups":[""],"resources":["configmaps","namespaces"],"verbs":["create","delete","list","get"]}}}` | Reserved values for Big Bang test automation |
+| bbtests | object | `{"enabled":false,"imagePullSecret":"private-registry","scripts":{"additionalVolumeMounts":[{"mountPath":"/yaml","name":"kyverno-policies-bbtest-manifests"},{"mountPath":"/.kube/cache","name":"kyverno-policies-bbtest-kube-cache"}],"additionalVolumes":[{"configMap":{"name":"kyverno-policies-bbtest-manifests"},"name":"kyverno-policies-bbtest-manifests"},{"emptyDir":{},"name":"kyverno-policies-bbtest-kube-cache"}],"envs":{"ENABLED_POLICIES":"{{ $p := list }}{{ range $k, $v := .Values.policies }}{{ if $v.enabled }}{{ $p = append $p $k }}{{ end }}{{ end }}{{ join \" \" $p }}","IMAGE_PULL_SECRET":"{{ .Values.bbtests.imagePullSecret }}"},"image":"registry1.dso.mil/ironbank/opensource/kubernetes/kubectl:v1.33.4","permissions":{"apiGroups":[""],"resources":["configmaps","namespaces"],"verbs":["create","delete","list","get"]}}}` | Reserved values for Big Bang test automation |
 | waitJob.enabled | bool | `true` |  |
 | waitJob.kind | string | `"ClusterRole"` |  |
-| waitJob.scripts.image | string | `"registry1.dso.mil/ironbank/opensource/kubernetes/kubectl:v1.32.8"` |  |
+| waitJob.scripts.image | string | `"registry1.dso.mil/ironbank/opensource/kubernetes/kubectl:v1.33.4"` |  |
 | waitJob.permissions.apiGroups[0] | string | `"kyverno.io"` |  |
 | waitJob.permissions.resources[0] | string | `"clusterpolicies"` |  |
 | waitJob.permissions.resources[1] | string | `"policies"` |  |
