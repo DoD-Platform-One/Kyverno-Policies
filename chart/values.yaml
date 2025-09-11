@@ -167,7 +167,7 @@ policies:
     validationFailureAction: Enforce
 
   # -- Prevent Automounting of Kubernetes API Credentials on Pods and Service Accounts
-  disallow-auto-mount-service-account-token:
+  disallow-auto-mount-service-account-token: 
     enabled: true
     validationFailureAction: Audit
 
@@ -531,7 +531,7 @@ policies:
       #   to: "new.registry.to.use"
 
   # -- List of namespaces to explictly disable mounting the serviceaccount token
-  update-automountserviceaccounttokens-default:
+  update-automountserviceaccounttokens-default: 
     enabled: false
 #   namespaces:
 #     - istio-system
@@ -540,7 +540,7 @@ policies:
   # -- For each namespace provide a list of serviceAccounts to disable automounting their tokens
   # -- as volumes on the pods.
   # -- List pods to explictly enable mounting the serviceaccount token
-  update-automountserviceaccounttokens:
+  update-automountserviceaccounttokens:  
     enabled: false
 #   namespaces:
 #     - namespace: istio-system
@@ -647,7 +647,7 @@ istio:
 bbtests:
   enabled: false
   scripts:
-    image: registry1.dso.mil/ironbank/opensource/kubernetes/kubectl:v1.32.8
+    image: registry1.dso.mil/ironbank/opensource/kubernetes/kubectl:v1.33.4
     permissions:
       apiGroups:
         - ""
@@ -679,7 +679,7 @@ waitJob:
   enabled: true
   kind: ClusterRole
   scripts:
-    image: registry1.dso.mil/ironbank/opensource/kubernetes/kubectl:v1.32.8
+    image: registry1.dso.mil/ironbank/opensource/kubernetes/kubectl:v1.33.4
   permissions:
     apiGroups:
       - kyverno.io
