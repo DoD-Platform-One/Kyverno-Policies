@@ -4,8 +4,16 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 
 ---
 
+## [3.3.4-bb.14] (2025-08-20)
+
+### Fixed
+
+- Fix restrict-capabilities policy to allow for multiple allowed capabilities
+
 ## [3.3.4-bb.13] (2025-09-10)
+
 ### Changed
+
 - gluon updated from 0.8.4 to 0.9.0
 - kubectl updated from v1.32.8 to v1.33.4
 

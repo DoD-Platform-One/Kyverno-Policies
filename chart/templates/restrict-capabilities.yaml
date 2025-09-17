@@ -14,9 +14,11 @@ metadata:
     policies.kyverno.io/severity: {{ default "high" (dig $name "severity" nil .Values.policies) }}
     policies.kyverno.io/subject: Pod
     policies.kyverno.io/description: >-
-      Capabilities permit privileged actions without giving full root access.
-      Adding capabilities beyond the default set must not be allowed. This policy
-      ensures users cannot add additional capabilities beyond the allowed list to a Pod.
+      Adding capabilities is a way for containers in a Pod to request higher levels
+      of ability than those with which they may be provisioned. Many capabilities
+      allow system-level control and should be prevented. This policy checks
+      ephemeralContainers, initContainers, and containers to ensure the only
+      capabilities that are added are those in the allowed list (.values.policies.restrict-capabilities.parameters.allow).
   labels: {{- include "kyverno-policies.labels" . | nindent 4 }}
 spec:
   {{- include "kyverno-policies.webhookTimeoutSeconds" (merge (dict "name" $name) .) | indent 2 }}
@@ -38,8 +40,13 @@ spec:
         spec.initContainers[*].securityContext.capabilities.add, and
         spec.ephemeralContainers[*].securityContext.capabilities.add must be in the allowed list.
       {{- include "kyverno-policies.excludeContainers" (merge (dict "name" $name) .) | nindent 6 }}
-            pattern:
-               =(securityContext):
-                =(capabilities):
-                  =(add): "{{ join " | " (dig $name "parameters" "allow" nil .Values.policies) }}"
+            deny:
+              conditions:
+                all:
+                - key: "{{ "{{" }} element.securityContext.capabilities.add[] {{ "}}" }}"
+                  operator: AnyNotIn
+                  value: 
+                  {{- range (dig $name "parameters" "allow" (list) .Values.policies) }}
+                  - {{ . }}
+                  {{- end }}
 {{- end -}}
