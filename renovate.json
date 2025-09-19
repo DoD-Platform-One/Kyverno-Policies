@@ -44,8 +44,8 @@
     "customManagers": [
         {
             "customType": "regex",
-            "fileMatch": [
-                "^chart/tests/manifests/.*\\.yaml$"
+            "managerFilePatterns": [
+                "/^chart/tests/manifests/.*\\.yaml$/"
             ],
             "matchStrings": [
                 "image:\\s+(?<depName>.+):(?<currentValue>.+)",
@@ -55,8 +55,8 @@
         },
         {
             "customType": "regex",
-            "fileMatch": [
-                "^chart/Chart\\.yaml$"
+            "managerFilePatterns": [
+                "/^chart/Chart\\.yaml$/"
             ],
             "matchStrings": [
                 "image:[^\\S\\r\\n]+(?<depName>.+):(?<currentValue>.+)"
