@@ -678,8 +678,6 @@ bbtests:
 waitJob:
   enabled: true
   kind: ClusterRole
-  scripts:
-    image: registry1.dso.mil/ironbank/opensource/kubernetes/kubectl:v1.33.4
   permissions:
     apiGroups:
       - kyverno.io
