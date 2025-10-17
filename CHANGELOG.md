@@ -4,6 +4,14 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 
 ---
 
+## [3.3.4-bb.15] (2025-10-14)
+
+### Fixed
+
+- Removed image reference for waitjob in values.yaml
+- kubectl updated from v1.33.4 to v1.33.5
+- gluon updated from 0.9.0 to 0.9.5
+
 ## [3.3.4-bb.14] (2025-08-20)
 
 ### Fixed
