@@ -4,6 +4,14 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 
 ---
 
+## [3.3.4-bb.15] (2025-10-23)
+
+### Fixed
+
+- Updated URL references in comments of values.yaml
+- Updated URL references in ServiceAccountTokenHardening.md
+- Updated URL reference in exceptions.md
+
 ## [3.3.4-bb.15] (2025-10-14)
 
 ### Fixed

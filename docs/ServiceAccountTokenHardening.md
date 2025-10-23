@@ -1,4 +1,4 @@
-This document provides information about an [effort](https://repo1.dso.mil/groups/big-bang/-/epics/146) to harden automatic mounting of ServiceAccount tokens.
+This document provides information about an effort to harden automatic mounting of ServiceAccount tokens.
 
 # ServiceAccount Token Background
 
@@ -142,9 +142,7 @@ The mutating Kyverno policy named `update-automountserviceaccounttokens` is leve
 This policy revokes access to the K8s API for Pods utilizing said ServiceAccounts. If a Pod truly requires access to the K8s API (for app functionality), the Pod is added to the `pods:` array of the same mutating policy. This grants the Pod access to the API, and creates a Kyverno PolicyException to prevent an alert.
 ```
 
-# Example Issue and MRs
-
-This is an example issue of hardening the package ArgoCD: <https://repo1.dso.mil/big-bang/bigbang/-/issues/1827>
+# Example MRs
 
 This is the MR for hardening the package via the mutator: <https://repo1.dso.mil/big-bang/bigbang/-/merge_requests/3466>
 

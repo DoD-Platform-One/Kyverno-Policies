@@ -7,7 +7,7 @@ enabled: true
 validationFailureAction: ""
 
 # -- API server behavior if the webhook fails to respond ('Ignore', 'Fail')
-# For more info: https://kyverno.io/docs/writing-policies/policy-settings/
+# For more info: https://kyverno.io/docs/policy-types/cluster-policy/policy-settings/
 failurePolicy: Fail
 
 # -- Policies background mode
@@ -20,7 +20,7 @@ kyvernoVersion: autodetect
 # -- Override all policies' time to wait for admission webhook to respond.  If blank, uses policy setting or default (10).  Range is 1 to 30.
 webhookTimeoutSeconds: 30
 
-# -- Adds an exclusion to all policies.  This is merged with any policy-specific excludes.  See https://kyverno.io/docs/writing-policies/match-exclude for fields.
+# -- Adds an exclusion to all policies.  This is merged with any policy-specific excludes.  See https://kyverno.io/docs/policy-types/cluster-policy/policy-rules/ for fields.
 exclude:
   #Do not want to block anything in kube-system
   any:
@@ -32,7 +32,7 @@ exclude:
 excludeContainers: []
 
 # -- Customize the target Pod controllers for the auto-generated rules. (Eg. `none`, `Deployment`, `DaemonSet,Deployment,StatefulSet`)
-# For more info https://kyverno.io/docs/writing-policies/autogen/.
+# For more info https://kyverno.io/docs/policy-types/cluster-policy/autogen/.
 autogenControllers: "Deployment,ReplicaSet,DaemonSet,StatefulSet"
 
 # -- Additional labels to apply to all policies.
@@ -62,7 +62,7 @@ policyPreconditions: {}
 # webhookTimeoutSecond: can be added to any policy to override the timeout for that policy
 # match: can be added to any policy to completely override selection of resources by the policy
 # exclude: can be added to any policy to add specific exclusions to the policy
-# See https://kyverno.io/docs/writing-policies/match-exclude on how to format match/exclude
+# See https://kyverno.io/docs/policy-types/cluster-policy/policy-rules/ on how to format match/exclude
 
 policies:
   # Keep policies in alphabetical order and name them the same as the .yaml file to help with configuration and troubleshooting
@@ -557,7 +557,7 @@ policies:
 #          - istio-operator-*
 
 
-# -- Adds custom policies.  See https://kyverno.io/docs/writing-policies/.
+# -- Adds custom policies.  See https://kyverno.io/docs/introduction/quick-start/ .
 additionalPolicies:
   # -- Name of the policy.  Addtional policies can be added by adding a key.
   samplePolicy:
@@ -596,7 +596,7 @@ additionalPolicies:
             metadata:
               namespace: "!default"
 
-# -- Adds additional policyExceptions.  See https://kyverno.io/docs/writing-policies/exceptions/
+# -- Adds additional policyExceptions.  See https://kyverno.io/docs/policy-types/validating-policy/#exceptions
 additionalPolicyExceptions:
   # -- Name of the policy.  Addtional policyexceptions can be added by adding a key.
   samplePolicyException:
