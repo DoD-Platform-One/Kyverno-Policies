@@ -10,7 +10,7 @@ Whenever possible, attempt to fix the problem in the resource that is causing th
 
 ## Add a specific exclusion
 
-Each policy has an `exclude` key that can be used to add exceptions to the policy.  Review [Kyverno's exclude documentation](https://kyverno.io/docs/writing-policies/match-exclude/) for details.  It is recommended that your exclusion be as specific as possible.
+Each policy has an `exclude` key that can be used to add exceptions to the policy.  Review [Kyverno's exclude documentation](https://kyverno.io/docs/exceptions/) for details.  It is recommended that your exclusion be as specific as possible.
 
 > Kyverno expands pod policies automatically to pod controllers (i.e. Deployments, Daemonsets, StatefulSets, Jobs, CronJobs).  Exclusions for pods must account for the names of the pod controllers as well.
 
@@ -65,7 +65,7 @@ policies:
           - bar
 ```
 
-> There are other options that can be used to `match` resources like kind, labels, etc.  See [Kyverno's match documentation](https://kyverno.io/docs/writing-policies/match-exclude/) for details.
+> There are other options that can be used to `match` resources like kind, labels, etc.  See [Kyverno's match documentation](https://kyverno.io/docs/exceptions/#policyexceptions-with-cel-expressions) for details.
 
 **Risk**: All resources outside of the specified namespace(s) have the ability to violate the policy.
 
