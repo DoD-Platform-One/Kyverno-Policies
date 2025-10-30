@@ -1,0 +1,12 @@
+# Mutating Policies
+
+Each mutating policy exists to facilitate compliance with corrosponding validating policy. 
+
+|Mutating Policies | Corresponding Validating Policies|
+|------------------|--------------------|
+| [`update-automountserviceaccounttokens-default`](https://repo1.dso.mil/big-bang/product/packages/kyverno-policies/-/blob/main/chart/templates/update-automountserviceaccounttokens-default.yaml?ref_type=heads) | [`disallow-auto-mount-service-account-token`](https://repo1.dso.mil/big-bang/product/packages/kyverno-policies/-/blob/main/chart/templates/disallow-auto-mount-service-account-token)|
+| [`update-automountserviceaccounttokens`](https://repo1.dso.mil/big-bang/product/packages/kyverno-policies/-/blob/main/chart/templates/update-automountserviceaccounttokens.yaml?ref_type=heads) |[`disallow-auto-mount-service-account-token`](https://repo1.dso.mil/big-bang/product/packages/kyverno-policies/-/blob/main/chart/templates/disallow-auto-mount-service-account-token) |
+| [`update-image-pull-policy`](https://repo1.dso.mil/big-bang/product/packages/kyverno-policies/-/blob/main/chart/templates/update-image-pull-policy.yaml?ref_type=heads) | [`disallow-image-tags`](https://repo1.dso.mil/big-bang/product/packages/kyverno-policies/-/blob/main/chart/templates/disallow-image-tags) |
+| [`update-image-registry`](https://repo1.dso.mil/big-bang/product/packages/kyverno-policies/-/blob/main/chart/templates/update-image-registry.yaml?ref_type=heads) | [`restrict-image-registries`](https://repo1.dso.mil/big-bang/product/packages/kyverno-policies/-/blob/main/chart/templates/restrict-image-registries) |
+| [`add-default-capability-drop`](https://repo1.dso.mil/big-bang/product/packages/kyverno-policies/-/blob/main/chart/templates/add-default-capability-drop.yaml?ref_type=heads) | [`require-drop-all-capabilities`](https://repo1.dso.mil/big-bang/product/packages/kyverno-policies/-/blob/main/chart/templates/require-drop-all-capabilities) |
+| [`add-default-security-context`](https://repo1.dso.mil/big-bang/product/packages/kyverno-policies/-/blob/main/chart/templates/add-default-securitycontext.yaml?ref_type=heads) | [`require-non-root-user`](https://repo1.dso.mil/big-bang/product/packages/kyverno-policies/-/blob/main/chart/templates/require-non-root-user), [`require-non-root-group`](https://repo1.dso.mil/big-bang/product/packages/kyverno-policies/-/blob/main/chart/templates/require-non-root-group)|
