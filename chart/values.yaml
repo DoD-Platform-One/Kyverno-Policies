@@ -647,7 +647,7 @@ istio:
 bbtests:
   enabled: false
   scripts:
-    image: registry1.dso.mil/ironbank/opensource/kubernetes/kubectl:v1.33.4
+    image: registry1.dso.mil/ironbank/opensource/kubernetes/kubectl:v1.34
     permissions:
       apiGroups:
         - ""

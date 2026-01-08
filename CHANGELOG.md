@@ -4,7 +4,14 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 
 ---
 
-## [3.3.4-bb.15] (2025-10-23)
+## [3.3.4-bb.17] (2026-01-07)
+
+### Fixed
+
+- kubectl updated from v1.33.5 to v1.34
+- gluon updated from 0.9.5 to 0.9.7
+
+## [3.3.4-bb.16] (2025-10-23)
 
 ### Fixed
 
