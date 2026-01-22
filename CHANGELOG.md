@@ -4,6 +4,12 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 
 ---
 
+## [3.3.4-bb.18] (2026-01-21)
+
+### Fixed
+
+- Fix bug in update-image-registry mutating policy so that the pods with multiple container images are not mangled.
+
 ## [3.3.4-bb.17] (2026-01-07)
 
 ### Fixed
