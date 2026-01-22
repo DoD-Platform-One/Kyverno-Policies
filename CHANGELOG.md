@@ -4,6 +4,12 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 
 ---
 
+## [3.3.4-bb.19] (2026-01-22)
+
+### Changed
+
+- Updated ubi9-minimal from 9.6 to 9.7
+
 ## [3.3.4-bb.18] (2026-01-21)
 
 ### Fixed

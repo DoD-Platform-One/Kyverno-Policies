@@ -14,24 +14,28 @@
 
 6. Open an MR in "Draft" status ( or the Renovate created MR ) and validate that CI passes. This will perform a number of smoke tests against the package, but it is good to manually deploy to test some things that CI doesn't. Follow the steps below for manual testing.
 
-7. Test the package in a Big Bang pipeline using the instructions detailed here:  [test-package-against-bb](https://repo1.dso.mil/big-bang/bigbang/-/blob/master/docs/developer/test-package-against-bb.md?ref_type=heads) and modify [test-values](https://repo1.dso.mil/big-bang/bigbang/-/blob/master/tests/test-values.yaml?ref_type=heads) with the settings from the Helm chart below:
+7. Test the package in a Big Bang pipeline using the instructions detailed here:  [test-package-against-bb](https://repo1.dso.mil/big-bang/bigbang/-/blob/master/docs/community/development/test-package-against-bb.md?ref_type=heads) and modify [test-values](https://repo1.dso.mil/big-bang/bigbang/-/blob/master/tests/test-values.yaml?ref_type=heads) with the settings from the Helm chart below:
 
 Deploy Kyverno Policies using the Helm chart ( pointing to your branch )
 
 ```yaml
-    istioOperator:
-    enabled: true
-    istio:
-    enabled: true
-    monitoring:
-    enabled: true
-    kyverno:
-    enabled: true
-    kyvernoPolicies:
-      git:
-        tag: null
-        branch: "renovate/ironbank" # Or your branch
-      enabled: true
+istioCRDs:
+  enabled: true
+istiod:
+  enabled: true
+istioGateway:
+  enabled: true
+monitoring:
+  enabled: true
+kyverno:
+  enabled: true
+kyvernoReporter:
+  enabled: true
+kyvernoPolicies:
+  enabled: true
+  git:
+    tag: null
+    branch: "renovate/ironbank" # Or your branch
 ```
 
 You will want to install with:
