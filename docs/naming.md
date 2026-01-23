@@ -40,7 +40,8 @@ When possible, objects generated should be parameterized in `values.yaml` under 
 
 Mutate policy names should start with one of the following:
 
-- `update-`: policies that adds or updates a setting
+- `add-`: policies that add a setting
+- `update-`: policies that update a setting
 
 When possible, the values that the policy is updating from and to should be parameterized.  Use the following names for the parameters:
 
