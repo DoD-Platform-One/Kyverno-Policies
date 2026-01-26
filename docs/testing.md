@@ -24,17 +24,23 @@ When a helm test is started, the pod `kyverno-policies-script-test` will run wit
 
 ## Local Testing
 
-1. Deploy Kyverno using the Kyverno Helm chart
-1. Deploy Kyverno Policies using the Helm chart and test values:
-
+1. Deploy the bigbang chart to your k3d dev cluster with this project's [tests/test-values.yaml](../tests/test-values.yaml) overlay.
     ```shell
-    helm upgrade -i -n kyverno --create-namespace -f tests/test-values.yaml kyverno-policies chart
+    helm upgrade -i bigbang ~/git/repo1/bigbang/chart \
+      -n bigbang \
+      --create-namespace \
+      --set registryCredentials.username=${REGISTRY1_USERNAME} \
+      --set registryCredentials.password="${REGISTRY1_TOKEN}" \
+      -f https://repo1.dso.mil/big-bang/bigbang/-/raw/master/chart/ingress-certs.yaml \
+      -f https://repo1.dso.mil/big-bang/bigbang/-/raw/master/docs/reference/configs/example/policy-overrides-k3d.yaml \
+      -f https://repo1.dso.mil/big-bang/bigbang/-/raw/master/tests/test-values.yaml \
+      -f https://repo1.dso.mil/big-bang/product/packages/kyverno-policies/-/raw/main/tests/test-values.yaml
     ```
 
 1. Run Helm tests
 
     ```shell
-    helm test -n kyverno kyverno-policies
+    helm test -n bigbang kyverno-kyverno-policies
     ```
 
 ## Test Values
