@@ -53,10 +53,10 @@ Validates packages from the latest BigBang release against the specified Kyverno
 Requires the following environment vars to be set: GITLAB_TOKEN, KUBECONFIG, REGISTRY1_USER, REGISTRY1_PASS
 Note: This tool assumes that you have already run the 'k3d-dev.sh' script with nothing else installed afterwards, including flux and BigBang.
 
-Usage: ./bb_validate.sh [-p <policy>][-c <chart>][-h]
+Usage: ./bb-validate.sh [-p <policy>][-c <chart>][-h]
 
 Example: Lint a specific chart against a specific policy:
-        ./bb_validate.sh -p require-image-signature -c elasticsearch
+        ./bb-validate.sh -p require-image-signature -c elasticsearch-kibana
 ```
 
 ## Policy Reports
