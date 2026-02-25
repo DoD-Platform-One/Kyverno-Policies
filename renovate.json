@@ -1,71 +1,75 @@
 {
-    "baseBranches": [
-        "main"
-    ],
-    "configWarningReuseIssue": false,
-    "dependencyDashboard": true,
-    "dependencyDashboardTitle": "Renovate: Upgrade Kyverno Policy Images",
-    "draftPR": true,
-    "enabledManagers": [
-        "helmv3",
-        "helm-values",
-        "custom.regex"
-    ],
-    "ignorePaths": [
-        "chart/charts/**"
-    ],
-    "labels": [
-        "kyverno",
-        "renovate"
-    ],
-    "packageRules": [
-        {
-            "matchDatasources": [
-                "docker"
-            ],
-            "groupName": "Ironbank",
-            "registryUrls": [
-                "https://registry1.dso.mil"
-            ],
-            "postUpgradeTasks": {
-                "commands": [
-                    "bump-chart-yaml",
-                    "regenerate-helm-docs",
-                    "bump-changelog '- {{{replace 'registry1.dso.mil/' '' depName}}} updated from {{{currentVersion}}} to {{{newVersion}}}'"
-                ],
-                "fileFilters": [
-                    "chart/Chart.yaml",
-                    "README.md",
-                    "CHANGELOG.md"
-                ]
-            }
-        }
-    ],
-    "customManagers": [
-        {
-            "customType": "regex",
-            "managerFilePatterns": [
-                "/^chart/tests/manifests/.*\\.yaml$/"
-            ],
-            "matchStrings": [
-                "image:\\s+(?<depName>.+):(?<currentValue>.+)",
-                "kyverno-policies-bbtest/value:\\s+(?<depName>.+):(?<currentValue>.+)"
-            ],
-            "datasourceTemplate": "docker"
-        },
-        {
-            "customType": "regex",
-            "managerFilePatterns": [
-                "/^chart/Chart\\.yaml$/"
-            ],
-            "matchStrings": [
-                "image:[^\\S\\r\\n]+(?<depName>.+):(?<currentValue>.+)"
-            ],
-            "datasourceTemplate": "docker"
-        }
-    ],
-    "separateMajorMinor": false,
-    "postUpdateOptions": [
-        "helmUpdateSubChartArchives"
-    ]
+  "baseBranches": [
+    "main"
+  ],
+  "dependencyDashboard": true,
+  "dependencyDashboardTitle": "Renovate: Update Kyverno Policies Dependencies",
+  "draftPR": true,
+  "labels": [
+    "kyvernoPolicies",
+    "renovate",
+    "kind::maintenance"
+  ],
+  "enabledManagers": [
+    "helmv3",
+    "custom.regex"
+  ],
+  "separateMajorMinor": false,
+  "postUpdateOptions": [
+    "helmUpdateSubChartArchives"
+  ],
+  "packageRules": [
+    {
+      "matchDatasources": [
+        "docker",
+        "helm"
+      ],
+      "groupName": "Kyverno Policies",
+      "postUpgradeTasks": {
+        "commands": [
+          "bump-chart-yaml",
+          "bump-changelog '{{#each upgrades}}- {{depName}} {{currentVersion}} -> {{newVersion}}\\n{{/each}}'",
+          "regenerate-helm-docs"
+        ],
+        "fileFilters": [
+          "chart/Chart.yaml",
+          "README.md",
+          "CHANGELOG.md"
+        ]
+      }
+    }
+  ],
+  "customManagers": [
+    {
+      "customType": "regex",
+      "managerFilePatterns": [
+        "/^chart/tests/manifests/.*\\.yaml$/"
+      ],
+      "matchStrings": [
+        "image:\\s+(?<depName>[^@\\s]+):(?<currentValue>\\S+)",
+        "kyverno-policies-bbtest/value:\\s+(?<depName>[^@\\s]+):(?<currentValue>\\S+)"
+      ],
+      "datasourceTemplate": "docker"
+    },
+    {
+      "customType": "regex",
+      "managerFilePatterns": [
+        "/^chart/Chart\\.yaml$/"
+      ],
+      "matchStrings": [
+        "image:[^\\S\\r\\n]+(?<depName>.+):(?<currentValue>.+)"
+      ],
+      "datasourceTemplate": "docker"
+    },
+    {
+      "customType": "regex",
+      "managerFilePatterns": [
+        "/^chart/values\\.yaml$/"
+      ],
+      "matchStrings": [
+        "image:\\s+(?<depName>.+):(?<currentValue>.+)"
+      ],
+      "datasourceTemplate": "docker"
+    }
+  ]
 }
