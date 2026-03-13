@@ -99,3 +99,69 @@ Annotations are required for the script to know how to test each policy:
 - `kyverno-policies-bbtest/namespace`: If the mutation is not on the annotated resource and the mutated resource is in a different namespace than the annotated resource, the namespace to find the mutated resource.
 
 > If `expected` is set to `ignore`, `key` and `value` will still be used to validate the result.  The test will check that `key` does **NOT** exist or that the key's value does **NOT** match `value`.  Leaving `key` blank will result in a failure.
+
+## VPol / CEL Policy Testing (local only)
+
+> **Note:** These test harnesses currently run locally only. We intend to wire them into gluon-run `helm test` jobs in CI in the near future — tracked in [#213](https://repo1.dso.mil/big-bang/product/packages/kyverno-policies/-/issues/213). Until then, run them manually before pushing VPol changes.
+
+The `celPoliciesBeta` ValidatingPolicy templates have three layers of testing, each catching different classes of bugs.
+
+### Helm unit tests (`chart/unittests/`)
+
+Fast, offline tests that verify Helm template rendering — values precedence, helper output, enable guards, and YAML structure. No cluster required.
+
+```shell
+# Run all VPol unit tests
+helm unittest chart/ -f 'unittests/*-vpol_test.yaml'
+
+# Run tests for a single policy
+helm unittest chart/ -f 'unittests/disallow-privileged-containers-vpol_test.yaml'
+```
+
+Test files follow the naming convention `<policy-name>-vpol_test.yaml`. They use the [helm-unittest](https://github.com/helm-unittest/helm-unittest) plugin.
+
+### Kyverno CLI tests (`tests/scripts/vpol-kyverno-test.sh`)
+
+Offline policy evaluation using the `kyverno test` CLI. Renders VPol templates via Helm, then runs them against test fixtures to verify that CEL expressions admit good resources and reject bad ones — no cluster required.
+
+```shell
+tests/scripts/vpol-kyverno-test.sh
+```
+
+Each policy's test fixtures live under `tests/vpol/<category>/<policy-name>/`:
+
+```
+tests/vpol/pod-security-vpol/baseline/disallow-privileged-containers/
+├── .kyverno-test/
+│   ├── kyverno-test.yaml   # kyverno test manifest (names the policy, lists resources + expected results)
+│   └── resource.yaml       # test pod/resource fixtures
+└── .chainsaw-test/
+    └── ...                  # (see below)
+```
+
+The script auto-discovers `.kyverno-test/` directories, renders `policy.yaml` from Helm, runs the test, and cleans up the rendered file.
+
+### Chainsaw integration tests (`tests/scripts/vpol-chainsaw-test.sh`)
+
+Live cluster tests using [chainsaw](https://kyverno.github.io/chainsaw/). These apply the rendered VPol to a real cluster, patch it to `Deny`, then create good and bad pods to verify admission webhook behavior end-to-end.
+
+```shell
+# Requires: a cluster with Kyverno installed, no conflicting enforcing policies
+tests/scripts/vpol-chainsaw-test.sh
+```
+
+Chainsaw test fixtures live alongside the kyverno tests in `.chainsaw-test/`:
+
+```
+.chainsaw-test/
+├── chainsaw-test.yaml       # test steps (apply policy, assert ready, create pods)
+├── policy-ready.yaml        # assertion that the VPol reaches Ready state
+├── pod-good.yaml            # pods that should be admitted
+├── pod-bad.yaml             # pods that should be denied
+├── podcontroller-good.yaml  # deployments/daemonsets that should be admitted (autogen)
+└── podcontroller-bad.yaml   # deployments/daemonsets that should be denied (autogen)
+```
+
+Like the kyverno test script, `policy.yaml` is rendered from Helm at runtime and cleaned up afterward. The chainsaw test applies it to the cluster, patches `validationActions: [Deny]`, waits for the webhook to register, then exercises the admit/deny cases.
+
+**Cluster requirements:** The test cluster should have Kyverno installed but should not have other enforcing policies that would reject the test pods (e.g., `restrict-image-registries`, `require-image-signature`). A minimal k3d cluster with only Kyverno is ideal.

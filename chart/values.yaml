@@ -557,6 +557,34 @@ policies:
 #          - istio-operator-*
 
 
+# -- CEL-based ValidatingPolicy replacements (Kyverno 1.17+). Beta: schema may change.
+# -- These run alongside existing ClusterPolicies during migration.
+# -- Each policy must be individually enabled.
+celPoliciesBeta:
+  # -- Webhook failure behavior ('Ignore', 'Fail'). Empty = auto-derive from validationFailureAction.
+  failurePolicy: ""
+  # -- Background scanning (true/false). Empty = falls through to top-level .Values.background.
+  background: ""
+  # -- Webhook timeout 1-30s. Empty = falls through to top-level .Values.webhookTimeoutSeconds.
+  webhookTimeoutSeconds: ""
+  # -- Autogen controller list. Same comma-separated CamelCase format as top-level.
+  # Empty = falls through to top-level .Values.autogenControllers.
+  autogenControllers: ""
+  # -- Namespace names to exclude from all celPoliciesBeta policies.
+  # -- CEL equivalent of top-level .Values.exclude.any[].resources.namespaces.
+  # -- Only covers namespace-name exclusions. For complex exclusions (resource names,
+  # -- subjects, roles), use per-policy matchConditions with CEL expressions.
+  excludeNamespaces: []
+  # -- Container names to exclude from validation in all celPoliciesBeta policies.
+  # -- Merged with per-policy excludeContainers. CEL equivalent of top-level .Values.excludeContainers.
+  excludeContainers: []
+
+  # -- Prevent containers that run as privileged (VPol)
+  disallow-privileged-containers:
+    enabled: false
+    # -- Empty string falls through to the global validationFailureAction
+    validationFailureAction: ""
+
 # -- Adds custom policies.  See https://kyverno.io/docs/introduction/quick-start/ .
 additionalPolicies:
   # -- Name of the policy.  Addtional policies can be added by adding a key.

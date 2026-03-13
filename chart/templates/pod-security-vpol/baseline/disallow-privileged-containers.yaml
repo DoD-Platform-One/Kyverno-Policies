@@ -1,0 +1,55 @@
+{{- $name := "disallow-privileged-containers" }}
+{{- if and .Values.enabled (dig $name "enabled" false .Values.celPoliciesBeta) }}
+apiVersion: policies.kyverno.io/v1
+kind: ValidatingPolicy
+metadata:
+  name: {{ $name }}
+  annotations:
+    policies.kyverno.io/title: Disallow Privileged Containers
+    policies.kyverno.io/category: Pod Security Standards (Baseline)
+    policies.kyverno.io/severity: {{ default "high" (dig $name "severity" nil .Values.celPoliciesBeta) }}
+    policies.kyverno.io/subject: Pod
+    policies.kyverno.io/description: >-
+      Privileged mode disables most security mechanisms and must not be allowed. This policy
+      ensures Pods do not call for privileged mode.
+    policies.bigbang.dev/lifecycle: beta
+    policies.bigbang.dev/origin: https://github.com/kyverno/policies/blob/main/pod-security-vpol/baseline/disallow-privileged-containers/disallow-privileged-containers.yaml
+  labels: {{- include "kyverno-policies.labels" . | nindent 4 }}
+spec:
+  {{- include "bb-kyverno-policies.validationActions" (merge (dict "name" $name) .) | indent 2 }}
+  failurePolicy: {{ include "bb-kyverno-policies.vpol-failurePolicy" (merge (dict "name" $name) .) }}
+  {{- include "bb-kyverno-policies.vpol-webhookTimeoutSeconds" (merge (dict "name" $name) .) | indent 2 }}
+  {{- include "bb-kyverno-policies.vpol-autogenControllers" (merge (dict "name" $name) .) | indent 2 }}
+  evaluation:
+    background:
+      enabled: {{ include "bb-kyverno-policies.vpol-background" (merge (dict "name" $name) .) }}
+  {{- if dig $name "matchConstraints" nil .Values.celPoliciesBeta }}
+  matchConstraints:
+    {{- toYaml (dig $name "matchConstraints" nil .Values.celPoliciesBeta) | nindent 4 }}
+  {{- else }}
+  matchConstraints:
+    resourceRules:
+      - apiGroups:   [""]
+        apiVersions: ["v1"]
+        operations:  ["CREATE", "UPDATE"]
+        resources:   ["pods"]
+  {{- end }}
+  {{- $nsExclude := include "bb-kyverno-policies.vpol-excludeNamespaces" (merge (dict "name" $name) .) -}}
+  {{- $userConditions := dig $name "matchConditions" nil .Values.celPoliciesBeta -}}
+  {{- if or $nsExclude $userConditions }}
+  matchConditions:
+    {{- if $nsExclude }}
+    {{- $nsExclude | nindent 4 }}
+    {{- end }}
+    {{- with $userConditions }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+  {{- end }}
+  variables:
+  - name: allContainers
+    expression: >-
+      {{ include "bb-kyverno-policies.vpol-allContainers" (merge (dict "name" $name) .) }}
+  validations:
+    - expression: "variables.allContainers.all(container, container.?securityContext.?privileged.orValue(false) == false)"
+      message: "Privileged mode is disallowed. All containers must set the securityContext.privileged field to `false` or unset the field."
+{{- end -}}

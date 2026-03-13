@@ -1,0 +1,614 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/helm-unittest/helm-unittest/main/schema/helm-testsuite.json
+suite: disallow-privileged-containers ValidatingPolicy
+templates:
+  - templates/pod-security-vpol/baseline/disallow-privileged-containers.yaml
+capabilities:
+  apiVersions:
+    - policies.kyverno.io/v1
+tests:
+  # ── Enable guard ──────────────────────────────────────────────────────
+
+  - it: should not render when celPoliciesBeta is disabled (default)
+    asserts:
+      - hasDocuments:
+          count: 0
+
+  - it: should not render when global enabled is false
+    set:
+      enabled: false
+      celPoliciesBeta:
+        disallow-privileged-containers:
+          enabled: true
+    asserts:
+      - hasDocuments:
+          count: 0
+
+  - it: should render a ValidatingPolicy when enabled
+    set:
+      enabled: true
+      celPoliciesBeta:
+        disallow-privileged-containers:
+          enabled: true
+    asserts:
+      - isKind:
+          of: ValidatingPolicy
+      - isAPIVersion:
+          of: policies.kyverno.io/v1
+      - equal:
+          path: metadata.name
+          value: disallow-privileged-containers
+
+  # ── CEL validation expression ─────────────────────────────────────────
+
+  - it: should contain the CEL privileged-mode validation
+    set:
+      enabled: true
+      celPoliciesBeta:
+        disallow-privileged-containers:
+          enabled: true
+    asserts:
+      - contains:
+          path: spec.validations
+          content:
+            expression: "variables.allContainers.all(container, container.?securityContext.?privileged.orValue(false) == false)"
+            message: "Privileged mode is disallowed. All containers must set the securityContext.privileged field to `false` or unset the field."
+
+  # ── severity annotation ───────────────────────────────────────────────
+
+  - it: "severity: defaults to high"
+    set:
+      enabled: true
+      celPoliciesBeta:
+        disallow-privileged-containers:
+          enabled: true
+    asserts:
+      - equal:
+          path: metadata.annotations["policies.kyverno.io/severity"]
+          value: "high"
+
+  - it: "severity: per-policy override"
+    set:
+      enabled: true
+      celPoliciesBeta:
+        disallow-privileged-containers:
+          enabled: true
+          severity: medium
+    asserts:
+      - equal:
+          path: metadata.annotations["policies.kyverno.io/severity"]
+          value: "medium"
+
+  # ── validationActions ─────────────────────────────────────────────────
+
+  - it: "validationActions: defaults to Audit when no validationFailureAction set"
+    set:
+      enabled: true
+      celPoliciesBeta:
+        disallow-privileged-containers:
+          enabled: true
+    asserts:
+      - equal:
+          path: spec.validationActions
+          value: [Audit]
+
+  - it: "validationActions: Enforce maps to Deny (per-policy)"
+    set:
+      enabled: true
+      celPoliciesBeta:
+        disallow-privileged-containers:
+          enabled: true
+          validationFailureAction: Enforce
+    asserts:
+      - equal:
+          path: spec.validationActions
+          value: [Deny]
+
+  - it: "validationActions: Warn maps to Warn (per-policy)"
+    set:
+      enabled: true
+      celPoliciesBeta:
+        disallow-privileged-containers:
+          enabled: true
+          validationFailureAction: Warn
+    asserts:
+      - equal:
+          path: spec.validationActions
+          value: [Warn]
+
+  - it: "validationActions: Audit maps to Audit (per-policy)"
+    set:
+      enabled: true
+      celPoliciesBeta:
+        disallow-privileged-containers:
+          enabled: true
+          validationFailureAction: Audit
+    asserts:
+      - equal:
+          path: spec.validationActions
+          value: [Audit]
+
+  - it: "validationActions: falls through to global validationFailureAction"
+    set:
+      enabled: true
+      validationFailureAction: Enforce
+      celPoliciesBeta:
+        disallow-privileged-containers:
+          enabled: true
+    asserts:
+      - equal:
+          path: spec.validationActions
+          value: [Deny]
+
+  - it: "validationActions: per-policy overrides global validationFailureAction"
+    set:
+      enabled: true
+      validationFailureAction: Enforce
+      celPoliciesBeta:
+        disallow-privileged-containers:
+          enabled: true
+          validationFailureAction: Audit
+    asserts:
+      - equal:
+          path: spec.validationActions
+          value: [Audit]
+
+  # ── failurePolicy ────────────────────────────────────────────────────
+
+  - it: "failurePolicy: defaults to top-level Values.failurePolicy when no action set"
+    set:
+      enabled: true
+      failurePolicy: Fail
+      celPoliciesBeta:
+        disallow-privileged-containers:
+          enabled: true
+    asserts:
+      - equal:
+          path: spec.failurePolicy
+          value: Fail
+
+  - it: "failurePolicy: auto-derives Ignore when action is Audit"
+    set:
+      enabled: true
+      validationFailureAction: Audit
+      celPoliciesBeta:
+        disallow-privileged-containers:
+          enabled: true
+    asserts:
+      - equal:
+          path: spec.failurePolicy
+          value: Ignore
+
+  - it: "failurePolicy: auto-derives Ignore when action is Warn"
+    set:
+      enabled: true
+      validationFailureAction: Warn
+      celPoliciesBeta:
+        disallow-privileged-containers:
+          enabled: true
+    asserts:
+      - equal:
+          path: spec.failurePolicy
+          value: Ignore
+
+  - it: "failurePolicy: Enforce does not auto-derive, falls through to Values.failurePolicy"
+    set:
+      enabled: true
+      validationFailureAction: Enforce
+      failurePolicy: Fail
+      celPoliciesBeta:
+        disallow-privileged-containers:
+          enabled: true
+    asserts:
+      - equal:
+          path: spec.failurePolicy
+          value: Fail
+
+  - it: "failurePolicy: celPoliciesBeta global overrides auto-derive"
+    set:
+      enabled: true
+      validationFailureAction: Audit
+      celPoliciesBeta:
+        failurePolicy: Fail
+        disallow-privileged-containers:
+          enabled: true
+    asserts:
+      - equal:
+          path: spec.failurePolicy
+          value: Fail
+
+  - it: "failurePolicy: per-policy overrides celPoliciesBeta global"
+    set:
+      enabled: true
+      validationFailureAction: Audit
+      celPoliciesBeta:
+        failurePolicy: Fail
+        disallow-privileged-containers:
+          enabled: true
+          failurePolicy: Ignore
+    asserts:
+      - equal:
+          path: spec.failurePolicy
+          value: Ignore
+
+  # ── background ────────────────────────────────────────────────────────
+
+  - it: "background: defaults to top-level Values.background (true)"
+    set:
+      enabled: true
+      background: true
+      celPoliciesBeta:
+        disallow-privileged-containers:
+          enabled: true
+    asserts:
+      - equal:
+          path: spec.evaluation.background.enabled
+          value: true
+
+  - it: "background: celPoliciesBeta global overrides top-level"
+    set:
+      enabled: true
+      background: true
+      celPoliciesBeta:
+        background: false
+        disallow-privileged-containers:
+          enabled: true
+    asserts:
+      - equal:
+          path: spec.evaluation.background.enabled
+          value: false
+
+  - it: "background: per-policy overrides celPoliciesBeta global"
+    set:
+      enabled: true
+      background: true
+      celPoliciesBeta:
+        background: true
+        disallow-privileged-containers:
+          enabled: true
+          background: false
+    asserts:
+      - equal:
+          path: spec.evaluation.background.enabled
+          value: false
+
+  # ── webhookTimeoutSeconds ─────────────────────────────────────────────
+
+  - it: "webhookTimeoutSeconds: defaults to top-level value (30)"
+    set:
+      enabled: true
+      webhookTimeoutSeconds: 30
+      celPoliciesBeta:
+        disallow-privileged-containers:
+          enabled: true
+    asserts:
+      - equal:
+          path: spec.webhookConfiguration.timeoutSeconds
+          value: 30
+
+  - it: "webhookTimeoutSeconds: celPoliciesBeta global overrides top-level"
+    set:
+      enabled: true
+      webhookTimeoutSeconds: 30
+      celPoliciesBeta:
+        webhookTimeoutSeconds: 20
+        disallow-privileged-containers:
+          enabled: true
+    asserts:
+      - equal:
+          path: spec.webhookConfiguration.timeoutSeconds
+          value: 20
+
+  - it: "webhookTimeoutSeconds: per-policy overrides celPoliciesBeta global"
+    set:
+      enabled: true
+      webhookTimeoutSeconds: 30
+      celPoliciesBeta:
+        webhookTimeoutSeconds: 20
+        disallow-privileged-containers:
+          enabled: true
+          webhookTimeoutSeconds: 15
+    asserts:
+      - equal:
+          path: spec.webhookConfiguration.timeoutSeconds
+          value: 15
+
+  # ── autogenControllers ────────────────────────────────────────────────
+
+  - it: "autogenControllers: defaults to top-level (4 controllers)"
+    set:
+      enabled: true
+      autogenControllers: "Deployment,ReplicaSet,DaemonSet,StatefulSet"
+      celPoliciesBeta:
+        disallow-privileged-containers:
+          enabled: true
+    asserts:
+      - equal:
+          path: spec.autogen.podControllers.controllers
+          value:
+            - deployments
+            - replicasets
+            - daemonsets
+            - statefulsets
+
+  - it: "autogenControllers: none suppresses autogen block"
+    set:
+      enabled: true
+      autogenControllers: "Deployment,ReplicaSet,DaemonSet,StatefulSet"
+      celPoliciesBeta:
+        disallow-privileged-containers:
+          enabled: true
+          autogenControllers: none
+    asserts:
+      - notExists:
+          path: spec.autogen
+
+  - it: "autogenControllers: celPoliciesBeta global overrides top-level"
+    set:
+      enabled: true
+      autogenControllers: "Deployment,ReplicaSet,DaemonSet,StatefulSet"
+      celPoliciesBeta:
+        autogenControllers: "Deployment,DaemonSet"
+        disallow-privileged-containers:
+          enabled: true
+    asserts:
+      - equal:
+          path: spec.autogen.podControllers.controllers
+          value:
+            - deployments
+            - daemonsets
+
+  - it: "autogenControllers: per-policy overrides celPoliciesBeta global"
+    set:
+      enabled: true
+      autogenControllers: "Deployment,ReplicaSet,DaemonSet,StatefulSet"
+      celPoliciesBeta:
+        autogenControllers: "Deployment,DaemonSet"
+        disallow-privileged-containers:
+          enabled: true
+          autogenControllers: "CronJob,Job"
+    asserts:
+      - equal:
+          path: spec.autogen.podControllers.controllers
+          value:
+            - cronjobs
+            - jobs
+
+  - it: "autogenControllers: includes all 6 controller types"
+    set:
+      enabled: true
+      celPoliciesBeta:
+        disallow-privileged-containers:
+          enabled: true
+          autogenControllers: "Deployment,ReplicaSet,DaemonSet,StatefulSet,Job,CronJob"
+    asserts:
+      - equal:
+          path: spec.autogen.podControllers.controllers
+          value:
+            - deployments
+            - replicasets
+            - daemonsets
+            - statefulsets
+            - jobs
+            - cronjobs
+
+  # ── matchConstraints ──────────────────────────────────────────────────
+
+  - it: "matchConstraints: defaults to pods v1 CREATE/UPDATE"
+    set:
+      enabled: true
+      celPoliciesBeta:
+        disallow-privileged-containers:
+          enabled: true
+    asserts:
+      - equal:
+          path: spec.matchConstraints.resourceRules
+          value:
+            - apiGroups: [""]
+              apiVersions: ["v1"]
+              operations: ["CREATE", "UPDATE"]
+              resources: ["pods"]
+
+  - it: "matchConstraints: per-policy override replaces default"
+    set:
+      enabled: true
+      celPoliciesBeta:
+        disallow-privileged-containers:
+          enabled: true
+          matchConstraints:
+            resourceRules:
+              - apiGroups: ["apps"]
+                apiVersions: ["v1"]
+                operations: ["CREATE"]
+                resources: ["deployments"]
+    asserts:
+      - equal:
+          path: spec.matchConstraints.resourceRules
+          value:
+            - apiGroups: ["apps"]
+              apiVersions: ["v1"]
+              operations: ["CREATE"]
+              resources: ["deployments"]
+
+  # ── matchConditions ───────────────────────────────────────────────────
+
+  - it: "matchConditions: not present by default"
+    set:
+      enabled: true
+      celPoliciesBeta:
+        disallow-privileged-containers:
+          enabled: true
+    asserts:
+      - notExists:
+          path: spec.matchConditions
+
+  - it: "matchConditions: renders when set"
+    set:
+      enabled: true
+      celPoliciesBeta:
+        disallow-privileged-containers:
+          enabled: true
+          matchConditions:
+            - name: exclude-system
+              expression: "!object.metadata.namespace.startsWith('kube-')"
+    asserts:
+      - equal:
+          path: spec.matchConditions
+          value:
+            - name: exclude-system
+              expression: "!object.metadata.namespace.startsWith('kube-')"
+
+  # ── excludeNamespaces ────────────────────────────────────────────────
+
+  - it: "excludeNamespaces: no matchConditions when excludeNamespaces not set"
+    set:
+      enabled: true
+      celPoliciesBeta:
+        disallow-privileged-containers:
+          enabled: true
+    asserts:
+      - notExists:
+          path: spec.matchConditions
+
+  - it: "excludeNamespaces: global generates matchCondition"
+    set:
+      enabled: true
+      celPoliciesBeta:
+        excludeNamespaces:
+          - kube-system
+        disallow-privileged-containers:
+          enabled: true
+    asserts:
+      - contains:
+          path: spec.matchConditions
+          content:
+            name: exclude-namespaces
+            expression: '!(object.metadata.namespace in ["kube-system"])'
+
+  - it: "excludeNamespaces: per-policy generates matchCondition"
+    set:
+      enabled: true
+      celPoliciesBeta:
+        disallow-privileged-containers:
+          enabled: true
+          excludeNamespaces:
+            - istio-system
+    asserts:
+      - contains:
+          path: spec.matchConditions
+          content:
+            name: exclude-namespaces
+            expression: '!(object.metadata.namespace in ["istio-system"])'
+
+  - it: "excludeNamespaces: merges global + per-policy, deduplicates"
+    set:
+      enabled: true
+      celPoliciesBeta:
+        excludeNamespaces:
+          - kube-system
+          - istio-system
+        disallow-privileged-containers:
+          enabled: true
+          excludeNamespaces:
+            - istio-system
+            - flux-system
+    asserts:
+      - contains:
+          path: spec.matchConditions
+          content:
+            name: exclude-namespaces
+            expression: '!(object.metadata.namespace in ["kube-system","istio-system","flux-system"])'
+
+  - it: "excludeNamespaces: coexists with user-supplied matchConditions"
+    set:
+      enabled: true
+      celPoliciesBeta:
+        excludeNamespaces:
+          - kube-system
+        disallow-privileged-containers:
+          enabled: true
+          matchConditions:
+            - name: custom-check
+              expression: "object.metadata.name != 'skip-me'"
+    asserts:
+      - contains:
+          path: spec.matchConditions
+          content:
+            name: exclude-namespaces
+            expression: '!(object.metadata.namespace in ["kube-system"])'
+      - contains:
+          path: spec.matchConditions
+          content:
+            name: custom-check
+            expression: "object.metadata.name != 'skip-me'"
+
+  - it: "excludeNamespaces: only user matchConditions when no excludeNamespaces"
+    set:
+      enabled: true
+      celPoliciesBeta:
+        disallow-privileged-containers:
+          enabled: true
+          matchConditions:
+            - name: custom-check
+              expression: "object.metadata.name != 'skip-me'"
+    asserts:
+      - equal:
+          path: spec.matchConditions
+          value:
+            - name: custom-check
+              expression: "object.metadata.name != 'skip-me'"
+
+  # ── excludeContainers ───────────────────────────────────────────────
+
+  - it: "excludeContainers: no filter by default"
+    set:
+      enabled: true
+      celPoliciesBeta:
+        disallow-privileged-containers:
+          enabled: true
+    asserts:
+      - equal:
+          path: spec.variables[0].expression
+          value: "object.spec.containers + object.spec.?initContainers.orValue([]) + object.spec.?ephemeralContainers.orValue([])"
+
+  - it: "excludeContainers: global adds filter"
+    set:
+      enabled: true
+      celPoliciesBeta:
+        excludeContainers:
+          - istio-init
+        disallow-privileged-containers:
+          enabled: true
+    asserts:
+      - equal:
+          path: spec.variables[0].expression
+          value: '(object.spec.containers + object.spec.?initContainers.orValue([]) + object.spec.?ephemeralContainers.orValue([])).filter(c, !(c.name in ["istio-init"]))'
+
+  - it: "excludeContainers: per-policy adds filter"
+    set:
+      enabled: true
+      celPoliciesBeta:
+        disallow-privileged-containers:
+          enabled: true
+          excludeContainers:
+            - sidecar
+    asserts:
+      - equal:
+          path: spec.variables[0].expression
+          value: '(object.spec.containers + object.spec.?initContainers.orValue([]) + object.spec.?ephemeralContainers.orValue([])).filter(c, !(c.name in ["sidecar"]))'
+
+  - it: "excludeContainers: merges global + per-policy, deduplicates"
+    set:
+      enabled: true
+      celPoliciesBeta:
+        excludeContainers:
+          - istio-init
+          - linkerd-init
+        disallow-privileged-containers:
+          enabled: true
+          excludeContainers:
+            - linkerd-init
+            - vault-agent
+    asserts:
+      - equal:
+          path: spec.variables[0].expression
+          value: '(object.spec.containers + object.spec.?initContainers.orValue([]) + object.spec.?ephemeralContainers.orValue([])).filter(c, !(c.name in ["istio-init","linkerd-init","vault-agent"]))'
