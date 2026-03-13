@@ -1,7 +1,7 @@
 <!-- Warning: Do not manually edit this file. See notes on gluon + helm-docs at the end of this file for more information. -->
 # kyverno-policies
 
-![Version: 3.3.4-bb.19](https://img.shields.io/badge/Version-3.3.4--bb.19-informational?style=flat-square) ![AppVersion: v1.13.2](https://img.shields.io/badge/AppVersion-v1.13.2-informational?style=flat-square) ![Maintenance Track: bb_integrated](https://img.shields.io/badge/Maintenance_Track-bb_integrated-green?style=flat-square)
+![Version: 3.3.4-bb.20](https://img.shields.io/badge/Version-3.3.4--bb.20-informational?style=flat-square) ![AppVersion: v1.13.2](https://img.shields.io/badge/AppVersion-v1.13.2-informational?style=flat-square) ![Maintenance Track: bb_integrated](https://img.shields.io/badge/Maintenance_Track-bb_integrated-green?style=flat-square)
 
 Collection of Kyverno security and best-practice policies for Kyverno
 
@@ -145,6 +145,8 @@ helm install kyverno-policies chart/
 | policies.update-image-registry.parameters.update | list | `[]` | List of registry updates.  `from` contains the registry to replace. `to` contains the new registry to use. |
 | policies.update-automountserviceaccounttokens-default | object | `{"enabled":false}` | List of namespaces to explictly disable mounting the serviceaccount token |
 | policies.update-automountserviceaccounttokens | object | `{"enabled":false}` | List pods to explictly enable mounting the serviceaccount token |
+| celPoliciesBeta | object | `{"disallow-privileged-containers":{"enabled":false,"validationFailureAction":""}}` | Each policy must be individually enabled. |
+| celPoliciesBeta.disallow-privileged-containers | object | `{"enabled":false,"validationFailureAction":""}` | Prevent containers that run as privileged (VPol) |
 | additionalPolicies | object | `{"samplePolicy":{"annotations":{"policies.kyverno.io/category":"Examples","policies.kyverno.io/description":"This sample policy blocks pods from deploying into the 'default' namespace.","policies.kyverno.io/severity":"low","policies.kyverno.io/subject":"Pod","policies.kyverno.io/title":"Sample Policy"},"enabled":false,"kind":"ClusterPolicy","namespace":"","spec":{"rules":[{"match":{"any":[{"resources":{"kinds":["Pods"]}}]},"name":"sample-rule","validate":{"message":"Using 'default' namespace is not allowed.","pattern":{"metadata":{"namespace":"!default"}}}}]}}}` | Adds custom policies.  See https://kyverno.io/docs/introduction/quick-start/ . |
 | additionalPolicies.samplePolicy | object | `{"annotations":{"policies.kyverno.io/category":"Examples","policies.kyverno.io/description":"This sample policy blocks pods from deploying into the 'default' namespace.","policies.kyverno.io/severity":"low","policies.kyverno.io/subject":"Pod","policies.kyverno.io/title":"Sample Policy"},"enabled":false,"kind":"ClusterPolicy","namespace":"","spec":{"rules":[{"match":{"any":[{"resources":{"kinds":["Pods"]}}]},"name":"sample-rule","validate":{"message":"Using 'default' namespace is not allowed.","pattern":{"metadata":{"namespace":"!default"}}}}]}}` | Name of the policy.  Addtional policies can be added by adding a key. |
 | additionalPolicies.samplePolicy.enabled | bool | `false` | Controls policy deployment |

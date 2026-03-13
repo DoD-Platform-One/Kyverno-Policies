@@ -4,6 +4,12 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 
 ---
 
+## [3.3.4-bb.20] (2026-03-12)
+
+### Added
+
+- First CEL-based ValidatingPolicy (VPol): `disallow-privileged-containers`, gated behind `celPoliciesBeta.disallow-privileged-containers.enabled` (disabled by default). No VPol is rendered unless you explicitly opt in. To enable: set `celPoliciesBeta.disallow-privileged-containers.enabled: true` in your values. This is the first of ~50 planned ClusterPolicy-to-CEL migrations tracked in [Epic 578](https://repo1.dso.mil/groups/big-bang/-/epics/578). The `celPoliciesBeta` values key signals that this schema may change before GA.
+
 ## [3.3.4-bb.19] (2026-01-22)
 
 ### Changed

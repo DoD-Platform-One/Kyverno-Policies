@@ -35,3 +35,6 @@ Thumbs.db
 
 # Temporary files
 *.tmp
+
+# Rendered VPol artifacts (generated at test time by tests/scripts/vpol-kyverno-test.sh)
+tests/vpol/**/policy.yaml
