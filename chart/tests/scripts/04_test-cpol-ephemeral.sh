@@ -44,7 +44,9 @@ result=$(timeout 10 kubectl debug $POD_NAME -it --image=busybox -n $NAMESPACE 2>
 echo "output from command:"
 echo $result
 
-result=$(echo $result | grep -oP "rule block-ephemeral-containers failed" | grep -oP failed)
+# Two-stage grep replaces grep -oP (Perl regex), which isn't available
+# in the devops-tester image's BusyBox grep.
+result=$(echo $result | grep -o "rule block-ephemeral-containers failed" | grep -o failed)
 
 set -e
 echo "Step 4: Cleanup - Deleting test pod $POD_NAME and $NAMESPACE"

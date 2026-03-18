@@ -1,12 +1,25 @@
 # yaml-language-server: $schema=https://raw.githubusercontent.com/kyverno/chainsaw/main/.schemas/json/test-chainsaw-v1alpha1.json
+#
+# Upstream: kyverno/policies best-practices-vpol/disallow-privileged-containers
+# BB divergences:
+#   - images swapped to registry1 ubi9-micro:9.7 (Iron Bank requirement)
+#   - added deletionPropagationPolicy, forceTerminationGracePeriod, cleanup timeout
+#     (upstream tests run in ephemeral clusters; ours run inside long-lived gluon pods
+#     where ~20 test resources can exceed default cleanup budgets)
 apiVersion: chainsaw.kyverno.io/v1alpha1
 kind: Test
 metadata:
   creationTimestamp: null
-  name: disallow-privileged-containers
+  name: disallow-privileged-containers-cel
 spec:
   # disable templating because it can cause issues with CEL expressions
   template: false
+  # Step-02 creates ~20 pods/deployments. Without a short grace period,
+  # serial pod termination can exceed the cleanup budget.
+  deletionPropagationPolicy: Background
+  forceTerminationGracePeriod: 5s
+  timeouts:
+    cleanup: 2m
   steps:
   - name: step-01
     try:
@@ -17,12 +30,15 @@ spec:
           apiVersion: policies.kyverno.io/v1
           kind: ValidatingPolicy
           metadata:
-            name: disallow-privileged-containers
+            name: disallow-privileged-containers-cel
           spec:
             validationActions:
              - Deny
     - assert:
         file: policy-ready.yaml
+    # VPol reports Ready before the API server's admission webhook has
+    # fully synced the binding — without this buffer, step-02's bad-pod
+    # can slip through before admission is enforced.
     - sleep:
         duration: 10s
   - name: step-02

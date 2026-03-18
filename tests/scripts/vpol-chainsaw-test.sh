@@ -15,11 +15,11 @@
 #     (uninstall kyverno-policies chart or set all CPols to Audit first)
 #
 # Test discovery:
-#   Auto-discovers tests/vpol/**/.chainsaw-test/ directories. Each must have
-#   a sibling .kyverno-test/kyverno-test.yaml to provide the policy name.
+#   Auto-discovers chart/tests/vpol/**/chainsaw-test/ directories. Each must have
+#   a sibling kyverno-test/kyverno-test.yaml to provide the policy name.
 #
 # Rendered artifacts:
-#   Each test gets a transient policy.yaml rendered next to .chainsaw-test/.
+#   Each test gets a transient policy.yaml rendered next to chainsaw-test/.
 #   All rendered files are cleaned up on exit (even on failure) via trap.
 #
 # Usage: tests/scripts/vpol-chainsaw-test.sh
@@ -28,7 +28,7 @@ set -euo pipefail
 
 REPO_ROOT="$(cd "$(dirname "$0")/../.." && pwd)"
 CHART_DIR="${REPO_ROOT}/chart"
-TESTS_DIR="${REPO_ROOT}/tests/vpol"
+TESTS_DIR="${REPO_ROOT}/chart/tests/vpol"
 
 failures=0
 tested=0
@@ -44,14 +44,14 @@ trap cleanup EXIT
 
 # --- Main loop: discover and run each chainsaw test -----------------------
 
-for test_dir in $(find "${TESTS_DIR}" -name '.chainsaw-test' -type d 2>/dev/null); do
+for test_dir in $(find "${TESTS_DIR}" -name 'chainsaw-test' -type d 2>/dev/null); do
   policy_dir="$(dirname "${test_dir}")"
 
   # The policy name comes from the sibling kyverno-test.yaml, which is the
   # single source of truth shared by both the kyverno CLI and chainsaw tests.
-  kyverno_test="${policy_dir}/.kyverno-test/kyverno-test.yaml"
+  kyverno_test="${policy_dir}/kyverno-test/kyverno-test.yaml"
   if [[ ! -f "${kyverno_test}" ]]; then
-    echo "SKIP: no .kyverno-test/kyverno-test.yaml alongside ${test_dir}"
+    echo "SKIP: no kyverno-test/kyverno-test.yaml alongside ${test_dir}"
     continue
   fi
 

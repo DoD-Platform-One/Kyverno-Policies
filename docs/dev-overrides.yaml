@@ -1,0 +1,170 @@
+# Local dev overrides for bare helm install (no BB umbrella).
+#
+# Usage:
+#   helm upgrade -i kyverno-policies chart/ -n kyverno \
+#     -f docs/dev-overrides.yaml
+#
+# CI gets these parameters from the BB umbrella's test-values. Without the
+# umbrella, CPol tests fail on empty defaults. This file fills the gap.
+#
+# Each override has a "why" comment. Remove it when its CPol is replaced
+# by a VPol (VPol tests carry their own fixtures, no umbrella injection needed).
+#
+# Source: https://repo1.dso.mil/big-bang/bigbang/-/blob/master/tests/test-values.yaml
+
+bbtests:
+  enabled: true
+
+# CPol tests for `restrict-selinux` and `excludeContainers` match these names.
+# Remove each block only when its CPol is deleted.
+excludeContainers:
+  - not-me
+  - or-me
+
+policies:
+  # --- Disabled policies ---------------------------------------------------
+  # Kyverno 1.17 rejects null preconditions rendered by these CPol
+  # templates (require-image-signature, require-non-root-user,
+  # require-non-root-group). Not worth fixing — these CPols will be
+  # deleted when their VPol replacements land.
+  require-image-signature:
+    enabled: false
+  require-non-root-user:
+    enabled: false
+  require-non-root-group:
+    enabled: false
+
+  # --- Disabled-by-default policies that CI enables via BB umbrella --------
+  # Without these, local test counts diverge from CI.
+
+  # BB enables this to block `latest` and untagged images.
+  disallow-image-tags:
+    enabled: true
+    validationFailureAction: Audit
+    parameters:
+      disallow:
+        - latest
+
+  # BB enables this when Istio is active. No Istio locally, but the test
+  # fixtures don't need a running Istio — they just check label enforcement.
+  disallow-istio-injection-bypass:
+    enabled: true
+    validationFailureAction: Audit
+
+  # BB blocks `bigbang` and `default` namespaces. Test fixtures deploy to
+  # `default`, expecting deny.
+  disallow-namespaces:
+    enabled: true
+    validationFailureAction: Audit
+    parameters:
+      disallow:
+        - bigbang
+        - default
+
+  # Same Istio caveat as disallow-istio-injection-bypass.
+  require-istio-on-namespaces:
+    enabled: true
+    validationFailureAction: Audit
+
+  # Mutate policy — disables automountServiceAccountToken on the `default`
+  # ServiceAccount in listed namespaces. Test fixture creates its own
+  # namespace; we list it here so the policy targets it.
+  update-automountserviceaccounttokens-default:
+    enabled: true
+    namespaces:
+      - update-automountserviceaccounttokens-default
+
+  # Mutate policy — disables automountServiceAccountToken on specific
+  # ServiceAccounts. Test fixture uses namespace
+  # `update-automountserviceaccounttokens-2`.
+  update-automountserviceaccounttokens:
+    enabled: true
+    namespaces:
+      - namespace: update-automountserviceaccounttokens-2
+        serviceAccounts:
+          - update-token-automount-2
+
+  # --- Exclusions ----------------------------------------------------------
+  # `add-default-capability-drop` mutates every pod. Without this exclusion
+  # it alters `require-drop-all-capabilities` test fixtures and those tests
+  # fail on unexpected securityContext. Remove when the add-default-capability-drop
+  # CPol is deleted.
+  add-default-capability-drop:
+    exclude:
+      any:
+        - resources:
+            namespaces:
+              - default
+            names:
+              - require-drop-all-capabilities*
+
+  # --- Parameterized allow/disallow lists ----------------------------------
+  # CPol tests embed resources matching these exact values. Changing them
+  # breaks tests. Remove each block when its CPol becomes a VPol.
+
+  # Test fixtures create annotations matching these patterns, expect deny.
+  disallow-annotations:
+    parameters:
+      disallow:
+        - 'kyverno-policies-bbtest/test: disallowed'
+        - kyverno-policies-bbtest/disallowed
+  # Same pattern for labels.
+  disallow-labels:
+    parameters:
+      disallow:
+        - 'kyverno-policies-bbtest/test: disallowed'
+        - kyverno-policies-bbtest/disallowed
+  # Test fixtures omit these annotations, expect deny.
+  require-annotations:
+    parameters:
+      require:
+        - 'kyverno-policies-bbtest/test: required'
+        - kyverno-policies-bbtest/required
+  # Same pattern for labels.
+  require-labels:
+    parameters:
+      require:
+        - 'kyverno-policies-bbtest/test: required'
+        - kyverno-policies-bbtest/required
+  # Test creates a Service with externalIPs. Only this IP passes.
+  restrict-external-ips:
+    parameters:
+      allow:
+        - 192.168.0.1
+  # Test creates an ExternalName Service. Only "allowed" passes.
+  restrict-external-names:
+    parameters:
+      allow:
+        - allowed
+  # Test mounts hostPath volumes. Only `/tmp/allowed` passes.
+  restrict-host-path-mount:
+    parameters:
+      allow:
+        - /tmp/allowed
+  # PV-level hostPath. k3s storage path also allowed for local dev.
+  restrict-host-path-mount-pv:
+    parameters:
+      allow:
+        - /tmp/allowed
+        - /var/lib/rancher/k3s/storage/pvc-*
+  # Test writes to a hostPath. Only `/tmp/allowed` passes.
+  restrict-host-path-write:
+    parameters:
+      allow:
+        - /tmp/allowed
+  # Test uses specific host ports. These ranges must match.
+  restrict-host-ports:
+    parameters:
+      allow:
+        - '63999'
+        - '>= 64000 & < 65000'
+        - '> 65000'
+
+# --- VPol overrides -------------------------------------------------------
+# VPols run independently of CPol parameters. Pinned to Audit so they don't
+# block CPol Enforce/Deny testing. Chainsaw patches to Deny at test time.
+# This section will outlive the CPol overrides above.
+celPoliciesBeta:
+  disallow-privileged-containers-cel:
+    enabled: true
+    validationFailureAction: Audit

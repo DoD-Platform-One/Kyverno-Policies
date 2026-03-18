@@ -1,167 +1,49 @@
-# Kyverno Policy Unit Tests
+# Testing Kyverno Policies
 
-This document will guide developers on creating unit tests for Kyverno Policies.
+## How tests run
 
-## Overview
+CI runs tests in two stages:
 
-The following resources in `chart/templates/tests` are setup to support testing Kyverno policies:
+1. **Helm unit tests** (`helm unittest`) — run early in CI without a cluster. Fast, offline validation of template rendering.
+2. **Gluon bbtest scripts** (`helm test`) — run inside a single pod against a live cluster. Three flavors:
+   - *CPol integration tests* (legacy) — kubectl-based, must stay until their CPols are deleted at the end of the CEL migration
+   - *CEL policy kyverno CLI tests* (beta) — offline CEL evaluation that could run without a cluster, but packaged into gluon for practical CI reasons
+   - *CEL policy chainsaw integration tests* (beta) — live admission tests against deployed CEL policies (VPol/MPol/GPol)
 
-- Service Account: Account used for pod running the tests
-- Cluster Role: RBAC permissions to create, delete, and view Kyverno and test resources
-- Cluster Role Binding: Attaches cluster role to service account
-- Config Map: Manifests (.yaml) to use for testing policies.  These are located in `chart/tests/manifests`
-- GluOn: Big Bang library to create a Config Map holding the script and a Pod for running the script.  The script is located in `chart/tests/scripts`
+   Gluon executes scripts in lexicographic filename order with `set -e` — any failure stops the pod. Use filename prefixes to control execution order.
 
-In addition, `bbtest` values from `tests/test-values.yaml` are used to configure the test pod.
+## Test values
 
-When a helm test is started, the pod `kyverno-policies-script-test` will run with the following attributes:
-
-- Runs a `kubectl` container using an Iron Bank image
-- [Test manifests](#test-manifests) (in ConfigMap) are mounted to `/yaml`
-- Test scripts (in ConfigMap) are mounted to `/src`
-- Contains an environmental variable named `ENABLED_POLICIES` that holds a list of policies that should be tested
-- Runs using service account for additional privileges
-
-## Local Testing
-
-1. Deploy the bigbang chart to your k3d dev cluster with this project's [tests/test-values.yaml](../tests/test-values.yaml) overlay.
-    ```shell
-    helm upgrade -i bigbang ~/git/repo1/bigbang/chart \
-      -n bigbang \
-      --create-namespace \
-      --set registryCredentials.username=${REGISTRY1_USERNAME} \
-      --set registryCredentials.password="${REGISTRY1_TOKEN}" \
-      -f https://repo1.dso.mil/big-bang/bigbang/-/raw/master/chart/ingress-certs.yaml \
-      -f https://repo1.dso.mil/big-bang/bigbang/-/raw/master/docs/reference/configs/example/policy-overrides-k3d.yaml \
-      -f https://repo1.dso.mil/big-bang/bigbang/-/raw/master/tests/test-values.yaml \
-      -f https://repo1.dso.mil/big-bang/product/packages/kyverno-policies/-/raw/main/tests/test-values.yaml
-    ```
-
-1. Run Helm tests
-
-    ```shell
-    helm test -n bigbang kyverno-kyverno-policies
-    ```
-
-## Test Values
-
-All validation policies should be set to "Audit" for the failure action.  This allows Kyverno to capture multiple violations in a policy report.  Setting policies to "enforce" will cause Kyverno to stop after the first resource violation.
-
-Policies should have values setup to allow for both enforcement and non-enforcement of the policy.  Enforcement means the policy blocks, generates, or mutates a resource.  Non-enforcement means the policy allows or ignores a resource (e.g exception).
-
-## Tests
-
-The following tests are run in the test script:
-
-1. **Enabled cluster policies are deployed and ready**
-    Verifies that all the cluster policies from `ENABLED_POLICIES` successfully deployed and are in the "Ready" state.  A failure indicates a syntax problem with the policy.
-1. **Disabled cluster policies are not deployed**
-    Verifies no unexpected policies were deployed.  A failure means the `.enabled` flag was not implemented properly in the policy.
-1. **All enabled policies have a test**
-    Verifies every policy has at least one test case for enforcement (e.g. blocked, generated, mutated) and one test case for non-enforcement (e.g. allowed, excluded).
-1. **Validation policies allow or block manifests properly**
-    Verifies that [test manifests](#test-manifests) are either allowed or blocked by a validate policy.
-1. **Generate policies create resources when appropriate**
-    Verifies that [test manifests](#test-manifests) trigger or don't trigger the generation of a resource by a generate policy.
-1. **Mutate policies modify manifests when appropriate**
-    Verifies that [test manifests](#test-manifests) are mutated or left alone by a mutate policy.
-
-## Test Manifests
-
-Test manifests are located in `chart/tests/manifests/*.yaml`.  They are designed to deploy resources that tests enforcement or nonenforcement of a single policy.  Each manifest should be named the same as the policy it is enforcing.  Manifests can contain multiple resources.
-
-Inside the manifest, each test case should have a comment describing what is being tested.  For example `Test 1: Containers adding non-approved capabilities should not be allowed`.
-
-Annotations are required for the script to know how to test each policy:
-
-- `kyverno-policies-bbtest/type`: Indicates the type of test that should be applied to the manifest.  This can be either `validate`, `generate`, or `mutate`.
-
-### Validate Policies
-
-- `kyverno-policies-bbtest/expected`: The expected action that Kyverno will take with the manifest.  Use `pass` for allow or `fail` for block.
-
-### Generate Policies
-
-- `kyverno-policies-bbtest/expected`: The expected action that Kyverno will take with the manifest.  Use `generate` to indicate a resource should be generated or `ignore` for no action.
-- `kyverno-policies-bbtest/kind`: The kind of the generated resource to check
-- `kyverno-policies-bbtest/name`: The name of the generated resource to check
-- `kyverno-policies-bbtest/namespace`: If the generation is in a different namespace than the annotated resource, the namespace to find the generated resource.
-
-> If `expected` is set to `ignore`, `kind`, `name` and `namespace` will still be used to validate that the resource was **NOT** generated.
-
-### Mutate Policies
-
-- `kyverno-policies-bbtest/expected`: The expected action that Kyverno will take with the manifest.  Use `mutate` to indicate the manifest should be mutated or `ignore` for no action.
-- `kyverno-policies-bbtest/key`: The JMES path to the key that should be mutated.  The syntax should work with kubectl's `--jsonpath` option
-- `kyverno-policies-bbtest/value`: The expected value of the key after mutation.
-- `kyverno-policies-bbtest/kind`: If the mutation is not on the annotated resource, the kind of the mutated resource to check
-- `kyverno-policies-bbtest/name`: If the mutation is not on the annotated resource, the name of the mutated resource to check
-- `kyverno-policies-bbtest/namespace`: If the mutation is not on the annotated resource and the mutated resource is in a different namespace than the annotated resource, the namespace to find the mutated resource.
-
-> If `expected` is set to `ignore`, `key` and `value` will still be used to validate the result.  The test will check that `key` does **NOT** exist or that the key's value does **NOT** match `value`.  Leaving `key` blank will result in a failure.
-
-## VPol / CEL Policy Testing (local only)
-
-> **Note:** These test harnesses currently run locally only. We intend to wire them into gluon-run `helm test` jobs in CI in the near future — tracked in [#213](https://repo1.dso.mil/big-bang/product/packages/kyverno-policies/-/issues/213). Until then, run them manually before pushing VPol changes.
-
-The `celPoliciesBeta` ValidatingPolicy templates have three layers of testing, each catching different classes of bugs.
-
-### Helm unit tests (`chart/unittests/`)
-
-Fast, offline tests that verify Helm template rendering — values precedence, helper output, enable guards, and YAML structure. No cluster required.
+CI layers the Big Bang umbrella's `tests/test-values.yaml` under this repo's `tests/test-values.yaml`. Many CPol tests depend on policy parameters (allowed paths, allowed capabilities, etc.) that only the umbrella provides — a bare `helm install` will see test failures that don't reproduce in CI. Use [`docs/dev-overrides.yaml`](dev-overrides.yaml) to get equivalent coverage locally:
 
 ```shell
-# Run all VPol unit tests
-helm unittest chart/ -f 'unittests/*-vpol_test.yaml'
-
-# Run tests for a single policy
-helm unittest chart/ -f 'unittests/disallow-privileged-containers-vpol_test.yaml'
+helm upgrade -i kyverno-policies chart/ -n kyverno -f docs/dev-overrides.yaml
+helm test kyverno-policies -n kyverno --timeout 10m
 ```
 
-Test files follow the naming convention `<policy-name>-vpol_test.yaml`. They use the [helm-unittest](https://github.com/helm-unittest/helm-unittest) plugin.
+Test scripts toggle `validationFailureAction` on CPols/VPols via `kubectl patch` in `_helpers.sh`. After a test run, `kubectl patch` leaves a competing field-manager entry that blocks the next bare `helm upgrade`. Fix: pass `--force-conflicts` on the next `helm upgrade`, or use the Flux-based install mode (see below) which applies `--force` by default.
 
-### Kyverno CLI tests (`tests/scripts/vpol-kyverno-test.sh`)
+Set `validationFailureAction: Audit` for all validation policies under test. This lets Kyverno capture all violations in a policy report rather than stopping at the first one.
 
-Offline policy evaluation using the `kyverno test` CLI. Renders VPol templates via Helm, then runs them against test fixtures to verify that CEL expressions admit good resources and reject bad ones — no cluster required.
+## CPol tests (legacy)
 
-```shell
-tests/scripts/vpol-kyverno-test.sh
-```
+The `05_test-cpols.sh` script tests ClusterPolicies by patching each to Enforce one at a time, applying test manifests from `chart/tests/manifests/`, and checking admission results. Test manifests use `kyverno-policies-bbtest/*` annotations to declare expected outcomes — see any manifest file for the schema (e.g. `chart/tests/manifests/disallow-privileged-containers.yaml`).
 
-Each policy's test fixtures live under `tests/vpol/<category>/<policy-name>/`:
+These tests stay as long as the CPols they cover exist. Remove each test only when its CPol is deleted.
 
-```
-tests/vpol/pod-security-vpol/baseline/disallow-privileged-containers/
-├── .kyverno-test/
-│   ├── kyverno-test.yaml   # kyverno test manifest (names the policy, lists resources + expected results)
-│   └── resource.yaml       # test pod/resource fixtures
-└── .chainsaw-test/
-    └── ...                  # (see below)
-```
+## VPol / CEL policy tests
 
-The script auto-discovers `.kyverno-test/` directories, renders `policy.yaml` from Helm, runs the test, and cleans up the rendered file.
+ValidatingPolicy templates have three layers of testing, each catching different classes of bugs:
 
-### Chainsaw integration tests (`tests/scripts/vpol-chainsaw-test.sh`)
+1. **Helm unit tests** — Fast, offline. Verify template rendering (values, helpers, guards, YAML structure). Run via `helm unittest`.
+2. **Kyverno CLI tests** — Offline CEL evaluation. Verify that CEL expressions admit good resources and reject bad ones. No cluster needed, runs in ~2s.
+3. **Chainsaw integration tests** — Live cluster. Apply the VPol, patch to Deny, create good/bad resources, verify admission webhook behavior end-to-end. Chainsaw runs all policies in parallel.
 
-Live cluster tests using [chainsaw](https://kyverno.github.io/chainsaw/). These apply the rendered VPol to a real cluster, patch it to `Deny`, then create good and bad pods to verify admission webhook behavior end-to-end.
+The kyverno CLI test is the fastest gate — if CEL expressions are broken, it fails before chainsaw burns time on live admission.
 
-```shell
-# Requires: a cluster with Kyverno installed, no conflicting enforcing policies
-tests/scripts/vpol-chainsaw-test.sh
-```
+### Test fixture conventions
 
-Chainsaw test fixtures live alongside the kyverno tests in `.chainsaw-test/`:
+- Fixtures live in `chart/tests/vpol/<policy-name>/kyverno-test/` and `chainsaw-test/`.
+- Fixtures are **plain YAML, not Helm templates** — they're packaged into a ConfigMap verbatim.
+- **Chainsaw fixtures must use `registry1.dso.mil` images** (e.g. `ubi9-micro`) to pass `restrict-image-registries` in CI. Kyverno CLI fixtures use dummy image names since they never pull.
 
-```
-.chainsaw-test/
-├── chainsaw-test.yaml       # test steps (apply policy, assert ready, create pods)
-├── policy-ready.yaml        # assertion that the VPol reaches Ready state
-├── pod-good.yaml            # pods that should be admitted
-├── pod-bad.yaml             # pods that should be denied
-├── podcontroller-good.yaml  # deployments/daemonsets that should be admitted (autogen)
-└── podcontroller-bad.yaml   # deployments/daemonsets that should be denied (autogen)
-```
-
-Like the kyverno test script, `policy.yaml` is rendered from Helm at runtime and cleaned up afterward. The chainsaw test applies it to the cluster, patches `validationActions: [Deny]`, waits for the webhook to register, then exercises the admit/deny cases.
-
-**Cluster requirements:** The test cluster should have Kyverno installed but should not have other enforcing policies that would reject the test pods (e.g., `restrict-image-registries`, `require-image-signature`). A minimal k3d cluster with only Kyverno is ideal.

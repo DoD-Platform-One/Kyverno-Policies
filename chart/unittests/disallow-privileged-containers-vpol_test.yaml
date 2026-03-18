@@ -1,7 +1,8 @@
 # yaml-language-server: $schema=https://raw.githubusercontent.com/helm-unittest/helm-unittest/main/schema/helm-testsuite.json
-suite: disallow-privileged-containers ValidatingPolicy
+suite: disallow-privileged-containers-cel ValidatingPolicy
 templates:
-  - templates/pod-security-vpol/baseline/disallow-privileged-containers.yaml
+  - templates/pod-security-vpol/baseline/disallow-privileged-containers-cel.yaml
+
 capabilities:
   apiVersions:
     - policies.kyverno.io/v1
@@ -17,7 +18,7 @@ tests:
     set:
       enabled: false
       celPoliciesBeta:
-        disallow-privileged-containers:
+        disallow-privileged-containers-cel:
           enabled: true
     asserts:
       - hasDocuments:
@@ -27,7 +28,7 @@ tests:
     set:
       enabled: true
       celPoliciesBeta:
-        disallow-privileged-containers:
+        disallow-privileged-containers-cel:
           enabled: true
     asserts:
       - isKind:
@@ -36,7 +37,7 @@ tests:
           of: policies.kyverno.io/v1
       - equal:
           path: metadata.name
-          value: disallow-privileged-containers
+          value: disallow-privileged-containers-cel
 
   # ── CEL validation expression ─────────────────────────────────────────
 
@@ -44,7 +45,7 @@ tests:
     set:
       enabled: true
       celPoliciesBeta:
-        disallow-privileged-containers:
+        disallow-privileged-containers-cel:
           enabled: true
     asserts:
       - contains:
@@ -59,7 +60,7 @@ tests:
     set:
       enabled: true
       celPoliciesBeta:
-        disallow-privileged-containers:
+        disallow-privileged-containers-cel:
           enabled: true
     asserts:
       - equal:
@@ -70,7 +71,7 @@ tests:
     set:
       enabled: true
       celPoliciesBeta:
-        disallow-privileged-containers:
+        disallow-privileged-containers-cel:
           enabled: true
           severity: medium
     asserts:
@@ -84,7 +85,7 @@ tests:
     set:
       enabled: true
       celPoliciesBeta:
-        disallow-privileged-containers:
+        disallow-privileged-containers-cel:
           enabled: true
     asserts:
       - equal:
@@ -95,7 +96,7 @@ tests:
     set:
       enabled: true
       celPoliciesBeta:
-        disallow-privileged-containers:
+        disallow-privileged-containers-cel:
           enabled: true
           validationFailureAction: Enforce
     asserts:
@@ -107,7 +108,7 @@ tests:
     set:
       enabled: true
       celPoliciesBeta:
-        disallow-privileged-containers:
+        disallow-privileged-containers-cel:
           enabled: true
           validationFailureAction: Warn
     asserts:
@@ -119,7 +120,7 @@ tests:
     set:
       enabled: true
       celPoliciesBeta:
-        disallow-privileged-containers:
+        disallow-privileged-containers-cel:
           enabled: true
           validationFailureAction: Audit
     asserts:
@@ -132,7 +133,7 @@ tests:
       enabled: true
       validationFailureAction: Enforce
       celPoliciesBeta:
-        disallow-privileged-containers:
+        disallow-privileged-containers-cel:
           enabled: true
     asserts:
       - equal:
@@ -144,7 +145,7 @@ tests:
       enabled: true
       validationFailureAction: Enforce
       celPoliciesBeta:
-        disallow-privileged-containers:
+        disallow-privileged-containers-cel:
           enabled: true
           validationFailureAction: Audit
     asserts:
@@ -159,7 +160,7 @@ tests:
       enabled: true
       failurePolicy: Fail
       celPoliciesBeta:
-        disallow-privileged-containers:
+        disallow-privileged-containers-cel:
           enabled: true
     asserts:
       - equal:
@@ -171,7 +172,7 @@ tests:
       enabled: true
       validationFailureAction: Audit
       celPoliciesBeta:
-        disallow-privileged-containers:
+        disallow-privileged-containers-cel:
           enabled: true
     asserts:
       - equal:
@@ -183,7 +184,7 @@ tests:
       enabled: true
       validationFailureAction: Warn
       celPoliciesBeta:
-        disallow-privileged-containers:
+        disallow-privileged-containers-cel:
           enabled: true
     asserts:
       - equal:
@@ -196,7 +197,7 @@ tests:
       validationFailureAction: Enforce
       failurePolicy: Fail
       celPoliciesBeta:
-        disallow-privileged-containers:
+        disallow-privileged-containers-cel:
           enabled: true
     asserts:
       - equal:
@@ -209,7 +210,7 @@ tests:
       validationFailureAction: Audit
       celPoliciesBeta:
         failurePolicy: Fail
-        disallow-privileged-containers:
+        disallow-privileged-containers-cel:
           enabled: true
     asserts:
       - equal:
@@ -222,7 +223,7 @@ tests:
       validationFailureAction: Audit
       celPoliciesBeta:
         failurePolicy: Fail
-        disallow-privileged-containers:
+        disallow-privileged-containers-cel:
           enabled: true
           failurePolicy: Ignore
     asserts:
@@ -237,7 +238,7 @@ tests:
       enabled: true
       background: true
       celPoliciesBeta:
-        disallow-privileged-containers:
+        disallow-privileged-containers-cel:
           enabled: true
     asserts:
       - equal:
@@ -250,7 +251,7 @@ tests:
       background: true
       celPoliciesBeta:
         background: false
-        disallow-privileged-containers:
+        disallow-privileged-containers-cel:
           enabled: true
     asserts:
       - equal:
@@ -263,7 +264,7 @@ tests:
       background: true
       celPoliciesBeta:
         background: true
-        disallow-privileged-containers:
+        disallow-privileged-containers-cel:
           enabled: true
           background: false
     asserts:
@@ -278,7 +279,7 @@ tests:
       enabled: true
       webhookTimeoutSeconds: 30
       celPoliciesBeta:
-        disallow-privileged-containers:
+        disallow-privileged-containers-cel:
           enabled: true
     asserts:
       - equal:
@@ -291,7 +292,7 @@ tests:
       webhookTimeoutSeconds: 30
       celPoliciesBeta:
         webhookTimeoutSeconds: 20
-        disallow-privileged-containers:
+        disallow-privileged-containers-cel:
           enabled: true
     asserts:
       - equal:
@@ -304,7 +305,7 @@ tests:
       webhookTimeoutSeconds: 30
       celPoliciesBeta:
         webhookTimeoutSeconds: 20
-        disallow-privileged-containers:
+        disallow-privileged-containers-cel:
           enabled: true
           webhookTimeoutSeconds: 15
     asserts:
@@ -319,7 +320,7 @@ tests:
       enabled: true
       autogenControllers: "Deployment,ReplicaSet,DaemonSet,StatefulSet"
       celPoliciesBeta:
-        disallow-privileged-containers:
+        disallow-privileged-containers-cel:
           enabled: true
     asserts:
       - equal:
@@ -335,7 +336,7 @@ tests:
       enabled: true
       autogenControllers: "Deployment,ReplicaSet,DaemonSet,StatefulSet"
       celPoliciesBeta:
-        disallow-privileged-containers:
+        disallow-privileged-containers-cel:
           enabled: true
           autogenControllers: none
     asserts:
@@ -348,7 +349,7 @@ tests:
       autogenControllers: "Deployment,ReplicaSet,DaemonSet,StatefulSet"
       celPoliciesBeta:
         autogenControllers: "Deployment,DaemonSet"
-        disallow-privileged-containers:
+        disallow-privileged-containers-cel:
           enabled: true
     asserts:
       - equal:
@@ -363,7 +364,7 @@ tests:
       autogenControllers: "Deployment,ReplicaSet,DaemonSet,StatefulSet"
       celPoliciesBeta:
         autogenControllers: "Deployment,DaemonSet"
-        disallow-privileged-containers:
+        disallow-privileged-containers-cel:
           enabled: true
           autogenControllers: "CronJob,Job"
     asserts:
@@ -377,7 +378,7 @@ tests:
     set:
       enabled: true
       celPoliciesBeta:
-        disallow-privileged-containers:
+        disallow-privileged-containers-cel:
           enabled: true
           autogenControllers: "Deployment,ReplicaSet,DaemonSet,StatefulSet,Job,CronJob"
     asserts:
@@ -397,7 +398,7 @@ tests:
     set:
       enabled: true
       celPoliciesBeta:
-        disallow-privileged-containers:
+        disallow-privileged-containers-cel:
           enabled: true
     asserts:
       - equal:
@@ -412,7 +413,7 @@ tests:
     set:
       enabled: true
       celPoliciesBeta:
-        disallow-privileged-containers:
+        disallow-privileged-containers-cel:
           enabled: true
           matchConstraints:
             resourceRules:
@@ -435,7 +436,7 @@ tests:
     set:
       enabled: true
       celPoliciesBeta:
-        disallow-privileged-containers:
+        disallow-privileged-containers-cel:
           enabled: true
     asserts:
       - notExists:
@@ -445,7 +446,7 @@ tests:
     set:
       enabled: true
       celPoliciesBeta:
-        disallow-privileged-containers:
+        disallow-privileged-containers-cel:
           enabled: true
           matchConditions:
             - name: exclude-system
@@ -463,7 +464,7 @@ tests:
     set:
       enabled: true
       celPoliciesBeta:
-        disallow-privileged-containers:
+        disallow-privileged-containers-cel:
           enabled: true
     asserts:
       - notExists:
@@ -475,7 +476,7 @@ tests:
       celPoliciesBeta:
         excludeNamespaces:
           - kube-system
-        disallow-privileged-containers:
+        disallow-privileged-containers-cel:
           enabled: true
     asserts:
       - contains:
@@ -488,7 +489,7 @@ tests:
     set:
       enabled: true
       celPoliciesBeta:
-        disallow-privileged-containers:
+        disallow-privileged-containers-cel:
           enabled: true
           excludeNamespaces:
             - istio-system
@@ -506,7 +507,7 @@ tests:
         excludeNamespaces:
           - kube-system
           - istio-system
-        disallow-privileged-containers:
+        disallow-privileged-containers-cel:
           enabled: true
           excludeNamespaces:
             - istio-system
@@ -524,7 +525,7 @@ tests:
       celPoliciesBeta:
         excludeNamespaces:
           - kube-system
-        disallow-privileged-containers:
+        disallow-privileged-containers-cel:
           enabled: true
           matchConditions:
             - name: custom-check
@@ -545,7 +546,7 @@ tests:
     set:
       enabled: true
       celPoliciesBeta:
-        disallow-privileged-containers:
+        disallow-privileged-containers-cel:
           enabled: true
           matchConditions:
             - name: custom-check
@@ -563,7 +564,7 @@ tests:
     set:
       enabled: true
       celPoliciesBeta:
-        disallow-privileged-containers:
+        disallow-privileged-containers-cel:
           enabled: true
     asserts:
       - equal:
@@ -576,7 +577,7 @@ tests:
       celPoliciesBeta:
         excludeContainers:
           - istio-init
-        disallow-privileged-containers:
+        disallow-privileged-containers-cel:
           enabled: true
     asserts:
       - equal:
@@ -587,7 +588,7 @@ tests:
     set:
       enabled: true
       celPoliciesBeta:
-        disallow-privileged-containers:
+        disallow-privileged-containers-cel:
           enabled: true
           excludeContainers:
             - sidecar
@@ -603,7 +604,7 @@ tests:
         excludeContainers:
           - istio-init
           - linkerd-init
-        disallow-privileged-containers:
+        disallow-privileged-containers-cel:
           enabled: true
           excludeContainers:
             - linkerd-init

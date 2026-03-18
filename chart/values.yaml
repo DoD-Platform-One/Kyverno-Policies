@@ -580,7 +580,8 @@ celPoliciesBeta:
   excludeContainers: []
 
   # -- Prevent containers that run as privileged (VPol)
-  disallow-privileged-containers:
+  # -cel suffix avoids name collision with the CPol during migration
+  disallow-privileged-containers-cel:
     enabled: false
     # -- Empty string falls through to the global validationFailureAction
     validationFailureAction: ""
@@ -675,7 +676,8 @@ istio:
 bbtests:
   enabled: false
   scripts:
-    image: registry1.dso.mil/ironbank/opensource/kubernetes/kubectl:v1.34
+    # VPol test scripts need kyverno, chainsaw, and jq — kubectl image lacks them
+    image: registry1.dso.mil/ironbank/big-bang/devops-tester:1.1
     permissions:
       apiGroups:
         - ""
@@ -688,17 +690,27 @@ bbtests:
         - list
         - get
     envs:
-      ENABLED_POLICIES: '{{ $p := list }}{{ range $k, $v := .Values.policies }}{{ if $v.enabled }}{{ $p = append $p $k }}{{ end }}{{ end }}{{ join " " $p }}'
+      # Feeds 05_test-cpols.sh — the test pod needs the enabled set at runtime
+      ENABLED_CPOLS: '{{ $p := list }}{{ range $k, $v := .Values.policies }}{{ if $v.enabled }}{{ $p = append $p $k }}{{ end }}{{ end }}{{ join " " $p }}'
+      # Feeds 00_reset-cpols.sh — heals stale validationFailureAction between gluon re-runs.
+      # Precedence: global validationFailureAction wins over per-policy, matching the CPol
+      # templates (default returns its second arg when non-empty, first arg is fallback).
+      CPOL_ACTIONS: '{{ $pairs := list }}{{ range $k, $v := .Values.policies }}{{ if $v.enabled }}{{ $action := default (dig $k "validationFailureAction" "Audit" $.Values.policies) $.Values.validationFailureAction }}{{ $pairs = append $pairs (printf "%s=%s" $k $action) }}{{ end }}{{ end }}{{ join " " $pairs }}'
       IMAGE_PULL_SECRET: '{{ .Values.bbtests.imagePullSecret }}'
     additionalVolumeMounts:
       - name: "kyverno-policies-bbtest-manifests"
         mountPath: /yaml
+      - name: "kyverno-policies-bbtest-vpol"
+        mountPath: /vpol
       - name: "kyverno-policies-bbtest-kube-cache"
         mountPath: /.kube/cache
     additionalVolumes:
       - name: "kyverno-policies-bbtest-manifests"
         configMap:
           name: "kyverno-policies-bbtest-manifests"
+      - name: "kyverno-policies-bbtest-vpol"
+        configMap:
+          name: "kyverno-policies-bbtest-vpol"
       - name: "kyverno-policies-bbtest-kube-cache"
         emptyDir: {}
   imagePullSecret: private-registry

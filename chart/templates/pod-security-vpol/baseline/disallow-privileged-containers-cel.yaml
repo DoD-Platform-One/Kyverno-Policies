@@ -1,4 +1,4 @@
-{{- $name := "disallow-privileged-containers" }}
+{{- $name := "disallow-privileged-containers-cel" }}
 {{- if and .Values.enabled (dig $name "enabled" false .Values.celPoliciesBeta) }}
 apiVersion: policies.kyverno.io/v1
 kind: ValidatingPolicy
