@@ -12,11 +12,11 @@
 #   - helm, yq, kyverno CLI on PATH
 #
 # Test discovery:
-#   Auto-discovers tests/vpol/**/.kyverno-test/ directories. Each contains
+#   Auto-discovers chart/tests/vpol/**/kyverno-test/ directories. Each contains
 #   a kyverno-test.yaml (test manifest) and resource.yaml (test fixtures).
 #
 # Rendered artifacts:
-#   Each test gets a transient policy.yaml rendered next to .kyverno-test/.
+#   Each test gets a transient policy.yaml rendered next to kyverno-test/.
 #   Cleaned up after each test (even on failure).
 #
 # Usage: tests/scripts/vpol-kyverno-test.sh
@@ -25,14 +25,14 @@ set -euo pipefail
 
 REPO_ROOT="$(cd "$(dirname "$0")/../.." && pwd)"
 CHART_DIR="${REPO_ROOT}/chart"
-TESTS_DIR="${REPO_ROOT}/tests/vpol"
+TESTS_DIR="${REPO_ROOT}/chart/tests/vpol"
 
 failures=0
 tested=0
 
 # --- Main loop: discover and run each kyverno test ------------------------
 
-for test_dir in $(find "${TESTS_DIR}" -name '.kyverno-test' -type d 2>/dev/null); do
+for test_dir in $(find "${TESTS_DIR}" -name 'kyverno-test' -type d 2>/dev/null); do
   policy_dir="$(dirname "${test_dir}")"
 
   # Extract the policy name from kyverno-test.yaml metadata.

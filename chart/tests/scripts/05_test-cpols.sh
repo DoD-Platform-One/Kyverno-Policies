@@ -1,4 +1,9 @@
 #!/bin/bash
+# No `set -euo pipefail` — this script uses a PASS/FAIL counter pattern
+# that needs kubectl apply to return non-zero for denied resources without
+# aborting. Gluon's wrapper set -e applies to the parent process, not here.
+
+source "$(dirname "$0")/_helpers.sh"
 
 # Colors
 RED='\033[0;31m'
@@ -11,8 +16,12 @@ NC='\033[0m' # No Color
 PASS=0
 FAIL=0
 
-# test-values.yaml sets ENABLED_POLICIES as an environmental variable
-POLICIES=($ENABLED_POLICIES)
+# test-values.yaml sets ENABLED_CPOLS as an environmental variable
+POLICIES=($ENABLED_CPOLS)
+
+# Ensure deployed VPols can't interfere with CPol enforce/audit testing
+quiet_vpols
+trap restore_vpols EXIT
 
 #######################################
 
@@ -73,11 +82,11 @@ for POLICY in "${POLICIES[@]}"; do
   # Create an array with expected results
   # Format is "resource_kind;resource_namespace;resource_name;test_type;expected_result"
   for YAML in "${YAMLS[@]}"; do
-    TESTTYPE=$(echo $YAML | grep -m 1 -oP '(?<=kyverno-policies-bbtest/type: ).*')
-    KIND=$(echo $YAML | grep -m 1 -oP '(?<=^kind: ).*')
-    NAME=$(echo $YAML | grep -m 1 -oP '(?<=^  name: ).*')
-    NAMESPACE=$(echo $YAML | grep -m 1 -oP '(?<=^  namespace: ).*')
-    EXPECTED=$(echo $YAML | grep -m 1 -oP '(?<=kyverno-policies-bbtest/expected: ).*')
+    TESTTYPE=$(echo "$YAML" | sed -n 's/.*kyverno-policies-bbtest\/type: //p' | head -1)
+    KIND=$(echo "$YAML" | sed -n 's/^kind: //p' | head -1)
+    NAME=$(echo "$YAML" | sed -n 's/^  name: //p' | head -1)
+    NAMESPACE=$(echo "$YAML" | sed -n 's/^  namespace: //p' | head -1)
+    EXPECTED=$(echo "$YAML" | sed -n 's/.*kyverno-policies-bbtest\/expected: //p' | head -1)
     EXPECTED_RESULTS+=("$KIND;$NAMESPACE;$NAME;$TESTTYPE;$EXPECTED")
   done
 
@@ -108,7 +117,7 @@ for POLICY in "${POLICIES[@]}"; do
   DEPLOYS=$(kubectl apply --wait --timeout=10s -f /yaml/$POLICY.yaml 2>&1)
 
   # Verify resources were deployed
-  NUM_DEPLOYS=$(echo $DEPLOYS | grep -oP "created$|configured$|denied" | wc -l)
+  NUM_DEPLOYS=$(echo $DEPLOYS | grep -oE "created$|configured$|denied" | wc -l)
   if [ "${#EXPECTED_RESULTS[@]}" -eq "$NUM_DEPLOYS" ]; then
     echo -e "${GRN}PASS${NC}"
     ((PASS+=1))
@@ -144,8 +153,8 @@ for POLICY in "${POLICIES[@]}"; do
     #######################################
     ##### Validate Test
     if [ "$TESTTYPE" == "validate" ]; then
-      ALLOW=$(echo $DEPLOYS | grep -oP "$MANIFEST(?= created)")
-      BLOCK=$(echo $DEPLOYS | grep -oP "$MANIFEST.*was blocked")
+      ALLOW=$(echo $DEPLOYS | grep -o "$MANIFEST created" | grep -o "$MANIFEST")
+      BLOCK=$(echo $DEPLOYS | grep -o "$MANIFEST.*was blocked")
       if [ "$EXPECTED" == "pass" ]; then
         # Verify manifest is in the allowed list and not in the blocked list
         if [ -n "$ALLOW" ] && [ -z "$BLOCK" ]; then

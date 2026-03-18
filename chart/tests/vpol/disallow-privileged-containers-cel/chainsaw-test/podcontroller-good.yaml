@@ -14,16 +14,16 @@ spec:
     spec:
       initContainers:
         - name: busybox01-init
-          image: ghcr.io/kyverno/test-busybox:1.35
+          image: registry1.dso.mil/ironbank/redhat/ubi/ubi9-micro:9.7
           securityContext:
             privileged: false
       containers:
         - name: busybox01
-          image: ghcr.io/kyverno/test-busybox:1.35
+          image: registry1.dso.mil/ironbank/redhat/ubi/ubi9-micro:9.7
           securityContext:
             privileged: false
         - name: busybox02
-          image: ghcr.io/kyverno/test-busybox:1.35
+          image: registry1.dso.mil/ironbank/redhat/ubi/ubi9-micro:9.7
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -41,7 +41,7 @@ spec:
     spec:
       containers:
         - name: container01
-          image: ghcr.io/kyverno/test-busybox:1.35
+          image: registry1.dso.mil/ironbank/redhat/ubi/ubi9-micro:9.7
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -59,7 +59,7 @@ spec:
     spec:
       containers:
         - name: container01
-          image: ghcr.io/kyverno/test-busybox:1.35
+          image: registry1.dso.mil/ironbank/redhat/ubi/ubi9-micro:9.7
           securityContext:
             privileged: false
 ---
@@ -79,9 +79,9 @@ spec:
     spec:
       containers:
         - name: container01
-          image: ghcr.io/kyverno/test-busybox:1.35
+          image: registry1.dso.mil/ironbank/redhat/ubi/ubi9-micro:9.7
         - name: container02
-          image: ghcr.io/kyverno/test-busybox:1.35
+          image: registry1.dso.mil/ironbank/redhat/ubi/ubi9-micro:9.7
           securityContext:
             privileged: false
 ---
@@ -101,10 +101,10 @@ spec:
     spec:
       initContainers:
         - name: initcontainer01
-          image: ghcr.io/kyverno/test-busybox:1.35
+          image: registry1.dso.mil/ironbank/redhat/ubi/ubi9-micro:9.7
       containers:
         - name: container01
-          image: ghcr.io/kyverno/test-busybox:1.35
+          image: registry1.dso.mil/ironbank/redhat/ubi/ubi9-micro:9.7
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -122,12 +122,12 @@ spec:
     spec:
       initContainers:
         - name: initcontainer01
-          image: ghcr.io/kyverno/test-busybox:1.35
+          image: registry1.dso.mil/ironbank/redhat/ubi/ubi9-micro:9.7
           securityContext:
             privileged: false
       containers:
         - name: container01
-          image: ghcr.io/kyverno/test-busybox:1.35
+          image: registry1.dso.mil/ironbank/redhat/ubi/ubi9-micro:9.7
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -145,13 +145,13 @@ spec:
     spec:
       initContainers:
         - name: initcontainer01
-          image: ghcr.io/kyverno/test-busybox:1.35
+          image: registry1.dso.mil/ironbank/redhat/ubi/ubi9-micro:9.7
           securityContext:
             privileged: false
         - name: initcontainer02
-          image: ghcr.io/kyverno/test-busybox:1.35
+          image: registry1.dso.mil/ironbank/redhat/ubi/ubi9-micro:9.7
       containers:
         - name: container01
-          image: ghcr.io/kyverno/test-busybox:1.35
+          image: registry1.dso.mil/ironbank/redhat/ubi/ubi9-micro:9.7
           securityContext:
             privileged: false

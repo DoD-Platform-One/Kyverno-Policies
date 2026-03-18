@@ -1,4 +1,4 @@
-# Test 1: Pod + Containers without a security context will be assigned the default security context by add-default-securitycontext policy. Verfied in test-defaultsecuritycontext.sh
+# Test 1: Pod + Containers without a security context will be assigned the default security context by add-default-securitycontext policy. Verfied in 03_test-cpol-defaultsecuritycontext.sh
 apiVersion: v1
 kind: Pod
 metadata:
@@ -13,7 +13,7 @@ spec:
     image: registry1.dso.mil/ironbank/redhat/ubi/ubi9-minimal
     args: ["sleep", "infinity"]
 ---
-# Test 2: Pod + Init containers without a security context will be assigned the default security context by add-default-securitycontext policy. Verfied in test-defaultsecuritycontext.sh
+# Test 2: Pod + Init containers without a security context will be assigned the default security context by add-default-securitycontext policy. Verfied in 03_test-cpol-defaultsecuritycontext.sh
 apiVersion: v1
 kind: Pod
 metadata:

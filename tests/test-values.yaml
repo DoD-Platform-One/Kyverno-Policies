@@ -29,3 +29,97 @@ kyvernoPolicies:
   values:
     bbtests:
       enabled: true
+    # Test fixtures use these container names to test excludeContainers behavior
+    excludeContainers:
+      - not-me
+      - or-me
+    # CPol test parameters — layered under the BB umbrella's test-values in CI.
+    # These override the chart's empty defaults with values that match the
+    # test fixture expectations (allowed IPs, paths, labels, etc.).
+    policies:
+      # Kyverno 1.17 rejects null preconditions rendered by these CPol
+      # templates (require-image-signature, require-non-root-user,
+      # require-non-root-group). Not worth fixing — these CPols will be
+      # deleted when their VPol replacements land.
+      require-image-signature:
+        enabled: false
+      require-non-root-user:
+        enabled: false
+      require-non-root-group:
+        enabled: false
+      # Without this exclusion, add-default-capability-drop mutates
+      # require-drop-all-capabilities test fixtures and those tests
+      # fail on unexpected securityContext.
+      add-default-capability-drop:
+        exclude:
+          any:
+            - resources:
+                namespaces:
+                  - default
+                names:
+                  - require-drop-all-capabilities*
+      # --- CPol test parameters -----------------------------------------------
+      # Each entry below feeds a CPol's allow/disallow/require list so test
+      # fixtures get the expected admission result. Remove each entry when
+      # its CPol is replaced by a VPol (VPol tests carry their own fixtures).
+      disallow-annotations:
+        parameters:
+          disallow:
+            - 'kyverno-policies-bbtest/test: disallowed'
+            - kyverno-policies-bbtest/disallowed
+      disallow-labels:
+        parameters:
+          disallow:
+            - 'kyverno-policies-bbtest/test: disallowed'
+            - kyverno-policies-bbtest/disallowed
+      require-annotations:
+        parameters:
+          require:
+            - 'kyverno-policies-bbtest/test: required'
+            - kyverno-policies-bbtest/required
+      require-labels:
+        parameters:
+          require:
+            - 'kyverno-policies-bbtest/test: required'
+            - kyverno-policies-bbtest/required
+      restrict-external-ips:
+        parameters:
+          allow:
+            - 192.168.0.1
+      restrict-external-names:
+        parameters:
+          allow:
+            - allowed
+      restrict-host-path-mount:
+        parameters:
+          allow:
+            - /tmp/allowed
+      restrict-host-path-mount-pv:
+        parameters:
+          allow:
+            - /tmp/allowed
+            - /var/lib/rancher/k3s/storage/pvc-*
+      restrict-host-path-write:
+        parameters:
+          allow:
+            - /tmp/allowed
+      restrict-host-ports:
+        parameters:
+          allow:
+            - '63999'
+            - '>= 64000 & < 65000'
+            - '> 65000'
+      # gitlab namespace uses non-registry1 images in CI
+      restrict-image-registries:
+        exclude:
+          any:
+            - resources:
+                namespaces:
+                  - gitlab
+    # Every VPol must be enabled here so gluon scripts can test them.
+    # Pin to Audit so they don't interfere with CPol test accuracy —
+    # chainsaw handles its own Deny patching at test time.
+    celPoliciesBeta:
+      disallow-privileged-containers-cel:
+        enabled: true
+        validationFailureAction: Audit

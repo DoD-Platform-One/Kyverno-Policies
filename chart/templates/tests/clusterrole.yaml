@@ -18,6 +18,26 @@ rules:
   - list
   - patch
 - apiGroups:
+  - "policies.kyverno.io"
+  resources:
+  - validatingpolicies
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+# Kyverno VPols create native K8s bindings asynchronously. Without
+# polling these, quiet_vpols can't confirm the action change took
+# effect before CPol tests start — risking false denials.
+- apiGroups:
+  - "admissionregistration.k8s.io"
+  resources:
+  - validatingadmissionpolicybindings
+  verbs:
+  - get
+  - list
+- apiGroups:
   - "*"
   - ""
   resources:

@@ -1,7 +1,7 @@
 apiVersion: cli.kyverno.io/v1alpha1
 kind: Test
 metadata:
-  name: disallow-privileged-containers
+  name: disallow-privileged-containers-cel
 policies:
 - ../policy.yaml
 resources:
@@ -9,7 +9,7 @@ resources:
 results:
 - isValidatingPolicy: true
   kind: CronJob
-  policy: disallow-privileged-containers
+  policy: disallow-privileged-containers-cel
   resources:
   - badcronjob01
   - badcronjob02
@@ -19,7 +19,7 @@ results:
   result: fail
 - isValidatingPolicy: true
   kind: Deployment
-  policy: disallow-privileged-containers
+  policy: disallow-privileged-containers-cel
   resources:
   - baddeployment01
   - baddeployment02
@@ -29,7 +29,7 @@ results:
   result: fail
 - isValidatingPolicy: true
   kind: Pod
-  policy: disallow-privileged-containers
+  policy: disallow-privileged-containers-cel
   resources:
   - badpod01
   - badpod02
@@ -39,7 +39,7 @@ results:
   result: fail
 - isValidatingPolicy: true
   kind: CronJob
-  policy: disallow-privileged-containers
+  policy: disallow-privileged-containers-cel
   resources:
   - goodcronjob01
   - goodcronjob02
@@ -50,7 +50,7 @@ results:
   result: pass
 - isValidatingPolicy: true
   kind: Deployment
-  policy: disallow-privileged-containers
+  policy: disallow-privileged-containers-cel
   resources:
   - gooddeployment01
   - gooddeployment02
@@ -61,7 +61,7 @@ results:
   result: pass
 - isValidatingPolicy: true
   kind: Pod
-  policy: disallow-privileged-containers
+  policy: disallow-privileged-containers-cel
   resources:
   - goodpod01
   - goodpod02

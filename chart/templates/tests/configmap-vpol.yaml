@@ -1,0 +1,22 @@
+{{- if dig "bbtests" "enabled" false (merge .Values dict) }}
+{{- /* VPol test fixtures for gluon bbtest scripts.
+       Keys use __ as path separator so scripts can reconstruct the directory tree.
+       NOTE: All fixtures are packaged regardless of which celPoliciesBeta policies
+       are enabled — the gluon scripts discover what to test from deployed resources.
+       TODO: When fixture volume exceeds ~800KB (~30+ policies), migrate to an image
+       with helm/yq or use per-policy ConfigMaps instead of this single one. */ -}}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ template "kyverno-policies.name" . }}-bbtest-vpol
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "kyverno-policies.test-labels" . | nindent 4 }}
+  annotations:
+    "helm.sh/hook": test
+data:
+  {{- range $path, $_ := $.Files.Glob "tests/vpol/**" }}
+  {{ $path | replace "/" "__" | quote }}: |
+{{ $.Files.Get $path | indent 4 }}
+  {{- end }}
+{{- end }}

@@ -1,0 +1,56 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/helm-unittest/helm-unittest/main/schema/helm-testsuite.json
+suite: CPOL_ACTIONS env var rendering
+templates:
+  - templates/tests/gluon.yaml
+
+tests:
+  # ── Per-policy action preserved ──────────────────────────────────────
+
+  - it: "per-policy: Enforce policies render name=Enforce"
+    documentIndex: 5
+    set:
+      bbtests.enabled: true
+      bbtests.scripts.image: "registry1.dso.mil/ironbank/big-bang/devops-tester:1.1"
+    asserts:
+      - matchRegex:
+          path: spec.containers[0].env[2].value
+          pattern: "disallow-privileged-containers=Enforce"
+
+  - it: "per-policy: Audit policies render name=Audit"
+    documentIndex: 5
+    set:
+      bbtests.enabled: true
+      bbtests.scripts.image: "registry1.dso.mil/ironbank/big-bang/devops-tester:1.1"
+    asserts:
+      - matchRegex:
+          path: spec.containers[0].env[2].value
+          pattern: "disallow-deprecated-apis=Audit"
+
+  # ── Global override ──────────────────────────────────────────────────
+
+  - it: "global override: all enabled policies get global action"
+    documentIndex: 5
+    set:
+      bbtests.enabled: true
+      bbtests.scripts.image: "registry1.dso.mil/ironbank/big-bang/devops-tester:1.1"
+      validationFailureAction: Audit
+    asserts:
+      - matchRegex:
+          path: spec.containers[0].env[2].value
+          pattern: "disallow-privileged-containers=Audit"
+      - matchRegex:
+          path: spec.containers[0].env[2].value
+          pattern: "disallow-host-namespaces=Audit"
+
+  # ── Disabled policies excluded ───────────────────────────────────────
+
+  - it: "disabled policies excluded from CPOL_ACTIONS"
+    documentIndex: 5
+    set:
+      bbtests.enabled: true
+      bbtests.scripts.image: "registry1.dso.mil/ironbank/big-bang/devops-tester:1.1"
+      policies.disallow-privileged-containers.enabled: false
+    asserts:
+      - notMatchRegex:
+          path: spec.containers[0].env[2].value
+          pattern: "disallow-privileged-containers="

@@ -4,6 +4,16 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 
 ---
 
+## [3.3.4-bb.21] (2026-03-16)
+
+### Changed
+
+- Renamed VPol to `disallow-privileged-containers-cel` so it can coexist with the CPol of the same name
+- Added gluon bbtest scripts for VPols: `kyverno test` (offline CEL) and `chainsaw test` (live admission)
+- Added `docs/dev-overrides.yaml` for local helm installs without the BB umbrella
+- Test image changed from `kubectl:v1.34` to `devops-tester:1.1` (adds `kyverno`, `chainsaw`, `jq`)
+- Renamed `ENABLED_POLICIES` env var to `ENABLED_CPOLS`, added `CPOL_ACTIONS`
+
 ## [3.3.4-bb.20] (2026-03-12)
 
 ### Added

@@ -1,7 +1,7 @@
 apiVersion: policies.kyverno.io/v1
 kind: ValidatingPolicy
 metadata:
-  name: disallow-privileged-containers
+  name: disallow-privileged-containers-cel
 status:
   conditionStatus:
             (conditions[?type == 'RBACPermissionsGranted']):
