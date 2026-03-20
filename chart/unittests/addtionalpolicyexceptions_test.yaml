@@ -1,0 +1,319 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/helm-unittest/helm-unittest/main/schema/helm-testsuite.json
+suite: additionalPolicyExceptions
+templates:
+  - templates/additional-policyexceptions.yaml
+
+tests:
+  # ── No documents when nothing is configured ──────────────────────────
+
+  - it: should not render when additionalPolicyExceptions is empty (default)
+    asserts:
+      - hasDocuments:
+          count: 0
+
+  - it: should not render when global enabled is false
+    set:
+      enabled: false
+      additionalPolicyExceptions:
+        test-exception:
+          spec:
+            exceptions:
+              - policyName: disallow-privileged-containers
+                ruleNames:
+                  - privileged-containers
+            match:
+              any:
+                - resources:
+                    kinds:
+                      - Pod
+    asserts:
+      - hasDocuments:
+          count: 0
+
+  # ── Basic rendering ──────────────────────────────────────────────────
+
+  - it: should render a PolicyException with correct apiVersion and kind
+    set:
+      additionalPolicyExceptions:
+        my-exception:
+          spec:
+            exceptions:
+              - policyName: disallow-privileged-containers
+                ruleNames:
+                  - privileged-containers
+            match:
+              any:
+                - resources:
+                    kinds:
+                      - Pod
+    asserts:
+      - isKind:
+          of: PolicyException
+      - isAPIVersion:
+          of: kyverno.io/v2
+      - equal:
+          path: metadata.name
+          value: my-exception
+
+  # ── Namespace handling ───────────────────────────────────────────────
+
+  - it: "namespace: defaults to kyverno when not specified"
+    set:
+      additionalPolicyExceptions:
+        my-exception:
+          spec:
+            exceptions:
+              - policyName: disallow-privileged-containers
+                ruleNames:
+                  - privileged-containers
+            match:
+              any:
+                - resources:
+                    kinds:
+                      - Pod
+    asserts:
+      - equal:
+          path: metadata.namespace
+          value: kyverno
+
+  - it: "namespace: uses top-level namespace field"
+    set:
+      additionalPolicyExceptions:
+        my-exception:
+          namespace: custom-ns
+          spec:
+            exceptions:
+              - policyName: disallow-privileged-containers
+                ruleNames:
+                  - privileged-containers
+            match:
+              any:
+                - resources:
+                    kinds:
+                      - Pod
+    asserts:
+      - equal:
+          path: metadata.namespace
+          value: custom-ns
+
+  - it: "namespace: uses metadata.namespace field"
+    set:
+      additionalPolicyExceptions:
+        my-exception:
+          metadata:
+            namespace: metadata-ns
+          spec:
+            exceptions:
+              - policyName: disallow-privileged-containers
+                ruleNames:
+                  - privileged-containers
+            match:
+              any:
+                - resources:
+                    kinds:
+                      - Pod
+    asserts:
+      - equal:
+          path: metadata.namespace
+          value: metadata-ns
+
+  - it: "namespace: top-level namespace takes precedence over metadata.namespace"
+    set:
+      additionalPolicyExceptions:
+        my-exception:
+          namespace: top-level-ns
+          metadata:
+            namespace: metadata-ns
+          spec:
+            exceptions:
+              - policyName: disallow-privileged-containers
+                ruleNames:
+                  - privileged-containers
+            match:
+              any:
+                - resources:
+                    kinds:
+                      - Pod
+    asserts:
+      - equal:
+          path: metadata.namespace
+          value: top-level-ns
+
+  # ── Annotations ──────────────────────────────────────────────────────
+
+  - it: "annotations: not rendered when metadata.annotations is absent"
+    set:
+      additionalPolicyExceptions:
+        my-exception:
+          spec:
+            exceptions:
+              - policyName: disallow-privileged-containers
+                ruleNames:
+                  - privileged-containers
+            match:
+              any:
+                - resources:
+                    kinds:
+                      - Pod
+    asserts:
+      - notExists:
+          path: metadata.annotations
+
+  - it: "annotations: rendered from metadata.annotations"
+    set:
+      additionalPolicyExceptions:
+        my-exception:
+          metadata:
+            annotations:
+              policies.kyverno.io/title: My Exception
+              policies.kyverno.io/category: Testing
+          spec:
+            exceptions:
+              - policyName: disallow-privileged-containers
+                ruleNames:
+                  - privileged-containers
+            match:
+              any:
+                - resources:
+                    kinds:
+                      - Pod
+    asserts:
+      - equal:
+          path: metadata.annotations["policies.kyverno.io/title"]
+          value: My Exception
+      - equal:
+          path: metadata.annotations["policies.kyverno.io/category"]
+          value: Testing
+
+  # ── Labels ───────────────────────────────────────────────────────────
+
+  - it: "labels: includes default chart labels when no custom labels"
+    set:
+      additionalPolicyExceptions:
+        my-exception:
+          spec:
+            exceptions:
+              - policyName: disallow-privileged-containers
+                ruleNames:
+                  - privileged-containers
+            match:
+              any:
+                - resources:
+                    kinds:
+                      - Pod
+    asserts:
+      - exists:
+          path: metadata.labels
+
+  - it: "labels: merges custom labels with default labels"
+    set:
+      additionalPolicyExceptions:
+        my-exception:
+          metadata:
+            labels:
+              custom-label: custom-value
+          spec:
+            exceptions:
+              - policyName: disallow-privileged-containers
+                ruleNames:
+                  - privileged-containers
+            match:
+              any:
+                - resources:
+                    kinds:
+                      - Pod
+    asserts:
+      - equal:
+          path: metadata.labels["custom-label"]
+          value: custom-value
+
+  # ── Spec passthrough ─────────────────────────────────────────────────
+
+  - it: "spec: passes through exceptions and match correctly"
+    set:
+      additionalPolicyExceptions:
+        my-exception:
+          spec:
+            exceptions:
+              - policyName: disallow-privileged-containers
+                ruleNames:
+                  - privileged-containers
+            match:
+              any:
+                - resources:
+                    kinds:
+                      - Pod
+                    names:
+                      - important-tool*
+    asserts:
+      - equal:
+          path: spec.exceptions[0].policyName
+          value: disallow-privileged-containers
+      - equal:
+          path: spec.exceptions[0].ruleNames[0]
+          value: privileged-containers
+      - equal:
+          path: spec.match.any[0].resources.kinds[0]
+          value: Pod
+      - equal:
+          path: spec.match.any[0].resources.names[0]
+          value: important-tool*
+
+  - it: "spec: passes through conditions"
+    set:
+      additionalPolicyExceptions:
+        my-exception:
+          spec:
+            exceptions:
+              - policyName: disallow-privileged-containers
+                ruleNames:
+                  - privileged-containers
+            match:
+              any:
+                - resources:
+                    kinds:
+                      - Pod
+            conditions:
+              any:
+                - key: "{{ request.object.metadata.labels.app || '' }}"
+                  operator: Equals
+                  value: busybox
+    asserts:
+      - equal:
+          path: spec.conditions.any[0].operator
+          value: Equals
+      - equal:
+          path: spec.conditions.any[0].value
+          value: busybox
+
+  # ── Multiple exceptions ─────────────────────────────────────────────
+
+  - it: "multiple: renders two PolicyExceptions for two entries"
+    set:
+      additionalPolicyExceptions:
+        exception-one:
+          spec:
+            exceptions:
+              - policyName: disallow-privileged-containers
+                ruleNames:
+                  - privileged-containers
+            match:
+              any:
+                - resources:
+                    kinds:
+                      - Pod
+        exception-two:
+          namespace: other-ns
+          spec:
+            exceptions:
+              - policyName: require-labels
+                ruleNames:
+                  - check-labels
+            match:
+              any:
+                - resources:
+                    kinds:
+                      - Deployment
+    asserts:
+      - hasDocuments:
+          count: 2

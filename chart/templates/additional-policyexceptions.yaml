@@ -1,20 +1,22 @@
+{{- if $.Values.enabled }}
 {{- range $name, $values := .Values.additionalPolicyExceptions }}
-{{- if and $.Values.enabled $values.enabled }}
-{{- if not (has $values.kind (list "PolicyException")) }}
-{{- fail (printf "Invalid kind (%s) for policy named %s." $values.kind $name) }}
-{{- end }}
 ---
 apiVersion: kyverno.io/v2
-kind: {{ default $values.kind "PolicyException" }}
+kind: PolicyException
 metadata:
   name: {{ $name }}
-    {{- if $values.namespace  }}
-  namespace: {{ $values.namespace }}
-    {{- else }}
-      {{- fail (printf "PolicyException named %s requires a namespace." $name) }}
-    {{- end }}
-  annotations: {{- toYaml (default dict $values.annotations) | nindent 4 }}
-  labels: {{- include "kyverno-policies.labels" $ | nindent 4 }}
+  namespace: {{ $values.namespace | default (index (default dict $values.metadata) "namespace") | default "kyverno" }}
+  {{- if and $values.metadata $values.metadata.annotations }}
+  annotations: {{- toYaml $values.metadata.annotations | nindent 4 }}
+  {{- end }}
+  {{- $defaultLabels := (include "kyverno-policies.labels" $ | fromYaml) }}
+  {{- if and $values.metadata $values.metadata.labels }}
+  labels: 
+    {{- toYaml (mustMergeOverwrite $defaultLabels $values.metadata.labels) | nindent 4 }}
+  {{- else }}
+  labels: 
+    {{- toYaml $defaultLabels | nindent 4 }}
+  {{- end }}
 spec: {{- toYaml $values.spec | nindent 2 }}
 {{- end }}
 {{- end }}

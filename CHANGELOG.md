@@ -4,6 +4,12 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 
 ---
 
+## [3.3.4-bb.22] (2026-03-20)
+
+### Changed
+
+- Made changes to  `addtionalPolicyExceptions.yaml` template to simplifying passing exceptions from umbrella bigbang chart.
+
 ## [3.3.4-bb.21] (2026-03-16)
 
 ### Changed
