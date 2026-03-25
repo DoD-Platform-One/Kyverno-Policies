@@ -4,6 +4,12 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 
 ---
 
+## [3.3.4-bb.23] (2026-03-23)
+
+### Added
+
+- CEL-based ValidatingPolicy: `require-cpu-limit-cel`, gated behind `celPoliciesBeta.require-cpu-limit-cel.enabled` (disabled by default). Validates that all containers define CPU limits. Optional `maxCPU` parameter adds an upper-bound check via CEL `quantity()`. The CPol `parameters.require` JMESPath range-check syntax is not supported; `maxCPU` covers the common upper-bound case. Part of [Epic 578](https://repo1.dso.mil/groups/big-bang/-/epics/578).
+
 ## [3.3.4-bb.22] (2026-03-20)
 
 ### Changed

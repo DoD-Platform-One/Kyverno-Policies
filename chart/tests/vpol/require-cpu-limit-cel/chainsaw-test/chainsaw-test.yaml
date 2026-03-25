@@ -1,0 +1,52 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/kyverno/chainsaw/main/.schemas/json/test-chainsaw-v1alpha1.json
+#
+# Upstream: kyverno/policies other/require-cpu-limits
+# BB divergences:
+#   - images swapped to registry1 ubi9-micro:9.7 (Iron Bank requirement)
+#   - trimmed to minimal fixture set (offline kyverno-test covers permutations)
+#   - added deletionPropagationPolicy, forceTerminationGracePeriod, cleanup timeout
+apiVersion: chainsaw.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  creationTimestamp: null
+  name: require-cpu-limit-cel
+spec:
+  template: false
+  deletionPropagationPolicy: Background
+  forceTerminationGracePeriod: 5s
+  timeouts:
+    cleanup: 2m
+  steps:
+  - name: step-01
+    try:
+    - apply:
+        file: ../policy.yaml
+    - patch:
+        resource:
+          apiVersion: policies.kyverno.io/v1
+          kind: ValidatingPolicy
+          metadata:
+            name: require-cpu-limit-cel
+          spec:
+            validationActions:
+             - Deny
+    - assert:
+        file: policy-ready.yaml
+    - sleep:
+        duration: 10s
+  - name: step-02
+    try:
+    - apply:
+        file: pod-good.yaml
+    - apply:
+        expect:
+        - check:
+            ($error != null): true
+        file: pod-bad.yaml
+    - apply:
+        file: podcontroller-good.yaml
+    - apply:
+        expect:
+        - check:
+            ($error != null): true
+        file: podcontroller-bad.yaml
