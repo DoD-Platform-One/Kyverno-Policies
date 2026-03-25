@@ -1,0 +1,118 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/helm-unittest/helm-unittest/main/schema/helm-testsuite.json
+#
+# Policy-specific tests only. Shared helper tests are in
+# vpol-shared-helpers_test.yaml.
+suite: require-cpu-limit-cel ValidatingPolicy
+templates:
+  - templates/other-vpol/require-cpu-limit-cel.yaml
+
+capabilities:
+  apiVersions:
+    - policies.kyverno.io/v1
+tests:
+  - it: should render when enabled
+    set:
+      enabled: true
+      celPoliciesBeta:
+        require-cpu-limit-cel:
+          enabled: true
+    asserts:
+      - isKind:
+          of: ValidatingPolicy
+      - equal:
+          path: metadata.name
+          value: require-cpu-limit-cel
+
+  - it: should contain the CEL cpu-limit validation
+    set:
+      enabled: true
+      celPoliciesBeta:
+        require-cpu-limit-cel:
+          enabled: true
+    asserts:
+      - contains:
+          path: spec.validations
+          content:
+            expression: "variables.allContainers.all(container, container.?resources.?limits.?cpu.hasValue())"
+            message: "CPU limits are required for all containers."
+
+  - it: "severity: defaults to medium"
+    set:
+      enabled: true
+      celPoliciesBeta:
+        require-cpu-limit-cel:
+          enabled: true
+    asserts:
+      - equal:
+          path: metadata.annotations["policies.kyverno.io/severity"]
+          value: "medium"
+
+  # ── maxCPU ─────────────────────────────────────────────────────────────
+
+  - it: "maxCPU: no upper-bound validation when maxCPU is empty"
+    set:
+      enabled: true
+      celPoliciesBeta:
+        require-cpu-limit-cel:
+          enabled: true
+          maxCPU: ""
+    asserts:
+      - lengthEqual:
+          path: spec.validations
+          count: 1
+
+  - it: "maxCPU: defaults to 10 (matches CPol default)"
+    set:
+      enabled: true
+      celPoliciesBeta:
+        require-cpu-limit-cel:
+          enabled: true
+    asserts:
+      - lengthEqual:
+          path: spec.validations
+          count: 2
+      - contains:
+          path: spec.validations
+          content:
+            expression: |-
+              variables.allContainers.all(container,
+                !container.?resources.?limits.?cpu.hasValue() ||
+                quantity(container.resources.limits.cpu).compareTo(quantity('10')) <= 0)
+            message: "CPU limits must not exceed 10."
+
+  - it: "maxCPU: adds upper-bound validation when set"
+    set:
+      enabled: true
+      celPoliciesBeta:
+        require-cpu-limit-cel:
+          enabled: true
+          maxCPU: "10"
+    asserts:
+      - lengthEqual:
+          path: spec.validations
+          count: 2
+      - contains:
+          path: spec.validations
+          content:
+            expression: |-
+              variables.allContainers.all(container,
+                !container.?resources.?limits.?cpu.hasValue() ||
+                quantity(container.resources.limits.cpu).compareTo(quantity('10')) <= 0)
+            message: "CPU limits must not exceed 10."
+
+  - it: "maxCPU: works with millicore values"
+    set:
+      enabled: true
+      celPoliciesBeta:
+        require-cpu-limit-cel:
+          enabled: true
+          maxCPU: "4000m"
+    asserts:
+      - contains:
+          path: spec.validations
+          content:
+            expression: |-
+              variables.allContainers.all(container,
+                !container.?resources.?limits.?cpu.hasValue() ||
+                quantity(container.resources.limits.cpu).compareTo(quantity('4000m')) <= 0)
+            message: "CPU limits must not exceed 4000m."

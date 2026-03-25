@@ -1,0 +1,39 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: require-cpu-limit-cel
+policies:
+- ../policy.yaml
+resources:
+- resource.yaml
+results:
+- isValidatingPolicy: true
+  kind: Deployment
+  policy: require-cpu-limit-cel
+  resources:
+  - baddeployment-no-resources
+  result: fail
+- isValidatingPolicy: true
+  kind: Pod
+  policy: require-cpu-limit-cel
+  resources:
+  - badpod-no-resources
+  - badpod-partial
+  - badpod-init-missing
+  - badpod-over-limit
+  result: fail
+- isValidatingPolicy: true
+  kind: Deployment
+  policy: require-cpu-limit-cel
+  resources:
+  - gooddeployment-basic
+  result: pass
+- isValidatingPolicy: true
+  kind: Pod
+  policy: require-cpu-limit-cel
+  resources:
+  - goodpod-basic
+  - goodpod-multi
+  - goodpod-init
+  - goodpod-at-limit
+  result: pass

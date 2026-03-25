@@ -586,6 +586,17 @@ celPoliciesBeta:
     # -- Empty string falls through to the global validationFailureAction
     validationFailureAction: ""
 
+  # -- Require containers have CPU limits defined (VPol)
+  # -cel suffix avoids name collision with the CPol during migration
+  require-cpu-limit-cel:
+    enabled: false
+    # -- Empty string falls through to the global validationFailureAction
+    validationFailureAction: ""
+    # -- Upper bound on CPU limits. Rejects containers requesting more than this.
+    # -- Default "10" (cores) mirrors the CPol's "<10" ceiling (VPol uses <=).
+    # -- not a tight limit. Set to empty string to disable the upper-bound check.
+    maxCPU: "10"
+
 # -- Adds custom policies.  See https://kyverno.io/docs/introduction/quick-start/ .
 additionalPolicies:
   # -- Name of the policy.  Addtional policies can be added by adding a key.

@@ -1,0 +1,155 @@
+###### Pods - Bad
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: badpod-no-resources
+spec:
+  containers:
+  - name: container01
+    image: dummyimagename
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: badpod-partial
+spec:
+  containers:
+  - name: container01
+    image: dummyimagename
+    resources:
+      limits:
+        cpu: "500m"
+  - name: container02
+    image: dummyimagename
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: badpod-init-missing
+spec:
+  initContainers:
+  - name: initcontainer01
+    image: dummyimagename
+  containers:
+  - name: container01
+    image: dummyimagename
+    resources:
+      limits:
+        cpu: "500m"
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: badpod-over-limit
+spec:
+  containers:
+  - name: container01
+    image: dummyimagename
+    resources:
+      limits:
+        cpu: "11"
+---
+###### Pods - Good
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: goodpod-basic
+spec:
+  containers:
+  - name: container01
+    image: dummyimagename@sha256:af21f7f62c57958b7e5f31c334e37fd5e4c4710aeb1e83b7b235a8d9a7d097b7
+    resources:
+      limits:
+        cpu: "500m"
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: goodpod-multi
+spec:
+  containers:
+  - name: container01
+    image: dummyimagename@sha256:af21f7f62c57958b7e5f31c334e37fd5e4c4710aeb1e83b7b235a8d9a7d097b7
+    resources:
+      limits:
+        cpu: "500m"
+  - name: container02
+    image: dummyimagename@sha256:af21f7f62c57958b7e5f31c334e37fd5e4c4710aeb1e83b7b235a8d9a7d097b7
+    resources:
+      limits:
+        cpu: "500m"
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: goodpod-init
+spec:
+  initContainers:
+  - name: initcontainer01
+    image: dummyimagename@sha256:af21f7f62c57958b7e5f31c334e37fd5e4c4710aeb1e83b7b235a8d9a7d097b7
+    resources:
+      limits:
+        cpu: "500m"
+  containers:
+  - name: container01
+    image: dummyimagename@sha256:af21f7f62c57958b7e5f31c334e37fd5e4c4710aeb1e83b7b235a8d9a7d097b7
+    resources:
+      limits:
+        cpu: "500m"
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: goodpod-at-limit
+spec:
+  containers:
+  - name: container01
+    image: dummyimagename@sha256:af21f7f62c57958b7e5f31c334e37fd5e4c4710aeb1e83b7b235a8d9a7d097b7
+    resources:
+      limits:
+        cpu: "10"
+---
+###### Deployments - Bad
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: baddeployment-no-resources
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: app
+  template:
+    metadata:
+      labels:
+        app: app
+    spec:
+      containers:
+      - name: container01
+        image: dummyimagename
+---
+###### Deployments - Good
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gooddeployment-basic
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: app
+  template:
+    metadata:
+      labels:
+        app: app
+    spec:
+      containers:
+      - name: container01
+        image: dummyimagename@sha256:af21f7f62c57958b7e5f31c334e37fd5e4c4710aeb1e83b7b235a8d9a7d097b7
+        resources:
+          limits:
+            cpu: "500m"

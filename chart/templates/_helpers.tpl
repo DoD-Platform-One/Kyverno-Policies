@@ -235,7 +235,8 @@ preconditions:
      https://github.com/kyverno/kyverno/blob/main/charts/kyverno-policies/templates/_helpers.tpl#L113-L129
      Changes: (1) adds Warn→Warn mapping (upstream only handles Enforce→Deny, else→Audit),
      (2) reads from celPoliciesBeta per-policy override instead of validationFailureActionByPolicy.
-     Precedence: celPoliciesBeta.<name>.validationFailureAction → Values.validationFailureAction → default Audit. */}}
+     Precedence: celPoliciesBeta.<name>.validationFailureAction → Values.validationFailureAction → default Audit.
+     Shared-helper tests: chart/unittests/vpol-shared-helpers_test.yaml. New bb-kyverno-policies.* helpers need coverage there. */}}
 {{- define "bb-kyverno-policies.validationActions" -}}
 {{- $name := .name -}}
 {{- $action := default .Values.validationFailureAction (dig $name "validationFailureAction" "" .Values.celPoliciesBeta) -}}
@@ -255,7 +256,8 @@ validationActions:
      https://github.com/kyverno/kyverno/blob/main/charts/kyverno-policies/templates/baseline/disallow-privileged-containers.cel.yaml#L22
      Changes: adds auto-derive via existing setFailurePolicy (Audit/Warn→Ignore), plus per-policy
      and celPoliciesBeta global override layers.
-     Precedence: per-policy → celPoliciesBeta global → auto-derive from action → Values.failurePolicy. */}}
+     Precedence: per-policy → celPoliciesBeta global → auto-derive from action → Values.failurePolicy.
+     Tests: vpol-shared-helpers_test.yaml */}}
 {{- define "bb-kyverno-policies.vpol-failurePolicy" -}}
 {{- $name := .name -}}
 {{- $action := default .Values.validationFailureAction (dig $name "validationFailureAction" "" .Values.celPoliciesBeta) -}}
@@ -271,7 +273,8 @@ validationActions:
      https://github.com/kyverno/kyverno/blob/main/charts/kyverno-policies/templates/baseline/disallow-privileged-containers.cel.yaml
      Changes: wires to VPol's evaluation.background.enabled with per-policy and celPoliciesBeta
      global overrides. Uses toString to distinguish false (explicit) from "" (not set).
-     Precedence: per-policy → celPoliciesBeta global → Values.background. */}}
+     Precedence: per-policy → celPoliciesBeta global → Values.background.
+     Tests: vpol-shared-helpers_test.yaml */}}
 {{- define "bb-kyverno-policies.vpol-background" -}}
 {{- $name := .name -}}
 {{- $perPolicy := dig $name "background" "" .Values.celPoliciesBeta -}}
@@ -289,7 +292,8 @@ validationActions:
      BB CPol uses the kyverno-policies.webhookTimeoutSeconds helper for the same purpose.
      Changes: new helper for VPol's spec.webhookConfiguration.timeoutSeconds with per-policy and
      celPoliciesBeta global overrides.
-     Precedence: per-policy → celPoliciesBeta global → Values.webhookTimeoutSeconds. */}}
+     Precedence: per-policy → celPoliciesBeta global → Values.webhookTimeoutSeconds.
+     Tests: vpol-shared-helpers_test.yaml */}}
 {{- define "bb-kyverno-policies.vpol-webhookTimeoutSeconds" -}}
 {{- $name := .name -}}
 {{- $perPolicy := dig $name "webhookTimeoutSeconds" "" .Values.celPoliciesBeta -}}
@@ -307,7 +311,8 @@ webhookConfiguration:
      to VPol's spec.autogen.podControllers.controllers list (lowercase plural per Kyverno source
      pkg/cel/autogen/data.go). Accepts same input format as CPol so users don't learn a new syntax.
      "none" suppresses the autogen block entirely.
-     Precedence: per-policy → celPoliciesBeta global → Values.autogenControllers. */}}
+     Precedence: per-policy → celPoliciesBeta global → Values.autogenControllers.
+     Tests: vpol-shared-helpers_test.yaml */}}
 {{- define "bb-kyverno-policies.vpol-autogenControllers" -}}
 {{- $name := .name -}}
 {{- $perPolicy := dig $name "autogenControllers" "" .Values.celPoliciesBeta -}}
@@ -351,7 +356,8 @@ autogen:
      - exclude.all semantics (AND logic across multiple conditions)
      - exclude.any[].resources.names (resource name exclusions)
      - exclude.any[].subjects / clusterRoles / roles (user-based exclusions)
-     Precedence: celPoliciesBeta.<name>.excludeNamespaces + celPoliciesBeta.excludeNamespaces (merged). */}}
+     Precedence: celPoliciesBeta.<name>.excludeNamespaces + celPoliciesBeta.excludeNamespaces (merged).
+     Tests: vpol-shared-helpers_test.yaml */}}
 {{- define "bb-kyverno-policies.vpol-excludeNamespaces" -}}
 {{- $name := .name -}}
 {{- $global := default (list) .Values.celPoliciesBeta.excludeNamespaces -}}
@@ -375,7 +381,8 @@ autogen:
      always checks all three container types. This is a future-policy concern since
      disallow-privileged-containers checks all container types in both CPol and VPol.
 
-     Precedence: celPoliciesBeta.<name>.excludeContainers + celPoliciesBeta.excludeContainers (merged). */}}
+     Precedence: celPoliciesBeta.<name>.excludeContainers + celPoliciesBeta.excludeContainers (merged).
+     Tests: vpol-shared-helpers_test.yaml */}}
 {{- define "bb-kyverno-policies.vpol-allContainers" -}}
 {{- $name := .name -}}
 {{- $global := default (list) .Values.celPoliciesBeta.excludeContainers -}}
