@@ -3,6 +3,11 @@
 Format: [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 
 ---
+## [3.3.4-bb.24] (2026-03-26)
+
+### Changed
+
+- Changed the default `enabled` and `validatingFailureAction` values for the `disallow-image-tags`, `disallow-namespaces`, `disallow-nodeport-services`, `require-image-signature`, `restrict-host-path-mount`, `restrict-host-path-mount-pv`, `restrict-host-path-write`, and `restrict-image-registries` to match those specified in the bigbang umbrella chart.
 
 ## [3.3.4-bb.23] (2026-03-23)
 

@@ -123,8 +123,8 @@ policies:
 
   # -- Prevent container images with specified tags.  Also, requires images to have a tag.
   disallow-image-tags:
-    enabled: false
-    validationFailureAction: Audit
+    enabled: true
+    validationFailureAction: Enforce
     parameters:
       disallow:
       - latest
@@ -144,8 +144,8 @@ policies:
 
   # -- Prevent pods from using the listed namespaces
   disallow-namespaces:
-    enabled: false
-    validationFailureAction: Audit
+    enabled: true
+    validationFailureAction: Enforce
     parameters:
       # -- List of namespaces to deny pod deployment
       disallow:
@@ -154,7 +154,7 @@ policies:
   # -- Prevent services of the type NodePort
   disallow-nodeport-services:
     enabled: true
-    validationFailureAction: Audit
+    validationFailureAction: Enforce
 
   # -- Prevent the use of `exec` or `attach` on pods
   disallow-pod-exec:
@@ -242,8 +242,8 @@ policies:
 
   # -- Require specified images to be signed and verified
   require-image-signature:
-    enabled: true
-    validationFailureAction: Enforce
+    enabled: false
+    validationFailureAction: Audit
     parameters:
       # -- List of images that must be signed and the public key to verify.  Use `kubectl explain clusterpolicy.spec.rules.verifyImages` for fields.
       require:
@@ -396,14 +396,14 @@ policies:
   # -- Restrict the paths that can be mounted by hostPath volumes to the allowed list.  HostPath volumes are normally disallowed.  If exceptions are made, the path(s) should be restricted.
   restrict-host-path-mount:
     enabled: true
-    validationFailureAction: Audit
+    validationFailureAction: Enforce
     parameters:
       # -- List of allowed paths for hostPath volumes to mount
       allow: []
 
   restrict-host-path-mount-pv:
     enabled: true
-    validationFailureAction: Audit
+    validationFailureAction: Enforce
     parameters:
       # -- List of allowed paths for hostPath volumes to mount
       allow: []
@@ -411,7 +411,7 @@ policies:
   # -- Restrict the paths that can be mounted as read/write by hostPath volumes to the allowed list.  HostPath volumes, if allowed, should normally be mounted as read-only.  If exceptions are made, the path(s) should be restricted.
   restrict-host-path-write:
     enabled: true
-    validationFailureAction: Audit
+    validationFailureAction: Enforce
     parameters:
       # -- List of allowed paths for hostPath volumes to mount as read/write
       allow: []
@@ -427,11 +427,12 @@ policies:
   # -- Restricts container images to registries in the specified list
   restrict-image-registries:
     enabled: true
-    validationFailureAction: Audit
+    validationFailureAction: Enforce
     parameters:
       # -- List of allowed registries that images may use
       allow:
-      - registry1.dso.mil/
+      - registry1.dso.mil
+      - registry.dso.mil
 
   # -- Restrict mounting /proc to the specified mask
   restrict-proc-mount:
